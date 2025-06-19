@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "103293712511",
+    "project_id": "doggzi",
+    "storage_bucket": "doggzi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103293712511:android:d9782a98eb16dcef14674a",
+        "android_client_info": {
+          "package_name": "com.doggzi.doggzi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIVjxlSjIOtklntYNakVeJDM7NPgn1jYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,179 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
+import '../controllers/auth_controller.dart';
+import '../theme/colors.dart';
+import '../widgets/custom_button.dart';
+
+class OTPVerificationPage extends GetView<AuthController> {
+  OTPVerificationPage({super.key});
+
+  final _otpController = TextEditingController();
+
+  Future<void> _handleVerifyOTP() async {
+    if (_otpController.text.length != 4) {
+      Get.snackbar(
+        'Invalid OTP',
+        'Please enter a 4-digit verification code',
+        snackPosition: SnackPosition.TOP,
+      );
+      return;
+    }
+
+    final success = await controller.verifyOTP(_otpController.text);
+
+    if (success) {
+      Get.offAllNamed('/home');
+    }
+  }
+
+  Future<void> _handleResendOTP() async {
+    await controller.sendOTP(controller.currentPhoneNumber);
+  }
+
+  String _formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/content.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: 1.sw,
+                height: 460.h,
+                decoration: BoxDecoration(
+                  color: AppColors.pureWhite,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24.r),
+                    topRight: Radius.circular(24.r),
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 40.h),
+                    Text(
+                      'Enter verification code',
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.darkGray1,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      'Sent to ${controller.formatPhoneNumber(controller.currentPhoneNumber)}',
+                      style: TextStyle(color: AppColors.darkGray2),
+                    ),
+                    SizedBox(height: 16.h),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Pinput(
+                        defaultPinTheme: PinTheme(
+                          width: 60.w,
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.pureWhite,
+                            border: Border.all(
+                              color: AppColors.vividOrange,
+                              width: 1.w,
+                            ),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          textStyle: TextStyle(
+                            fontSize: 24.sp,
+                            color: AppColors.darkGray1,
+                          ),
+                        ),
+                        onCompleted: (_) => _handleVerifyOTP(),
+                        controller: _otpController,
+                        length: 4,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    // OTP expiration timer
+                    Obx(
+                      () =>
+                          controller.otpExpiresIn > 0
+                              ? Center(
+                                child: Text(
+                                  'Expires in ${_formatTime(controller.otpExpiresIn)}',
+                                  style: TextStyle(
+                                    color: AppColors.darkGray2,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              )
+                              : SizedBox.shrink(),
+                    ),
+                    Spacer(),
+                    Obx(
+                      () => CustomButton(
+                        text: 'Continue',
+                        onPressed:
+                            controller.isLoading ? null : _handleVerifyOTP,
+                        isLoading: controller.isLoading,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    // Resend OTP row
+                    Obx(() {
+                      final canResend = controller.canResendIn == 0;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Did not receive code? ',
+                            style: TextStyle(color: AppColors.darkGray1),
+                          ),
+                          TextButton(
+                            onPressed: canResend ? _handleResendOTP : null,
+                            child:
+                                canResend
+                                    ? Text(
+                                      'Resend',
+                                      style: TextStyle(
+                                        color: AppColors.vividOrange,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                    : Text(
+                                      'Resend in ${_formatTime(controller.canResendIn)}',
+                                      style: TextStyle(
+                                        color: AppColors.darkGray2,
+                                      ),
+                                    ),
+                          ),
+                        ],
+                      );
+                    }),
+                    SizedBox(height: 16.h),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
