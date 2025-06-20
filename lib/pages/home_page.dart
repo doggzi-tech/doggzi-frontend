@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../controllers/auth_controller.dart';
+import '../widgets/custom_bottom_nav_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,6 +12,7 @@ class HomePage extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
 
     return Scaffold(
+      bottomNavigationBar: CustomBottomNavBar(),
       appBar: AppBar(
         title: const Text('Home'),
         backgroundColor: Colors.blue.shade600,
@@ -30,38 +32,42 @@ class HomePage extends StatelessWidget {
                   break;
               }
             },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'logout',
-                child: Row(
-                  children: [
-                    Icon(Icons.logout),
-                    SizedBox(width: 8),
-                    Text('Logout'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'logout_all',
-                child: Row(
-                  children: [
-                    Icon(Icons.logout_outlined),
-                    SizedBox(width: 8),
-                    Text('Logout All Devices'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'delete_account',
-                child: Row(
-                  children: [
-                    Icon(Icons.delete_forever, color: Colors.red),
-                    SizedBox(width: 8),
-                    Text('Delete Account', style: TextStyle(color: Colors.red)),
-                  ],
-                ),
-              ),
-            ],
+            itemBuilder:
+                (context) => [
+                  const PopupMenuItem(
+                    value: 'logout',
+                    child: Row(
+                      children: [
+                        Icon(Icons.logout),
+                        SizedBox(width: 8),
+                        Text('Logout'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'logout_all',
+                    child: Row(
+                      children: [
+                        Icon(Icons.logout_outlined),
+                        SizedBox(width: 8),
+                        Text('Logout All Devices'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'delete_account',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete_forever, color: Colors.red),
+                        SizedBox(width: 8),
+                        Text(
+                          'Delete Account',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
           ),
         ],
       ),
@@ -116,9 +122,9 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 24.h),
-              
+
               // User Information Card
               if (user != null) ...[
                 Card(
@@ -150,20 +156,29 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 16.h),
-                        
+
                         _buildInfoRow('Name', user.fullName),
                         _buildInfoRow('Phone', user.phoneNumber),
-                        _buildInfoRow('Status', user.isVerified ? 'Verified' : 'Unverified'),
-                        _buildInfoRow('Member Since', _formatDate(user.createdAt)),
+                        _buildInfoRow(
+                          'Status',
+                          user.isVerified ? 'Verified' : 'Unverified',
+                        ),
+                        _buildInfoRow(
+                          'Member Since',
+                          _formatDate(user.createdAt),
+                        ),
                         if (user.lastLogin != null)
-                          _buildInfoRow('Last Login', _formatDate(user.lastLogin!)),
+                          _buildInfoRow(
+                            'Last Login',
+                            _formatDate(user.lastLogin!),
+                          ),
                       ],
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 24.h),
-                
+
                 // Quick Actions
                 Text(
                   'Quick Actions',
@@ -174,7 +189,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -263,11 +278,7 @@ class HomePage extends StatelessWidget {
                 color: color,
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 20.sp,
-              ),
+              child: Icon(icon, color: Colors.white, size: 20.sp),
             ),
             SizedBox(height: 12.h),
             Text(
@@ -282,10 +293,7 @@ class HomePage extends StatelessWidget {
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
             ),
           ],
         ),
@@ -297,29 +305,33 @@ class HomePage extends StatelessWidget {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-  void _showDeleteAccountDialog(BuildContext context, AuthController authController) {
+  void _showDeleteAccountDialog(
+    BuildContext context,
+    AuthController authController,
+  ) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'Are you sure you want to delete your account? This action cannot be undone.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Delete Account'),
+            content: const Text(
+              'Are you sure you want to delete your account? This action cannot be undone.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  authController.deleteAccount();
+                },
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: const Text('Delete'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              authController.deleteAccount();
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
     );
   }
 }
