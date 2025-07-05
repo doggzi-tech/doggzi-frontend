@@ -1,3 +1,4 @@
+import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../models/user_model.dart';
@@ -89,11 +90,9 @@ class AuthController extends GetxController {
       print('✅ Server is healthy');
     } catch (e) {
       print('⚠️ Server health check failed: $e');
-      Get.snackbar(
-        'Connection Warning',
-        'Unable to connect to server. Please check your internet connection.',
-        snackPosition: SnackPosition.TOP,
-        duration: const Duration(seconds: 3),
+      customSnackBar.show(
+        message: 'Server is currently unavailable. Please try again later.',
+        type: SnackBarType.warning,
       );
     }
   }
@@ -128,18 +127,16 @@ class AuthController extends GetxController {
       _startOTPTimer();
       _startResendTimer();
 
-      Get.snackbar(
-        'OTP Sent',
-        response.message,
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'OTP sent successfully .otp is ${response.message}',
+        type: SnackBarType.success,
       );
 
       return true;
     } catch (e) {
-      Get.snackbar(
-        'Failed to Send OTP',
-        e.toString(),
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'Failed to send OTP: ${e.toString()}',
+        type: SnackBarType.error,
       );
       return false;
     } finally {
@@ -161,18 +158,15 @@ class AuthController extends GetxController {
       await _saveAuthData(response);
       _resetOTPState();
 
-      Get.snackbar(
-        'Success',
-        'Welcome, ${response.user.firstName}!',
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'OTP verified successfully',
+        type: SnackBarType.success,
       );
-
       return true;
     } catch (e) {
-      Get.snackbar(
-        'Verification Failed',
-        e.toString(),
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'OTP verification failed: ${e.toString()}',
+        type: SnackBarType.error,
       );
       return false;
     } finally {
@@ -185,6 +179,7 @@ class AuthController extends GetxController {
       if (_refreshToken.isEmpty) return false;
 
       final response = await _apiService.refreshToken(_refreshToken.value);
+      print("refresh token response: $response");
       await _saveAuthData(response);
       return true;
     } catch (e) {
@@ -201,18 +196,16 @@ class AuthController extends GetxController {
       _user.value = updatedUser;
       await _storage.write('user', updatedUser.toJson());
 
-      Get.snackbar(
-        'Success',
-        'Profile updated successfully!',
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'Profile updated successfully',
+        type: SnackBarType.success,
       );
 
       return true;
     } catch (e) {
-      Get.snackbar(
-        'Update Failed',
-        e.toString(),
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'Failed to update profile: ${e.toString()}',
+        type: SnackBarType.error,
       );
       return false;
     } finally {
@@ -232,10 +225,9 @@ class AuthController extends GetxController {
       await _clearAuthData();
       _resetOTPState();
       Get.offAllNamed('/phone-auth');
-      Get.snackbar(
-        'Logged Out',
-        'You have been logged out successfully',
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'You have been logged out successfully',
+        type: SnackBarType.success,
       );
     }
   }
@@ -246,16 +238,14 @@ class AuthController extends GetxController {
       await _clearAuthData();
       _resetOTPState();
       Get.offAllNamed('/phone-auth');
-      Get.snackbar(
-        'Logged Out',
-        'Logged out from all devices successfully',
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'You have been logged out from all devices',
+        type: SnackBarType.success,
       );
     } catch (e) {
-      Get.snackbar(
-        'Logout Failed',
-        e.toString(),
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'Failed to logout from all devices: ${e.toString()}',
+        type: SnackBarType.error,
       );
     }
   }
@@ -268,17 +258,14 @@ class AuthController extends GetxController {
       await _clearAuthData();
       _resetOTPState();
       Get.offAllNamed('/phone-auth');
-
-      Get.snackbar(
-        'Account Deleted',
-        'Your account has been deleted successfully',
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'Your account has been deleted successfully',
+        type: SnackBarType.success,
       );
     } catch (e) {
-      Get.snackbar(
-        'Delete Failed',
-        e.toString(),
-        snackPosition: SnackPosition.TOP,
+      customSnackBar.show(
+        message: 'Failed to delete account: ${e.toString()}',
+        type: SnackBarType.error,
       );
     } finally {
       _isLoading.value = false;

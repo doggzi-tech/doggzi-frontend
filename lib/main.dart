@@ -1,3 +1,5 @@
+import 'package:doggzi/core/app_routes.dart';
+import 'package:doggzi/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,10 +15,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
-
   // Initialize AuthController
   Get.put(AuthController());
-
   runApp(const MyApp());
 }
 
@@ -33,21 +33,10 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Doggzi',
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            fontFamily: 'Manrope',
-            useMaterial3: true,
-          ),
+          theme: DoggziTheme.theme,
           initialRoute: _getInitialRoute(),
           // initialRoute: '/otp-verification',
-          getPages: [
-            GetPage(name: '/phone-auth', page: () => PhoneAuthPage()),
-            GetPage(
-              name: '/otp-verification',
-              page: () => OTPVerificationPage(),
-            ),
-            GetPage(name: '/home', page: () => const HomePage()),
-          ],
+          getPages: AppRoutes.pages,
         );
       },
     );
@@ -55,6 +44,6 @@ class MyApp extends StatelessWidget {
 
   String _getInitialRoute() {
     final authController = Get.find<AuthController>();
-    return authController.isLoggedIn ? '/home' : '/phone-auth';
+    return authController.isLoggedIn ? AppRoutes.mainPage : AppRoutes.initial;
   }
 }

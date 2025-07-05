@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../controllers/auth_controller.dart';
+import '../core/common/CustomSnackbar.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
 
@@ -45,98 +46,95 @@ class PhoneAuthPage extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                'assets/images/content.png',
-                fit: BoxFit.cover,
-              ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/content.png',
+              fit: BoxFit.cover,
             ),
-            Positioned(
-              bottom: 0,
-              child: Form(
-                key: _formKey,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.pureWhite,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24.r),
-                      topRight: Radius.circular(24.r),
-                    ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Form(
+              key: _formKey,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24.r),
+                    topRight: Radius.circular(24.r),
                   ),
-                  width: 400.w,
-                  height: 460.h,
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 40.h),
-                      Text(
-                        'Enter your number',
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.darkGray1,
-                        ),
+                ),
+                width: 400.w,
+                height: 460.h,
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 40.h),
+                    Text(
+                      'Enter your number',
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark,
                       ),
-                      SizedBox(height: 8.h),
-                      CustomTextField(
-                        controller: _phoneController,
-                        hintText: '1234567890',
-                        keyboardType: TextInputType.phone,
-                        prefixIcon: Icons.phone,
-                        inputFormatter: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[0-9+\-$$$$\s]'),
+                    ),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      controller: _phoneController,
+                      hintText: '1234567890',
+                      keyboardType: TextInputType.phone,
+                      prefixIcon: Icons.phone,
+                      inputFormatter: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9+\-$$$$\s]'),
+                        ),
+                      ],
+                      validator: _validatePhoneNumber,
+                    ),
+                    Spacer(),
+                    Obx(
+                      () => CustomButton(
+                        text: 'Continue',
+                        onPressed: controller.isLoading ? null : _handleSendOTP,
+                        isLoading: controller.isLoading,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    RichText(
+                      text: const TextSpan(
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                        children: [
+                          TextSpan(text: "By clicking, I accept the "),
+                          TextSpan(
+                            text: "Terms of Services",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
+                            // recognizer: TapGestureRecognizer()..onTap = onTermsTap,
+                          ),
+                          TextSpan(text: " and "),
+                          TextSpan(
+                            text: "Privacy Policy",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
+                            // recognizer:
+                            //     TapGestureRecognizer()..onTap = onPrivacyTap,
                           ),
                         ],
-                        validator: _validatePhoneNumber,
                       ),
-                      SizedBox(height: 210.h),
-                      Obx(
-                        () => CustomButton(
-                          text: 'Continue',
-                          onPressed:
-                              controller.isLoading ? null : _handleSendOTP,
-                          isLoading: controller.isLoading,
-                        ),
-                      ),
-                      SizedBox(height: 20.h),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black, fontSize: 14),
-                          children: [
-                            const TextSpan(text: "By clicking, I accept the "),
-                            TextSpan(
-                              text: "Terms of Services",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              ),
-                              // recognizer: TapGestureRecognizer()..onTap = onTermsTap,
-                            ),
-                            const TextSpan(text: " and "),
-                            TextSpan(
-                              text: "Privacy Policy",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              ),
-                              // recognizer:
-                              //     TapGestureRecognizer()..onTap = onPrivacyTap,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

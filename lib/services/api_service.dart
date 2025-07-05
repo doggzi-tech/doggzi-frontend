@@ -8,7 +8,7 @@ class ApiService {
   static const String baseUrl =
       'http://backend.doggzi.com/api/v1'; // Update with your server URL
   // "http://168.231.122.82/api/v1";
-  // 'http://192.168.1.5:8000/api/v1'; // Update with your server URL
+  // 'http://192.168.1.4:8000/api/v1'; // Update with your server URL
   late Dio _dio;
 
   ApiService() {
@@ -39,7 +39,6 @@ class ApiService {
           if (options.data != null) {
             print('📤 Request data: ${options.data}');
           }
-
           handler.next(options);
         },
         onResponse: (response, handler) {
@@ -50,12 +49,13 @@ class ApiService {
         onError: (error, handler) async {
           print('❌ ${error.response?.statusCode} ${error.requestOptions.path}');
           print('Error: ${error.response?.data}');
+          print("error code:${error.response?.statusCode}");
 
           if (error.response?.statusCode == 401) {
             // Token expired, try to refresh
             final authController = Get.find<AuthController>();
             final refreshed = await authController.refreshTokens();
-
+            print('Token refreshed: $refreshed');
             if (refreshed) {
               // Retry the original request
               final opts = error.requestOptions;
@@ -109,6 +109,7 @@ class ApiService {
         '/auth/refresh',
         data: {'refresh_token': refreshToken},
       );
+      print("refresh token api response: ${response.data}");
       return AuthResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw _handleError(e);
@@ -174,8 +175,7 @@ class ApiService {
         return 'Connection timeout. Please check your internet connection.';
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode;
-        final message =
-            error.response?.data?['detail'] ??
+        final message = error.response?.data?['detail'] ??
             error.response?.data?['message'] ??
             'An error occurred';
 

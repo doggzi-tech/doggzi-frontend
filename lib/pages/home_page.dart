@@ -12,7 +12,6 @@ class HomePage extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
 
     return Scaffold(
-      bottomNavigationBar: CustomBottomNavBar(),
       appBar: AppBar(
         title: const Text('Home'),
         backgroundColor: Colors.blue.shade600,
@@ -32,42 +31,41 @@ class HomePage extends StatelessWidget {
                   break;
               }
             },
-            itemBuilder:
-                (context) => [
-                  const PopupMenuItem(
-                    value: 'logout',
-                    child: Row(
-                      children: [
-                        Icon(Icons.logout),
-                        SizedBox(width: 8),
-                        Text('Logout'),
-                      ],
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout),
+                    SizedBox(width: 8),
+                    Text('Logout'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'logout_all',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout_outlined),
+                    SizedBox(width: 8),
+                    Text('Logout All Devices'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'delete_account',
+                child: Row(
+                  children: [
+                    Icon(Icons.delete_forever, color: Colors.red),
+                    SizedBox(width: 8),
+                    Text(
+                      'Delete Account',
+                      style: TextStyle(color: Colors.red),
                     ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'logout_all',
-                    child: Row(
-                      children: [
-                        Icon(Icons.logout_outlined),
-                        SizedBox(width: 8),
-                        Text('Logout All Devices'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'delete_account',
-                    child: Row(
-                      children: [
-                        Icon(Icons.delete_forever, color: Colors.red),
-                        SizedBox(width: 8),
-                        Text(
-                          'Delete Account',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -156,7 +154,6 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 16.h),
-
                         _buildInfoRow('Name', user.fullName),
                         _buildInfoRow('Phone', user.phoneNumber),
                         _buildInfoRow(
@@ -175,43 +172,6 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-
-                SizedBox(height: 24.h),
-
-                // Quick Actions
-                Text(
-                  'Quick Actions',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                SizedBox(height: 16.h),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildActionCard(
-                        icon: Icons.edit,
-                        title: 'Edit Profile',
-                        subtitle: 'Update your information',
-                        color: Colors.green,
-                        onTap: () => Get.toNamed('/profile-edit'),
-                      ),
-                    ),
-                    SizedBox(width: 16.w),
-                    Expanded(
-                      child: _buildActionCard(
-                        icon: Icons.security,
-                        title: 'Security',
-                        subtitle: 'Manage your account',
-                        color: Colors.orange,
-                        onTap: () => Get.toNamed('/security'),
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ],
@@ -253,54 +213,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildActionCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: color.withOpacity(0.3)),
-        ),
-        child: Column(
-          children: [
-            Container(
-              width: 40.w,
-              height: 40.h,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Icon(icon, color: Colors.white, size: 20.sp),
-            ),
-            SizedBox(height: 12.h),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade800,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -311,27 +223,26 @@ class HomePage extends StatelessWidget {
   ) {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Delete Account'),
-            content: const Text(
-              'Are you sure you want to delete your account? This action cannot be undone.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  authController.deleteAccount();
-                },
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
-                child: const Text('Delete'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Account'),
+        content: const Text(
+          'Are you sure you want to delete your account? This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              authController.deleteAccount();
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
     );
   }
 }
