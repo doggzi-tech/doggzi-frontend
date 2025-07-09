@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/bottom_nav_controller.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
+import 'menu_page/menu_page.dart';
+import 'subscription_page/subscription_page.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({super.key});
@@ -11,10 +13,10 @@ class MainPage extends StatelessWidget {
   final BottomNavController controller = Get.put(BottomNavController());
 
   final List<Widget> pages = [
-    HomePage(),
-    HomePage(),
-    HomePage(),
-    ProfilePage(),
+    const HomePage(),
+    const MenuPage(),
+    const SubscriptionPage(),
+    const ProfilePage(),
   ];
 
   @override

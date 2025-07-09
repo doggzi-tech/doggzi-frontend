@@ -2,11 +2,11 @@ import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../models/user_model.dart';
-import '../services/api_service.dart';
+import '../services/auth_service.dart';
 import 'dart:async';
 
 class AuthController extends GetxController {
-  final ApiService _apiService = ApiService();
+  final AuthService _apiService = AuthService();
   final GetStorage _storage = GetStorage();
 
   final Rx<User?> _user = Rx<User?>(null);

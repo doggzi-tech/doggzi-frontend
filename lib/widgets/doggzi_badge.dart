@@ -33,7 +33,7 @@ class DoggziBadge extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: DoggziTextStyles.smallText.copyWith(
+        style: DoggziTextStyles.semiBold14.copyWith(
           color: textColor ?? AppColors.primaryOrange,
         ),
       ),

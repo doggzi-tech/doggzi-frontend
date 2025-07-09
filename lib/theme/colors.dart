@@ -4,7 +4,7 @@ class AppColors {
   // ─── MAPPED OLD PALETTE ─────────────────────────────────────────────────────
 
   // Primary
-  static const Color primaryOrange = Color(0xFFFF6A00); // from doggziOrange
+  static const Color primaryOrange = Color(0xFFFD451C); // from doggziOrange
   static const Color accentYellow = Color(0xFFFFE500);
 
   // Backgrounds

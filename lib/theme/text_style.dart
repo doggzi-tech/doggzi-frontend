@@ -45,7 +45,7 @@ class DoggziTextStyles {
         color: AppColors.textDark,
       );
 
-  static TextStyle get smallText => TextStyle(
+  static TextStyle get semiBold14 => TextStyle(
         fontFamily: _fontFamily,
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
@@ -62,6 +62,13 @@ class DoggziTextStyles {
   static TextStyle get semiBold16 => TextStyle(
         fontFamily: _fontFamily,
         fontSize: 16.sp,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textDark,
+      );
+
+  static TextStyle get semiBold10 => TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 10.sp,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
       );

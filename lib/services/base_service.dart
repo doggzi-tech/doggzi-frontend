@@ -1,18 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import '../models/user_model.dart';
 import '../controllers/auth_controller.dart';
 
-class ApiService {
-  static const String baseUrl =
-      'http://backend.doggzi.com/api/v1'; // Update with your server URL
-  // "http://168.231.122.82/api/v1";
-  // 'http://192.168.1.4:8000/api/v1'; // Update with your server URL
-  late Dio _dio;
+class BaseApiService {
+  static const String baseUrl = 'https://backend.doggzi.com/api/v1';
+  late Dio dio;
 
-  ApiService() {
-    _dio = Dio(
+  BaseApiService() {
+    dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
         connectTimeout: const Duration(seconds: 30),
@@ -23,18 +19,24 @@ class ApiService {
         },
       ),
     );
-    _dio.interceptors.add(PrettyDioLogger());
-    _dio.interceptors.add(
+
+    dio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+      responseBody: true,
+      responseHeader: false,
+      error: true,
+      compact: true,
+    ));
+
+    dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          // Add auth token to requests
           final authController = Get.find<AuthController>();
           if (authController.accessToken.isNotEmpty) {
             options.headers['Authorization'] =
                 'Bearer ${authController.accessToken}';
           }
-
-          // Log request for debugging
           print('🚀 ${options.method} ${options.path}');
           if (options.data != null) {
             print('📤 Request data: ${options.data}');
@@ -42,34 +44,32 @@ class ApiService {
           handler.next(options);
         },
         onResponse: (response, handler) {
-          // Log response for debugging
           print('✅ ${response.statusCode} ${response.requestOptions.path}');
           handler.next(response);
         },
         onError: (error, handler) async {
           print('❌ ${error.response?.statusCode} ${error.requestOptions.path}');
           print('Error: ${error.response?.data}');
-          print("error code:${error.response?.statusCode}");
+          final authController = Get.find<AuthController>();
 
           if (error.response?.statusCode == 401) {
-            // Token expired, try to refresh
-            final authController = Get.find<AuthController>();
+            // Try refreshing token
             final refreshed = await authController.refreshTokens();
             print('Token refreshed: $refreshed');
             if (refreshed) {
-              // Retry the original request
+              // Retry the original request with new token
               final opts = error.requestOptions;
               opts.headers['Authorization'] =
                   'Bearer ${authController.accessToken}';
               try {
-                final response = await _dio.fetch(opts);
+                final response = await dio.fetch(opts);
                 handler.resolve(response);
                 return;
               } catch (e) {
-                // If retry fails, proceed with original error
+                // If retry fails, continue with original error
               }
             } else {
-              // Refresh failed, logout user
+              // If refresh failed, logout user
               authController.logout();
             }
           }
@@ -79,95 +79,8 @@ class ApiService {
     );
   }
 
-  Future<OTPResponse> sendOTP(SendOTPRequest request) async {
-    try {
-      final response = await _dio.post(
-        '/auth/send-otp',
-        data: request.toJson(),
-      );
-      return OTPResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<AuthResponse> verifyOTP(VerifyOTPRequest request) async {
-    try {
-      final response = await _dio.post(
-        '/auth/verify-otp',
-        data: request.toJson(),
-      );
-      return AuthResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<AuthResponse> refreshToken(String refreshToken) async {
-    try {
-      final response = await _dio.post(
-        '/auth/refresh',
-        data: {'refresh_token': refreshToken},
-      );
-      print("refresh token api response: ${response.data}");
-      return AuthResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<User> getProfile() async {
-    try {
-      final response = await _dio.get('/users/me');
-      return User.fromJson(response.data);
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<User> updateProfile(UserUpdateRequest request) async {
-    try {
-      final response = await _dio.put('/users/me', data: request.toJson());
-      return User.fromJson(response.data);
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<void> logout(String refreshToken) async {
-    try {
-      await _dio.post('/auth/logout', data: {'refresh_token': refreshToken});
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<void> logoutAll() async {
-    try {
-      await _dio.post('/auth/logout-all');
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<void> deleteAccount() async {
-    try {
-      await _dio.delete('/users/me');
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Future<Map<String, dynamic>> getHealthCheck() async {
-    try {
-      final response = await _dio.get('/health');
-      return response.data;
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  String _handleError(DioException error) {
+  /// Centralized error handler returning user-friendly error messages
+  String handleError(DioException error) {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
