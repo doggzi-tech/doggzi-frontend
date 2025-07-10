@@ -8,13 +8,16 @@ import '../services/menu_service.dart';
 class FoodMenuController extends GetxController {
   final MenuService _menuService = MenuService();
   final RxList<MenuModel> _menuItems = <MenuModel>[].obs;
+  final RxList<MenuModel> allMenuItems = <MenuModel>[].obs;
   final RxBool _isLoading = false.obs;
 
   List<MenuModel> get menuItems => _menuItems;
 
   bool get isLoading => _isLoading.value;
+
   RxString selectedFoodType = 'All'.obs;
   RxString selectedPetType = 'Dog'.obs;
+
   final ImageService imageService = ImageService();
 
   @override
@@ -27,10 +30,15 @@ class FoodMenuController extends GetxController {
     _isLoading.value = true;
     try {
       final items = await _menuService.getMenuItems();
-      _menuItems.assignAll(items);
-      await Future.wait(_menuItems.map((item) async {
+      allMenuItems.assignAll(items);
+
+      // Fetch S3 URLs for all items
+      await Future.wait(allMenuItems.map((item) async {
         item.s3Url = await imageService.getFileUrl(item.imageUrl);
       }));
+
+      // Apply current filters after fetching
+      _applyFilters();
     } catch (e) {
       customSnackBar.show(
         message: "Failed to fetch menu items $e",
@@ -42,27 +50,33 @@ class FoodMenuController extends GetxController {
     }
   }
 
-  selectFoodType(String type) {
+  void selectFoodType(String type) {
     selectedFoodType.value = type;
-    // Optionally, you can filter the menu items based on the selected food type
-    if (type == 'All') {
-      fetchMenuItems(); // Fetch all items
-    } else {
-      final finalType = type == "Veg" ? 'vegetarian' : 'non_vegetarian';
-      _menuItems.value =
-          _menuItems.where((item) => item.dietType == finalType).toList();
-    }
+    _applyFilters();
   }
 
-  selectPetType(String type) {
+  void selectPetType(String type) {
     selectedPetType.value = type;
-    // Optionally, you can filter the menu items based on the selected pet type
-    if (type == 'Dog') {
-      _menuItems.value =
-          _menuItems.where((item) => item.species == 'dog').toList();
-    } else if (type == 'Cat') {
-      _menuItems.value =
-          _menuItems.where((item) => item.species == 'cat').toList();
+    _applyFilters();
+  }
+
+  void _applyFilters() {
+    List<MenuModel> filtered = List<MenuModel>.from(allMenuItems);
+
+    // Filter by pet type
+    if (selectedPetType.value == 'Dog') {
+      filtered = filtered.where((item) => item.species == 'dog').toList();
+    } else if (selectedPetType.value == 'Cat') {
+      filtered = filtered.where((item) => item.species == 'cat').toList();
     }
+
+    // Filter by food type
+    if (selectedFoodType.value != 'All') {
+      final finalType =
+          selectedFoodType.value == "Veg" ? 'vegetarian' : 'non_vegetarian';
+      filtered = filtered.where((item) => item.dietType == finalType).toList();
+    }
+
+    _menuItems.assignAll(filtered);
   }
 }
