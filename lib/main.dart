@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/food_menu_controller.dart';
+import 'controllers/location_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -24,6 +25,7 @@ void main() async {
   Get.put(AuthController());
   Get.put(FoodMenuController());
   Get.putAsync(() => OneSignalService().init());
+  Get.put(LocationController());
   runApp(const MyApp());
 }
 

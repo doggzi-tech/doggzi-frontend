@@ -45,11 +45,11 @@ class DoggziTextStyles {
         color: AppColors.textDark,
       );
 
-  static TextStyle get semiBold14 => TextStyle(
+  static TextStyle get bold14 => TextStyle(
         fontFamily: _fontFamily,
         fontSize: 14.sp,
-        fontWeight: FontWeight.w400,
-        color: AppColors.textMedium,
+        fontWeight: FontWeight.w900,
+        color: AppColors.textDark,
       );
 
   static TextStyle get bold16 => TextStyle(
@@ -59,16 +59,30 @@ class DoggziTextStyles {
         color: AppColors.black,
       );
 
-  static TextStyle get semiBold16 => TextStyle(
+  static TextStyle get semiBold10 => TextStyle(
         fontFamily: _fontFamily,
-        fontSize: 16.sp,
+        fontSize: 10.sp,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
       );
 
-  static TextStyle get semiBold10 => TextStyle(
+  static TextStyle get semiBold12 => TextStyle(
         fontFamily: _fontFamily,
-        fontSize: 10.sp,
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textDark,
+      );
+
+  static TextStyle get semiBold14 => TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textMedium,
+      );
+
+  static TextStyle get semiBold16 => TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 16.sp,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
       );

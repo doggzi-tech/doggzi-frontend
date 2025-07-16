@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../theme/colors.dart';
 import '../../theme/text_style.dart';
 
-List<String> sliderItems = [
+List<String> offerSliderItems = [
   "30 % off on 3 months subscription",
   "40 % off on 3 months subscription",
   "50 % off on 3 months subscription",
@@ -36,8 +36,15 @@ class SubscriptionPage extends StatelessWidget {
           CarouselSlider(
             options: CarouselOptions(
               height: 50.h,
+              autoPlay: true,
+              // 🔁 Enables auto-rotation
+              autoPlayInterval: Duration(seconds: 3),
+              // ⏱ Interval between slides
+              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              // 🎞 Animation speed
+              autoPlayCurve: Curves.easeInOut, // 🌀 Smooth transition
             ),
-            items: sliderItems.map((i) {
+            items: offerSliderItems.map((i) {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -46,8 +53,8 @@ class SubscriptionPage extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 3.w),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
-                      gradient: gradientList[
-                          (sliderItems.indexOf(i) + 1) % gradientList.length],
+                      gradient: gradientList[(offerSliderItems.indexOf(i) + 1) %
+                          gradientList.length],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

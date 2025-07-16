@@ -13,6 +13,8 @@ class CustomAppBar extends StatelessWidget {
     this.onLeadingIconTap,
     this.isTrailingIconVisible = true,
     this.onTrailingIconTap,
+    this.showBackButton = false,
+    this.onBackButtonTap,
     required this.title,
   });
 
@@ -23,9 +25,15 @@ class CustomAppBar extends StatelessWidget {
   final Function()? onLeadingIconTap;
   final bool isTrailingIconVisible;
   final Function()? onTrailingIconTap;
+  final bool showBackButton;
+  final Function()? onBackButtonTap;
 
   @override
   Widget build(BuildContext context) {
+    // Check if we can go back in navigation
+    final canGoBack = Navigator.canPop(context);
+    final shouldShowBackButton = showBackButton && canGoBack;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25.w),
       child: Column(
@@ -34,15 +42,25 @@ class CustomAppBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Show back button if conditions are met, otherwise show leading icon
               Visibility(
-                visible: isLeadingIconVisible,
+                visible: shouldShowBackButton || isLeadingIconVisible,
                 maintainSize: true,
                 maintainAnimation: true,
                 maintainState: true,
                 child: CustomIcon(
-                  icon: leadingIcon,
+                  icon:
+                      shouldShowBackButton ? Icons.arrow_back_ios : leadingIcon,
                   onTap: () {
-                    // Navigate to settings page
+                    if (shouldShowBackButton) {
+                      if (onBackButtonTap != null) {
+                        onBackButtonTap!();
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    } else {
+                      onLeadingIconTap?.call();
+                    }
                   },
                 ),
               ),
@@ -58,7 +76,7 @@ class CustomAppBar extends StatelessWidget {
                 child: CustomIcon(
                   icon: trailingIcon,
                   onTap: () {
-                    onLeadingIconTap?.call();
+                    onTrailingIconTap?.call();
                   },
                 ),
               )

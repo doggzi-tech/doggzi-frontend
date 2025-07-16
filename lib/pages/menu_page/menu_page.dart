@@ -29,60 +29,70 @@ class MenuPage extends GetView<FoodMenuController> {
               },
             ),
             const CustomSearchWidget(),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      // Food Type Filters
-                      Row(
-                        children: [
-                          _buildFoodTypeChip('All'),
-                          SizedBox(width: 6.w),
-                          _buildFoodTypeChip('Veg'),
-                          SizedBox(width: 6.w),
-                          _buildFoodTypeChip('Non-veg'),
-                        ],
-                      ),
-
-                      SizedBox(width: 37.w),
-
-                      // Pet Type Filters
-                      Row(
-                        children: [
-                          _buildPetTypeChip('Cat', FontAwesomeIcons.cat),
-                          _buildToggleButton(),
-                          _buildPetTypeChip('Dog', FontAwesomeIcons.dog),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Obx(() {
-                    if (!controller.isLoading) {
-                      return SizedBox(
-                        height: 567.h,
-                        child: MasonryGridView.count(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10.w,
-                          itemCount: controller.menuItems.length,
-                          itemBuilder: (context, index) {
-                            return ZoomTapAnimation(
-                              child: MenuItem(
-                                item: controller.menuItems[index],
-                              ),
-                            );
-                          },
+            Expanded(
+              // Changed from Container to Expanded
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  children: [
+                    // Filter chips row
+                    Row(
+                      children: [
+                        // Food Type Filters
+                        Row(
+                          children: [
+                            _buildFoodTypeChip('All'),
+                            SizedBox(width: 6.w),
+                            _buildFoodTypeChip('Veg'),
+                            SizedBox(width: 6.w),
+                            _buildFoodTypeChip('Non-veg'),
+                          ],
                         ),
-                      );
-                    }
 
-                    return const CustomLoader(
-                      size: 50.0,
-                      color: AppColors.primaryOrange,
-                    );
-                  }),
-                ],
+                        SizedBox(width: 37.w),
+
+                        // Pet Type Filters
+                        Row(
+                          children: [
+                            _buildPetTypeChip('Cat', FontAwesomeIcons.cat),
+                            _buildToggleButton(),
+                            _buildPetTypeChip('Dog', FontAwesomeIcons.dog),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.h), // Add some spacing
+                    // GridView section
+                    Expanded(
+                      // Make GridView take remaining space
+                      child: Obx(() {
+                        if (!controller.isLoading) {
+                          return MasonryGridView.count(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10.w,
+                            mainAxisSpacing: 10.h,
+                            // Add vertical spacing
+                            itemCount: controller.menuItems.length,
+                            itemBuilder: (context, index) {
+                              return ZoomTapAnimation(
+                                child: MenuItem(
+                                  item: controller.menuItems[index],
+                                ),
+                              );
+                            },
+                          );
+                        }
+
+                        return const Center(
+                          child: CustomLoader(
+                            size: 50.0,
+                            color: AppColors.primaryOrange,
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

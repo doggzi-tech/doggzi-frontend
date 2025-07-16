@@ -1,6 +1,7 @@
 import 'package:doggzi/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class CustomIcon extends StatelessWidget {
@@ -9,27 +10,33 @@ class CustomIcon extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.radius = 12,
+    this.iconColor = AppColors.textMedium,
   });
 
   final IconData? icon;
   final VoidCallback? onTap;
   final int radius;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
-      onTap: onTap,
+      onTap: icon == Icons.notification_add
+          ? () => Get.toNamed('/notifications')
+          : onTap,
       child: Container(
         width: 44.w,
         height: 44.h,
         decoration: BoxDecoration(
-          color: AppColors.textMedium.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(radius!.toDouble().r),
+          color: iconColor.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(radius.toDouble().r),
         ),
-        child: Icon(
-          icon,
-          color: AppColors.textMedium,
-          size: 24.sp,
+        child: Center(
+          child: Icon(
+            icon,
+            color: iconColor,
+            size: 24.sp,
+          ),
         ),
       ),
     );

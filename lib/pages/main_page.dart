@@ -1,4 +1,4 @@
-import 'package:doggzi/pages/home_page.dart';
+import 'package:doggzi/pages/home_page/home_page.dart';
 import 'package:doggzi/pages/profile_page/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,7 @@ class MainPage extends StatelessWidget {
   final BottomNavController controller = Get.put(BottomNavController());
 
   final List<Widget> pages = [
-    const HomePage(),
+    HomePage(),
     const MenuPage(),
     const SubscriptionPage(),
     const ProfilePage(),
@@ -22,6 +22,8 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Set resizeToAvoidBottomInset to true to make the body resize when keyboard appears
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Obx(() {
           return AnimatedSwitcher(

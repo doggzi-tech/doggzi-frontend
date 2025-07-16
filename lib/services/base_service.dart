@@ -4,14 +4,14 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../controllers/auth_controller.dart';
 
 class BaseApiService {
-  // static const String baseUrl = 'https://backend.doggzi.com/api/v1';
-  static const String baseUrl = 'http://192.168.1.7:8000/api/v1/';
+  // static const String baseUrl = 'https://backend.doggzi.com';
+  static const String baseUrl = 'http://192.168.1.8:8000';
   late Dio dio;
 
   BaseApiService() {
     dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl,
+        baseUrl: "$baseUrl/api/v1",
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
@@ -21,14 +21,16 @@ class BaseApiService {
       ),
     );
 
-    dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: true,
-      responseHeader: false,
-      error: true,
-      compact: true,
-    ));
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+      ),
+    );
 
     dio.interceptors.add(
       InterceptorsWrapper(
