@@ -6,6 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import '../controllers/auth_controller.dart';
+import '../controllers/food_menu_controller.dart';
+import '../controllers/location_controller.dart';
+import '../controllers/pet_controller.dart';
 import '../theme/colors.dart';
 import '../widgets/custom_button.dart';
 

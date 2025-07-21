@@ -1,42 +1,32 @@
-// notification_service.dart
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
+import 'package:dio/dio.dart';
 import '../models/notification_model.dart';
+import 'base_service.dart';
 
-class NotificationService {
-  static const String baseUrl = 'https://your-api-endpoint.com/api';
-
+class NotificationService extends BaseApiService {
+  // Get notifications
   Future<List<NotificationModel>> getNotifications() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/notifications'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_TOKEN_HERE', // Add your auth token
-        },
-      );
+      final response = await dio.get('/notifications');
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
+      final data = response.data;
+      if (data is List) {
         return data.map((json) => NotificationModel.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load notifications');
+        throw Exception('Invalid response format');
       }
+    } on DioException catch (e) {
+      throw Exception(handleError(e));
     } catch (e) {
       throw Exception('Error fetching notifications: $e');
     }
   }
 
+  // Mark notification as read
   Future<void> markAsRead(String notificationId) async {
     try {
-      await http.patch(
-        Uri.parse('$baseUrl/notifications/$notificationId/read'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_TOKEN_HERE',
-        },
-      );
+      await dio.patch('/notifications/$notificationId/read');
+    } on DioException catch (e) {
+      throw Exception(handleError(e));
     } catch (e) {
       throw Exception('Error marking notification as read: $e');
     }

@@ -16,7 +16,7 @@ class MainPage extends StatelessWidget {
     HomePage(),
     const MenuPage(),
     const SubscriptionPage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   @override

@@ -3,7 +3,9 @@ import 'package:doggzi/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
+import '../../controllers/pet_controller.dart';
 import '../../theme/colors.dart';
 import '../../theme/text_style.dart';
 
@@ -19,7 +21,7 @@ List<LinearGradient> gradientList = [
   AppColors.greenGradient
 ];
 
-class SubscriptionPage extends StatelessWidget {
+class SubscriptionPage extends GetView<PetController> {
   const SubscriptionPage({super.key});
 
   @override

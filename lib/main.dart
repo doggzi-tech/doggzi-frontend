@@ -1,9 +1,11 @@
+import 'package:doggzi/controllers/pet_controller.dart';
 import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/services/onesignal_service.dart';
 import 'package:doggzi/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,18 +16,21 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   // Initialize AuthController
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // Set status bar background color
-    statusBarIconBrightness: Brightness.dark, // For Android
-    statusBarBrightness: Brightness.light, // For iOS
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // Set status bar background color
+      statusBarIconBrightness: Brightness.dark, // For Android
+      statusBarBrightness: Brightness.light, // For iOS
+    ),
+  );
   Get.put(AuthController());
-  Get.put(FoodMenuController());
-  Get.putAsync(() => OneSignalService().init());
   Get.put(LocationController());
+  Get.putAsync(() => OneSignalService().init());
+
   runApp(const MyApp());
 }
 

@@ -1,15 +1,22 @@
+import 'package:doggzi/pages/profile_page/widget/my_pet_view.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../controllers/auth_controller.dart';
+import '../../controllers/pet_controller.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon.dart';
 import 'widget/profile_intro_item.dart';
 import 'widget/profile_item.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
+
+  final authController = Get.find<AuthController>();
+  final petController = Get.find<PetController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +39,15 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 20.h),
-                  const ProfileIntroItem(),
+                  ProfileIntroItem(),
                   SizedBox(height: 30.h),
                   ProfileItem(
                     title: "My Pets",
                     onTap: () {
+                      Get.to(
+                        () => MyPetView(pets: petController.pets),
+                        transition: Transition.rightToLeft,
+                      );
                       // Navigate to My Pets page
                     },
                   ),
@@ -80,6 +91,7 @@ class ProfilePage extends StatelessWidget {
                     title: "Logout",
                     onTap: () {
                       // Navigate to My Pets page
+                      authController.logout();
                     },
                     textColor: AppColors.errorRed,
                   ),
