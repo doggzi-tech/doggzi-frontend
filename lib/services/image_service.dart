@@ -20,15 +20,7 @@ class ImageService extends BaseApiService {
     }
   }
 
-  /// Get signed URL to access the file from S3
-  Future<String> getFileUrl(String key) async {
-    try {
-      final response = await dio.get('/files/get-url/$key');
-      return response.data['url'];
-    } on DioException catch (e) {
-      throw handleError(e);
-    }
-  }
+  
 
   /// Generate a pre-signed URL for direct S3 upload
   Future<String> generatePreSignedUploadUrl({

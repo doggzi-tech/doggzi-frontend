@@ -24,7 +24,7 @@ class MenuItem extends StatelessWidget {
             top: 0,
             child: Center(
               child: CachedImage(
-                imageUrl: item.s3Url,
+                imageUrl: item.s3_url,
                 cacheKey: item.imageUrl,
                 width: 150.w,
                 height: 110.w,

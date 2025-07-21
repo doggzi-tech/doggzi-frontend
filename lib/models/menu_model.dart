@@ -14,7 +14,7 @@ class MenuModel {
   final String dietType;
   final bool freshlyCooked;
   final String imageUrl;
-  String s3Url = '';
+  final String s3_url;
 
   MenuModel({
     required this.id,
@@ -29,6 +29,7 @@ class MenuModel {
     required this.dietType,
     required this.freshlyCooked,
     required this.imageUrl,
+    required this.s3_url,
   });
 
   /// Creates a ProductModel from a JSON map.
@@ -46,6 +47,7 @@ class MenuModel {
       dietType: json['diet_type'] as String,
       freshlyCooked: json['freshly_cooked'] as bool,
       imageUrl: json['image_url'] as String,
+      s3_url: json['s3_url'] as String,
     );
   }
 
@@ -64,6 +66,7 @@ class MenuModel {
       'diet_type': dietType,
       'freshly_cooked': freshlyCooked,
       'image_url': imageUrl,
+      's3_url': s3_url,
     };
   }
 

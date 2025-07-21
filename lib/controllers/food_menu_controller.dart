@@ -32,11 +32,6 @@ class FoodMenuController extends GetxController {
       final items = await _menuService.getMenuItems();
       allMenuItems.assignAll(items);
 
-      // Fetch S3 URLs for all items
-      await Future.wait(allMenuItems.map((item) async {
-        item.s3Url = await imageService.getFileUrl(item.imageUrl);
-      }));
-
       // Apply current filters after fetching
       _applyFilters();
     } catch (e) {
