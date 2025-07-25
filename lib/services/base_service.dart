@@ -9,7 +9,7 @@ import '../controllers/auth_controller.dart';
 
 class BaseApiService {
   static String productionUrl = 'https://backend.doggzi.com';
-  static String developmentUrl = "http://192.168.1.8:8000";
+  static String developmentUrl = "http://192.168.1.4:8000";
   static String baseUrl = dotenv.env["ENVIRONMENT"] == "PRODUCTION"
       ? productionUrl
       : dotenv.env["ENVIRONMENT"] == "LOCAL"
@@ -77,6 +77,11 @@ class BaseApiService {
           print('Error: ${error.response?.data}');
 
           if (error.response?.statusCode == 401) {
+            if (error.requestOptions.path == '/auth/refresh') {
+              final authController = Get.find<AuthController>();
+              authController.logout();
+              return handler.next(error);
+            }
             await _handle401Error(error, handler);
           } else {
             handler.next(error);

@@ -9,6 +9,7 @@ import '../controllers/auth_controller.dart';
 import '../controllers/food_menu_controller.dart';
 import '../controllers/location_controller.dart';
 import '../controllers/pet_controller.dart';
+import '../services/onesignal_service.dart';
 import '../theme/colors.dart';
 import '../widgets/custom_button.dart';
 
@@ -16,6 +17,7 @@ class OTPVerificationPage extends GetView<AuthController> {
   OTPVerificationPage({super.key});
 
   final _otpController = TextEditingController();
+  final oneSignalService = OneSignalService();
 
   Future<void> _handleVerifyOTP() async {
     if (_otpController.text.length != 4) {

@@ -5,9 +5,12 @@ import '../models/user_model.dart';
 import '../services/auth_service.dart';
 import 'dart:async';
 
+import '../services/onesignal_service.dart';
+
 class AuthController extends GetxController {
   final AuthService _apiService = AuthService();
   final GetStorage _storage = GetStorage();
+  final oneSignalService = OneSignalService();
 
   final Rx<User?> _user = Rx<User?>(null);
   final RxBool _isLoading = false.obs;
@@ -22,6 +25,8 @@ class AuthController extends GetxController {
 
   Timer? _otpTimer;
   Timer? _resendTimer;
+  bool _isRefreshing = false;
+  Completer<bool>? _refreshCompleter;
 
   User? get user => _user.value;
 
@@ -79,8 +84,12 @@ class AuthController extends GetxController {
       _user.value = user;
       await _storage.write('user', user.toJson());
     } catch (e) {
-      // Token is invalid, clear stored data
-      await _clearAuthData();
+      // If the token is invalid, try to refresh it
+      final refreshed = await refreshTokens();
+      if (!refreshed) {
+        // If refresh fails, clear stored data
+        await _clearAuthData();
+      }
     }
   }
 
@@ -175,16 +184,26 @@ class AuthController extends GetxController {
   }
 
   Future<bool> refreshTokens() async {
+    if (_isRefreshing) {
+      return await _refreshCompleter!.future;
+    }
+    _isRefreshing = true;
+    _refreshCompleter = Completer<bool>();
+
     try {
       if (_refreshToken.isEmpty) return false;
 
       final response = await _apiService.refreshToken(_refreshToken.value);
       print("refresh token response: $response");
       await _saveAuthData(response);
+      _refreshCompleter!.complete(true);
       return true;
     } catch (e) {
       print('Token refresh failed: $e');
+      _refreshCompleter!.complete(false);
       return false;
+    } finally {
+      _isRefreshing = false;
     }
   }
 
@@ -308,7 +327,7 @@ class AuthController extends GetxController {
     _accessToken.value = response.accessToken;
     _refreshToken.value = response.refreshToken;
     _user.value = response.user;
-
+    oneSignalService.registerUser(response.user.id);
     await _storage.write('access_token', response.accessToken);
     await _storage.write('refresh_token', response.refreshToken);
     await _storage.write('user', response.user.toJson());
@@ -318,7 +337,7 @@ class AuthController extends GetxController {
     _accessToken.value = '';
     _refreshToken.value = '';
     _user.value = null;
-
+    oneSignalService.logoutUser();
     await _storage.remove('access_token');
     await _storage.remove('refresh_token');
     await _storage.remove('user');
