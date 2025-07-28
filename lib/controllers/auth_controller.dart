@@ -106,29 +106,13 @@ class AuthController extends GetxController {
     }
   }
 
-  String formatPhoneNumber(String phoneNumber) {
-    // Remove any non-digit characters
-    String phone = phoneNumber.replaceAll(RegExp(r'\D'), '');
-
-    // Add country code if not present (assuming +1 for US)
-    if (phone.length == 10) {
-      phone = '+91$phone';
-    } else if (!phone.startsWith('+')) {
-      phone = '+$phone';
-    }
-
-    return phone;
-  }
-
   Future<bool> sendOTP(String phoneNumber) async {
     try {
       _isLoading.value = true;
-
-      final formattedPhone = formatPhoneNumber(phoneNumber);
-      final request = SendOTPRequest(phoneNumber: formattedPhone);
+      final request = SendOTPRequest(phoneNumber: phoneNumber);
       final response = await _apiService.sendOTP(request);
 
-      _currentPhoneNumber.value = formattedPhone;
+      _currentPhoneNumber.value = phoneNumber;
       _isOTPSent.value = true;
       _otpExpiresIn.value = response.expiresIn;
       _canResendIn.value = response.canResendIn;

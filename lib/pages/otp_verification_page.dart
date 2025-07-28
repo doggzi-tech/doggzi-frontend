@@ -83,7 +83,7 @@ class OTPVerificationPage extends GetView<AuthController> {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    'Sent to ${controller.formatPhoneNumber(controller.currentPhoneNumber)}',
+                    'Sent to ${controller.currentPhoneNumber}',
                     style: const TextStyle(color: AppColors.textMedium),
                   ),
                   SizedBox(height: 16.h),
