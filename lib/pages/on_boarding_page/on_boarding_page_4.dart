@@ -11,7 +11,13 @@ class OnboardingPage4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(gradient: AppColors.greenGradient),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image:
+              AssetImage('assets/images/onboarding4_bg.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(

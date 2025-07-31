@@ -15,10 +15,10 @@ List<String> offerSliderItems = [
   "50 % off on 3 months subscription",
 ];
 List<LinearGradient> gradientList = [
-  AppColors.purpleGradient,
-  AppColors.blueGradient,
-  AppColors.orangeGradient,
-  AppColors.greenGradient
+  OldAppColors.purpleGradient,
+  OldAppColors.blueGradient,
+  OldAppColors.orangeGradient,
+  OldAppColors.greenGradient
 ];
 
 class SubscriptionPage extends GetView<PetController> {
@@ -63,14 +63,14 @@ class SubscriptionPage extends GetView<PetController> {
                       children: [
                         Icon(
                           FontAwesomeIcons.award,
-                          color: AppColors.white,
+                          color: OldAppColors.white,
                           size: 20.sp,
                         ),
                         SizedBox(width: 5.w),
                         Text(
                           i,
                           style: DoggziTextStyles.semiBold14.copyWith(
-                            color: AppColors.white,
+                            color: OldAppColors.white,
                           ),
                         ),
                       ],
@@ -96,13 +96,13 @@ class SubscriptionPage extends GetView<PetController> {
                 Text(
                   "Your Pet’s Personalized Nutrition Plan",
                   style: DoggziTextStyles.bold16.copyWith(
-                    color: AppColors.textDark,
+                    color: OldAppColors.textDark,
                   ),
                 ),
                 Text(
                   "Crafted by experts. Delivered with care",
                   style: DoggziTextStyles.semiBold14.copyWith(
-                    color: AppColors.textMedium,
+                    color: OldAppColors.textMedium,
                   ),
                 ),
               ],

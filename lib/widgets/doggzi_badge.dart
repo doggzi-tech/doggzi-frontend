@@ -28,13 +28,13 @@ class DoggziBadge extends StatelessWidget {
             vertical: 4.w,
           ),
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.accentYellow,
+        color: backgroundColor ?? OldAppColors.accentYellow,
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Text(
         text,
         style: DoggziTextStyles.semiBold14.copyWith(
-          color: textColor ?? AppColors.primaryOrange,
+          color: textColor ?? OldAppColors.primaryOrange,
         ),
       ),
     );

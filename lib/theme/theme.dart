@@ -8,19 +8,19 @@ class DoggziTheme {
   static ThemeData get theme {
     return ThemeData(
       primarySwatch: Colors.orange,
-      primaryColor: AppColors.primaryOrange,
-      scaffoldBackgroundColor: AppColors.white,
+      primaryColor: OldAppColors.primaryOrange,
+      scaffoldBackgroundColor: OldAppColors.white,
       fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.white,
+        backgroundColor: OldAppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.textDark, size: 24.sp),
+        iconTheme: IconThemeData(color: OldAppColors.textDark, size: 24.sp),
         titleTextStyle: DoggziTextStyles.heading2,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryOrange,
-          foregroundColor: AppColors.white,
+          backgroundColor: OldAppColors.primaryOrange,
+          foregroundColor: OldAppColors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
@@ -29,19 +29,19 @@ class DoggziTheme {
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: AppColors.dividerGray, width: 1.w),
+          borderSide: BorderSide(color: OldAppColors.dividerGray, width: 1.w),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: AppColors.primaryOrange, width: 2.w),
+          borderSide: BorderSide(color: OldAppColors.primaryOrange, width: 2.w),
         ),
       ),
       colorScheme: const ColorScheme.light(
-        primary: AppColors.primaryOrange,
-        secondary: AppColors.accentYellow,
-        error: AppColors.errorRed,
-        surface: AppColors.white,
-        background: AppColors.lightBackground,
+        primary: OldAppColors.primaryOrange,
+        secondary: OldAppColors.accentYellow,
+        error: OldAppColors.errorRed,
+        surface: OldAppColors.white,
+        background: OldAppColors.lightBackground,
       ),
     );
   }

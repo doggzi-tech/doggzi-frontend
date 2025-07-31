@@ -46,7 +46,7 @@ class MenuItem extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: AppColors.black.withValues(alpha: 0.06),
+                      color: OldAppColors.black.withValues(alpha: 0.06),
                       width: 1.w,
                     ),
                     borderRadius: BorderRadius.all(
@@ -72,18 +72,18 @@ class MenuItem extends StatelessWidget {
                                       'assets/images/cat_face.svg',
                                       width: 16.w,
                                       height: 16.h,
-                                      color: AppColors.primaryOrange,
+                                      color: OldAppColors.primaryOrange,
                                     )
                                   : SvgPicture.asset(
                                       'assets/images/dog_face.svg',
                                       width: 24.w,
                                       height: 24.h,
-                                      color: AppColors.primaryOrange,
+                                      color: OldAppColors.primaryOrange,
                                     ),
                               Text(
                                 item.species == "cat" ? 'Cat' : 'Dog',
                                 style: DoggziTextStyles.semiBold10.copyWith(
-                                  color: AppColors.black,
+                                  color: OldAppColors.black,
                                 ),
                               ),
                             ],
@@ -102,13 +102,13 @@ class MenuItem extends StatelessWidget {
                                 Text(
                                   item.name,
                                   style: DoggziTextStyles.bold16.copyWith(
-                                    color: AppColors.doggziPink,
+                                    color: OldAppColors.doggziPink,
                                   ),
                                 ),
                                 Text(
                                   'Quantity : ${item.quantity}g',
                                   style: DoggziTextStyles.semiBold10.copyWith(
-                                    color: AppColors.textMedium,
+                                    color: OldAppColors.textMedium,
                                   ),
                                 ),
                               ],
@@ -156,7 +156,7 @@ class MenuItem extends StatelessWidget {
                         ],
                       ),
                       const Divider(
-                        color: AppColors.dividerGray,
+                        color: OldAppColors.dividerGray,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,13 +164,13 @@ class MenuItem extends StatelessWidget {
                           Text(
                             "Protein",
                             style: DoggziTextStyles.semiBold10.copyWith(
-                              color: AppColors.textMedium,
+                              color: OldAppColors.textMedium,
                             ),
                           ),
                           Text(
                             "${item.proteinPerGram}g",
                             style: DoggziTextStyles.semiBold10.copyWith(
-                              color: AppColors.textDark,
+                              color: OldAppColors.textDark,
                             ),
                           ),
                         ],
@@ -181,14 +181,14 @@ class MenuItem extends StatelessWidget {
                           Text(
                             "Fats",
                             style: DoggziTextStyles.semiBold10.copyWith(
-                              color: AppColors.textMedium,
+                              color: OldAppColors.textMedium,
                             ),
                           ),
                           SizedBox(width: 5.w),
                           Text(
                             "${item.fatPercent}%",
                             style: DoggziTextStyles.semiBold10.copyWith(
-                              color: AppColors.textDark,
+                              color: OldAppColors.textDark,
                             ),
                           ),
                         ],
@@ -199,14 +199,14 @@ class MenuItem extends StatelessWidget {
                           Text(
                             "Calories",
                             style: DoggziTextStyles.semiBold10.copyWith(
-                              color: AppColors.textMedium,
+                              color: OldAppColors.textMedium,
                             ),
                           ),
                           SizedBox(width: 5.w),
                           Text(
                             "${item.caloriesPerGram}kcal",
                             style: DoggziTextStyles.semiBold10.copyWith(
-                              color: AppColors.textDark,
+                              color: OldAppColors.textDark,
                             ),
                           ),
                         ],
@@ -219,7 +219,7 @@ class MenuItem extends StatelessWidget {
                         height: 20.h,
                         width: 130.w,
                         decoration: BoxDecoration(
-                          color: AppColors.greenHighlight,
+                          color: OldAppColors.greenHighlight,
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(25.r),
                             bottomLeft: Radius.circular(25.r),
@@ -237,7 +237,7 @@ class MenuItem extends StatelessWidget {
                             Text(
                               "Freshly Cooked",
                               style: DoggziTextStyles.semiBold10.copyWith(
-                                color: AppColors.white,
+                                color: OldAppColors.white,
                               ),
                             ),
                           ],

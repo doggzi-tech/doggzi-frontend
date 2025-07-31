@@ -1,140 +1,171 @@
+import 'package:doggzi/pages/policies/privacy_policy.dart';
+import 'package:doggzi/pages/policies/terms_of_services.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../controllers/auth_controller.dart';
-import '../core/common/CustomSnackbar.dart';
+import '../controllers/phone_auth_controller.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
 
-class PhoneAuthPage extends GetView<AuthController> {
-  final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+class PhoneAuthPage extends StatelessWidget {
+  PhoneAuthPage({super.key});
 
-  Future<void> _handleSendOTP() async {
-    if (_formKey.currentState!.validate()) {
-      final success = await controller.sendOTP(_phoneController.text.trim());
-
-      if (success) {
-        Get.toNamed('/otp-verification');
-      }
-    }
-  }
-
-  String? _validatePhoneNumber(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your phone number';
-    }
-
-    // Remove any non-digit characters for validation
-    String phone = value.replaceAll(RegExp(r'\D'), '');
-
-    if (phone.length < 10) {
-      return 'Phone number must be at least 10 digits';
-    }
-
-    if (phone.length > 15) {
-      return 'Phone number cannot exceed 15 digits';
-    }
-
-    return null;
-  }
+  final PhoneAuthController controller = Get.put(PhoneAuthController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/content.png',
-              fit: BoxFit.cover,
+      resizeToAvoidBottomInset: false, // Key change: prevent automatic resizing
+      backgroundColor: OldAppColors.brown.withOpacity(0.61),
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/verification.png',
+                fit: BoxFit.scaleDown,
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Form(
-              key: _formKey,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24.r),
-                    topRight: Radius.circular(24.r),
+            Positioned(
+              top: 0,
+              left: 20.w,
+              right: 20.w,
+              child: Image.asset(
+                'assets/images/logo.png',
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+            // Use Positioned instead of Align for better control
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0, // Keep it at the bottom
+              child: SlideTransition(
+                position: controller.slideAnimation,
+                child: Container(
+                  width: double.infinity,
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height *
+                        0.9, // Use percentage instead of fixed height
                   ),
-                ),
-                width: 400.w,
-                height: 460.h,
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 40.h),
-                    Text(
-                      'Enter your number',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textDark,
-                      ),
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  decoration: BoxDecoration(
+                    color: OldAppColors.black.withOpacity(0.60),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24.r),
+                      topRight: Radius.circular(24.r),
                     ),
-                    SizedBox(height: 8.h),
-                    CustomTextField(
-                      controller: _phoneController,
-                      hintText: '1234567890',
-                      keyboardType: TextInputType.phone,
-                      prefixIcon: Icons.phone,
-                      inputFormatter: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[0-9+\-$$$$\s]'),
+                  ),
+                  child: LayoutBuilder(
+                    builder: (_, constraints) {
+                      return SingleChildScrollView(
+                        reverse: true,
+                        physics: const BouncingScrollPhysics(),
+                        padding: EdgeInsets.only(
+                          bottom:
+                              MediaQuery.of(context).viewInsets.bottom + 20.h,
+                          top: 40.h,
                         ),
-                      ],
-                      validator: _validatePhoneNumber,
-                    ),
-                    Spacer(),
-                    Obx(
-                      () => CustomButton(
-                        text: 'Continue',
-                        onPressed: controller.isLoading ? null : _handleSendOTP,
-                        isLoading: controller.isLoading,
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                    RichText(
-                      text: const TextSpan(
-                        style: TextStyle(color: Colors.black, fontSize: 14),
-                        children: [
-                          TextSpan(text: "By clicking, I accept the "),
-                          TextSpan(
-                            text: "Terms of Services",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                            // recognizer: TapGestureRecognizer()..onTap = onTermsTap,
+                        child: Form(
+                          key: controller.formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            // Important: minimize the column size
+                            children: [
+                              Text(
+                                'Phone Verification',
+                                style: TextStyle(
+                                  fontSize: 24.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: OldAppColors.white,
+                                ),
+                              ),
+                              SizedBox(height: 16.h),
+                              Text(
+                                'We need to register your phone number before getting started!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal,
+                                  color: OldAppColors.white,
+                                ),
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomTextField(
+                                controller: controller.phoneController,
+                                hintText: '1234567890',
+                                keyboardType: TextInputType.phone,
+                                prefixIcon: Icons.phone,
+                                inputFormatter: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9+\-\s]'),
+                                  ),
+                                ],
+                                validator: controller.validatePhoneNumber,
+                              ),
+                              SizedBox(height: 40.h),
+                              Obx(
+                                () => CustomButton(
+                                  text: 'Get via SMS',
+                                  onPressed: controller.authController.isLoading
+                                      ? null
+                                      : controller.handleSendOTP,
+                                  isLoading:
+                                      controller.authController.isLoading,
+                                ),
+                              ),
+                              SizedBox(height: 20.h),
+                              RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                        text: "By clicking, I accept the "),
+                                    TextSpan(
+                                      text: "Terms of Services",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.to(() => const TermsOfService());
+                                        },
+                                    ),
+                                    const TextSpan(text: " and "),
+                                    TextSpan(
+                                      text: "Privacy Policy",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.to(() => const PrivacyPolicy());
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          TextSpan(text: " and "),
-                          TextSpan(
-                            text: "Privacy Policy",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                            // recognizer:
-                            //     TapGestureRecognizer()..onTap = onPrivacyTap,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
