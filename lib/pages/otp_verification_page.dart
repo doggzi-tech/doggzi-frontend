@@ -48,9 +48,10 @@ class OTPVerificationPage extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, // Prevent automatic resizing
       backgroundColor: AppColors.brown.withOpacity(0.61),
       body: SafeArea(
-        bottom: true,
+        bottom: false,
         top: false,
         child: Stack(
           children: [
@@ -70,10 +71,15 @@ class OTPVerificationPage extends GetView<AuthController> {
               ),
             ),
             Positioned(
-              bottom: 0,
+              left: 0,
+              right: 0,
+              bottom: 0, // Keep at bottom
               child: Container(
-                width: 400.w,
-                height: 560.h,
+                width: double.infinity,
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height *
+                      0.9, // Dynamic height
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.black.withOpacity(0.60),
                   borderRadius: BorderRadius.only(
@@ -82,127 +88,143 @@ class OTPVerificationPage extends GetView<AuthController> {
                   ),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 40.h),
-                    Text(
-                      'OTP Verification',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(children: [
+                child: SingleChildScrollView(
+                  reverse: true, // Scroll from bottom when keyboard appears
+                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 16.h,
+                    top: 40.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min, // Minimize column size
+                    children: [
                       Text(
-                        'Sent to ${controller.currentPhoneNumber}',
-                        style: const TextStyle(color: AppColors.white),
-                      ),
-                      SizedBox(width: 8.w),
-                      Icon(
-                        Icons.check_circle,
-                        color: AppColors.greenHighlight,
-                        size: 20.sp,
-                      ),
-                      TextButton(
-                        onPressed: (){},
-                        child: const Text(
-                        'Change number?',
+                        'OTP Verification',
                         style: TextStyle(
-                          fontSize: 10,
-                          color: AppColors.textMedium,
-                        ),),
-                      ),
-                    ]),
-                    SizedBox(height: 24.h),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Pinput(
-                        defaultPinTheme: PinTheme(
-                          width: 60.w,
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            border: Border.all(
-                              color: AppColors.primaryOrange,
-                              width: 1.w,
-                            ),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          textStyle: TextStyle(
-                            fontSize: 24.sp,
-                            color: AppColors.textMedium,
-                          ),
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
                         ),
-                        onCompleted: (_) => _handleVerifyOTP(),
-                        controller: _otpController,
-                        length: 4,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              'Sent to ${controller.currentPhoneNumber}',
+                              style: const TextStyle(color: AppColors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Icon(
+                            Icons.check_circle,
+                            color: AppColors.greenHighlight,
+                            size: 20.sp,
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              'Change number?',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: AppColors.textMedium,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 12.h),
-                    // OTP expiration timer
-                    Obx(
-                      () => controller.otpExpiresIn > 0
-                          ? Center(
-                              child: Text(
-                                'Expires in ${_formatTime(controller.otpExpiresIn)}',
-                                style: TextStyle(
-                                  color: AppColors.textMedium,
-                                  fontSize: 14.sp,
-                                ),
+                      SizedBox(height: 24.h),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Pinput(
+                          defaultPinTheme: PinTheme(
+                            width: 60.w,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              border: Border.all(
+                                color: AppColors.primaryOrange,
+                                width: 1.w,
                               ),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                    const Spacer(),
-                    Obx(
-                      () => CustomButton(
-                        text: 'Continue',
-                        onPressed:
-                            controller.isLoading ? null : _handleVerifyOTP,
-                        isLoading: controller.isLoading,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    // Resend OTP row
-                    Obx(
-                      () {
-                        final canResend = controller.canResendIn == 0;
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Did not receive code? ',
-                              style: TextStyle(color: AppColors.textMedium),
+                              borderRadius: BorderRadius.circular(8.r),
                             ),
-                            TextButton(
-                              onPressed: canResend ? _handleResendOTP : null,
-                              child: canResend
-                                  ? const Text(
-                                      'Resend',
-                                      style: TextStyle(
-                                        color: AppColors.primaryOrange,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  : Text(
-                                      'Resend in ${_formatTime(controller.canResendIn)}',
-                                      style: const TextStyle(
-                                        color: AppColors.textMedium,
-                                      ),
-                                    ),
+                            textStyle: TextStyle(
+                              fontSize: 24.sp,
+                              color: AppColors.textMedium,
                             ),
+                          ),
+                          onCompleted: (_) => _handleVerifyOTP(),
+                          controller: _otpController,
+                          length: 4,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                           ],
-                        );
-                      },
-                    ),
-                    SizedBox(height: 16.h),
-                  ],
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      // OTP expiration timer
+                      Obx(
+                        () => controller.otpExpiresIn > 0
+                            ? Center(
+                                child: Text(
+                                  'Expires in ${_formatTime(controller.otpExpiresIn)}',
+                                  style: TextStyle(
+                                    color: AppColors.textMedium,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                      SizedBox(height: 60.h),
+                      // Replace Spacer with fixed height
+                      Obx(
+                        () => CustomButton(
+                          text: 'Continue',
+                          onPressed:
+                              controller.isLoading ? null : _handleVerifyOTP,
+                          isLoading: controller.isLoading,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      // Resend OTP row
+                      Obx(
+                        () {
+                          final canResend = controller.canResendIn == 0;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Did not receive code? ',
+                                style: TextStyle(color: AppColors.textMedium),
+                              ),
+                              TextButton(
+                                onPressed: canResend ? _handleResendOTP : null,
+                                child: canResend
+                                    ? const Text(
+                                        'Resend',
+                                        style: TextStyle(
+                                          color: AppColors.primaryOrange,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : Text(
+                                        'Resend in ${_formatTime(controller.canResendIn)}',
+                                        style: const TextStyle(
+                                          color: AppColors.textMedium,
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
+                  ),
                 ),
               ),
             ),

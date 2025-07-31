@@ -5,85 +5,23 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../controllers/auth_controller.dart';
-import '../core/common/CustomSnackbar.dart';
+import '../controllers/phone_auth_controller.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
 
-class PhoneAuthPage extends StatefulWidget {
-  const PhoneAuthPage({super.key});
+class PhoneAuthPage extends StatelessWidget {
+  PhoneAuthPage({super.key});
 
-  @override
-  State<PhoneAuthPage> createState() => _PhoneAuthPageState();
-}
-
-class _PhoneAuthPageState extends State<PhoneAuthPage>
-    with SingleTickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
-  final AuthController _controller = Get.find<AuthController>();
-
-  late AnimationController _animationController;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
-    );
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOutCubic,
-      ),
-    );
-
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _phoneController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _handleSendOTP() async {
-    if (_formKey.currentState!.validate()) {
-      final success = await _controller.sendOTP(_phoneController.text.trim());
-      if (success) {
-        Get.toNamed('/otp-verification');
-      }
-    }
-  }
-
-  String? _validatePhoneNumber(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your phone number';
-    }
-
-    String phone = value.replaceAll(RegExp(r'\D'), '');
-
-    if (phone.length < 10) return 'Phone number must be at least 10 digits';
-    if (phone.length > 15) return 'Phone number cannot exceed 15 digits';
-    return null;
-  }
+  final PhoneAuthController controller = Get.put(PhoneAuthController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, // Key change: prevent automatic resizing
       backgroundColor: AppColors.brown.withOpacity(0.61),
       body: SafeArea(
-        bottom: true,
-        top: false,
+        bottom: false,
         child: Stack(
           children: [
             Positioned.fill(
@@ -101,114 +39,127 @@ class _PhoneAuthPageState extends State<PhoneAuthPage>
                 fit: BoxFit.fitHeight,
               ),
             ),
+            // Use Positioned instead of Align for better control
             Positioned(
-              bottom: 0,
+              left: 0,
+              right: 0,
+              bottom: 0, // Keep it at the bottom
               child: SlideTransition(
-                position: _slideAnimation,
-                child: Form(
-                  key: _formKey,
-                  child: Container(
-                    width: 400.w,
-                    height: 560.h,
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.black.withOpacity(0.60),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24.r),
-                        topRight: Radius.circular(24.r),
-                      ),
+                position: controller.slideAnimation,
+                child: Container(
+                  width: double.infinity,
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height *
+                        0.9, // Use percentage instead of fixed height
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.black.withOpacity(0.60),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24.r),
+                      topRight: Radius.circular(24.r),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 40.h),
-                        Text(
-                          'Phone Verification',
-                          style: TextStyle(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
+                  ),
+                  child: LayoutBuilder(
+                    builder: (_, constraints) {
+                      return SingleChildScrollView(
+                        reverse: true,
+                        physics: const BouncingScrollPhysics(),
+                        padding: EdgeInsets.only(
+                          bottom:
+                              MediaQuery.of(context).viewInsets.bottom + 20.h,
+                          top: 40.h,
                         ),
-                        SizedBox(height: 16.h),
-                        Text(
-                          'We need to register your phone number before getting started!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.normal,
-                            color: AppColors.white,
-                          ),
-                        ),
-                        SizedBox(height: 16.h),
-                        CustomTextField(
-                          controller: _phoneController,
-                          hintText: '1234567890',
-                          keyboardType: TextInputType.phone,
-                          prefixIcon: Icons.phone,
-                          inputFormatter: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'[0-9+\-$$$$\s]'),
-                            ),
-                          ],
-                          validator: _validatePhoneNumber,
-                        ),
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut,
-                          height: MediaQuery.of(context).viewInsets.bottom > 0
-                              ? 120.h
-                              : 200.h,
-                        ),
-                        Obx(
-                          () => CustomButton(
-                            text: 'Get via SMS',
-                            onPressed:
-                                _controller.isLoading ? null : _handleSendOTP,
-                            isLoading: _controller.isLoading,
-                          ),
-                        ),
-                        SizedBox(height: 20.h),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 14),
+                        child: Form(
+                          key: controller.formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            // Important: minimize the column size
                             children: [
-                              const TextSpan(
-                                  text: "By clicking, I accept the "),
-                              TextSpan(
-                                text: "Terms of Services",
-                                style: const TextStyle(
+                              Text(
+                                'Phone Verification',
+                                style: TextStyle(
+                                  fontSize: 24.sp,
                                   fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
+                                  color: AppColors.white,
                                 ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TermsOfService()));
-                                  },
                               ),
-                              const TextSpan(text: " and "),
-                              TextSpan(
-                                  text: "Privacy Policy",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
+                              SizedBox(height: 16.h),
+                              Text(
+                                'We need to register your phone number before getting started!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomTextField(
+                                controller: controller.phoneController,
+                                hintText: '1234567890',
+                                keyboardType: TextInputType.phone,
+                                prefixIcon: Icons.phone,
+                                inputFormatter: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9+\-\s]'),
                                   ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const PrivacyPolicy()));
-                                    }),
+                                ],
+                                validator: controller.validatePhoneNumber,
+                              ),
+                              SizedBox(height: 40.h),
+                              Obx(
+                                () => CustomButton(
+                                  text: 'Get via SMS',
+                                  onPressed: controller.authController.isLoading
+                                      ? null
+                                      : controller.handleSendOTP,
+                                  isLoading:
+                                      controller.authController.isLoading,
+                                ),
+                              ),
+                              SizedBox(height: 20.h),
+                              RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                        text: "By clicking, I accept the "),
+                                    TextSpan(
+                                      text: "Terms of Services",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.to(() => const TermsOfService());
+                                        },
+                                    ),
+                                    const TextSpan(text: " and "),
+                                    TextSpan(
+                                      text: "Privacy Policy",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.to(() => const PrivacyPolicy());
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ),
               ),

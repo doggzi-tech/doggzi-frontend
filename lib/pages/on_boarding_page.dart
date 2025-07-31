@@ -100,7 +100,8 @@ class OnboardingPage extends StatelessWidget {
                                     height: 80.h,
                                     child: CircularProgressIndicator(
                                       value:
-                                          (controller.currentPage.value + 1) / 4,
+                                          (controller.currentPage.value + 1) /
+                                              4,
                                       strokeWidth: 2.w,
                                       backgroundColor:
                                           Colors.white.withValues(alpha: 0.3),
@@ -115,12 +116,14 @@ class OnboardingPage extends StatelessWidget {
                                     width: 60.w,
                                     height: 60.h,
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withValues(alpha: 0.9),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.9),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
                                       Icons.arrow_forward_ios,
-                                      color: Colors.black.withValues(alpha: 0.1),
+                                      color:
+                                          Colors.black.withValues(alpha: 0.1),
                                       size: 24.sp,
                                     ),
                                   ),
