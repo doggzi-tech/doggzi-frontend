@@ -8,6 +8,8 @@ class AppColors {
   static const Color accentYellow = Color(0xFFFFE500);
 
   // Backgrounds
+  static const Color brown = Color(0xEB9E7A99);
+
   static const Color lightBackground = Color(0xFFEEF5FF);
 
   // Text
