@@ -228,7 +228,7 @@ class CustomSearchWidget extends StatelessWidget {
           child: customFilterIcon ??
               Icon(
                 Icons.filter_list_sharp,
-                color: iconColor ?? AppColors.primaryOrange,
+                color: iconColor ?? OldAppColors.primaryOrange,
                 size: 25.sp,
               ),
         ),

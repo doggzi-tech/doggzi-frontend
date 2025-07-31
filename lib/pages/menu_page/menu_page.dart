@@ -86,7 +86,7 @@ class MenuPage extends GetView<FoodMenuController> {
                         return const Center(
                           child: CustomLoader(
                             size: 50.0,
-                            color: AppColors.primaryOrange,
+                            color: OldAppColors.primaryOrange,
                           ),
                         );
                       }),
@@ -108,11 +108,11 @@ class MenuPage extends GetView<FoodMenuController> {
             padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
             decoration: BoxDecoration(
               color: controller.selectedFoodType.value == type
-                  ? AppColors.primaryOrange.withOpacity(0.1)
+                  ? OldAppColors.primaryOrange.withOpacity(0.1)
                   : Colors.transparent,
               border: Border.all(
                 color: controller.selectedFoodType.value == type
-                    ? AppColors.primaryOrange
+                    ? OldAppColors.primaryOrange
                     : Colors.grey.shade300,
                 width: 1.5,
               ),
@@ -124,7 +124,7 @@ class MenuPage extends GetView<FoodMenuController> {
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: controller.selectedFoodType.value == type
-                    ? AppColors.primaryOrange
+                    ? OldAppColors.primaryOrange
                     : Colors.grey.shade600,
               ),
             ),
@@ -148,7 +148,7 @@ class MenuPage extends GetView<FoodMenuController> {
                 icon,
                 size: 16.sp,
                 color: controller.selectedPetType.value == type
-                    ? AppColors.primaryOrange
+                    ? OldAppColors.primaryOrange
                     : Colors.grey.shade600,
               ),
               SizedBox(height: 2.h),
@@ -158,7 +158,7 @@ class MenuPage extends GetView<FoodMenuController> {
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w500,
                   color: controller.selectedPetType.value == type
-                      ? AppColors.primaryOrange
+                      ? OldAppColors.primaryOrange
                       : Colors.grey.shade600,
                 ),
               ),
@@ -198,7 +198,7 @@ class MenuPage extends GetView<FoodMenuController> {
                     width: 16.w,
                     height: 16.h,
                     decoration: BoxDecoration(
-                      color: AppColors.primaryOrange,
+                      color: OldAppColors.primaryOrange,
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(

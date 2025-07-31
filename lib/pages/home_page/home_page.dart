@@ -84,12 +84,12 @@ class HomePage extends StatelessWidget {
                           Text(
                             "Meals for Pet",
                             style: DoggziTextStyles.bold16.copyWith(
-                              color: AppColors.textDark,
+                              color: OldAppColors.textDark,
                             ),
                           ),
                           Icon(
                             Icons.arrow_forward_ios,
-                            color: AppColors.textDark,
+                            color: OldAppColors.textDark,
                             size: 15.sp,
                           ),
                         ],
@@ -138,8 +138,8 @@ class HomePage extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(20.r),
                           border: Border.all(
-                            color:
-                                AppColors.primaryOrange.withValues(alpha: 0.3),
+                            color: OldAppColors.primaryOrange
+                                .withValues(alpha: 0.3),
                             width: 2.w,
                           ),
                         ),
@@ -170,7 +170,8 @@ class HomePage extends StatelessWidget {
                                               'Subscribe to the meal',
                                               style: DoggziTextStyles.bold14
                                                   .copyWith(
-                                                color: AppColors.primaryOrange,
+                                                color:
+                                                    OldAppColors.primaryOrange,
                                               ),
                                             ),
                                             Text(
@@ -193,14 +194,14 @@ class HomePage extends StatelessWidget {
                                             vertical: 6.h,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: AppColors.primaryOrange
+                                            color: OldAppColors.primaryOrange
                                                 .withValues(
                                               alpha: 0.2,
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(10.r),
                                             border: Border.all(
-                                              color: AppColors.primaryOrange,
+                                              color: OldAppColors.primaryOrange,
                                               width: 1.5.w,
                                             ),
                                             boxShadow: [
@@ -216,7 +217,7 @@ class HomePage extends StatelessWidget {
                                             'Try now',
                                             style: DoggziTextStyles.semiBold12
                                                 .copyWith(
-                                              color: AppColors.primaryOrange,
+                                              color: OldAppColors.primaryOrange,
                                             ),
                                           ),
                                         ),
@@ -263,14 +264,14 @@ class HomePage extends StatelessWidget {
                                     bottomRight: Radius.circular(60.r),
                                     bottomLeft: Radius.circular(60.r),
                                   ),
-                                  gradient: AppColors.purpleGradient,
+                                  gradient: OldAppColors.purpleGradient,
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
                                       FontAwesomeIcons.award,
-                                      color: AppColors.white,
+                                      color: OldAppColors.white,
                                       size: 10.sp,
                                     ),
                                     SizedBox(width: 5.w),
@@ -278,7 +279,7 @@ class HomePage extends StatelessWidget {
                                       offerSliderItems[0],
                                       style:
                                           DoggziTextStyles.semiBold10.copyWith(
-                                        color: AppColors.white,
+                                        color: OldAppColors.white,
                                       ),
                                     ),
                                   ],

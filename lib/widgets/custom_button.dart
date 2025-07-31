@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? AppColors.primaryOrange,
+          backgroundColor: backgroundColor ?? OldAppColors.primaryOrange,
           foregroundColor: textColor ?? Colors.white,
           elevation: 0,
           shadowColor: Colors.transparent,

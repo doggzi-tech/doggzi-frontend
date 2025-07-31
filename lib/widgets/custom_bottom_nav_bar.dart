@@ -52,10 +52,10 @@ class CustomBottomNavBar extends StatelessWidget {
     return Container(
       height: 90.h,
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: OldAppColors.white,
         boxShadow: [
           BoxShadow(
-            color: AppColors.lightBackground,
+            color: OldAppColors.lightBackground,
             blurRadius: 2.r,
             offset: Offset(0, -1.h),
           ),
@@ -88,7 +88,7 @@ class CustomBottomNavBar extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColors.primaryOrange.withOpacity(0.1)
+                ? OldAppColors.primaryOrange.withOpacity(0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(20.r),
           ),
@@ -100,8 +100,8 @@ class CustomBottomNavBar extends StatelessWidget {
                 child: Icon(
                   isSelected ? items[index].activeIcon : items[index].icon,
                   color: isSelected
-                      ? AppColors.primaryOrange
-                      : AppColors.textMedium,
+                      ? OldAppColors.primaryOrange
+                      : OldAppColors.textMedium,
                   size: isSelected ? 26.sp : 24.sp,
                 ),
               ),
@@ -110,8 +110,8 @@ class CustomBottomNavBar extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 style: TextStyle(
                   color: isSelected
-                      ? AppColors.primaryOrange
-                      : AppColors.textMedium,
+                      ? OldAppColors.primaryOrange
+                      : OldAppColors.textMedium,
                   fontSize: isSelected ? 12.sp : 11.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 ),
@@ -123,7 +123,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 height: 3.h,
                 width: isSelected ? 20.w : 0,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryOrange,
+                  color: OldAppColors.primaryOrange,
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),

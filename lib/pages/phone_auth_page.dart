@@ -19,7 +19,7 @@ class PhoneAuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false, // Key change: prevent automatic resizing
-      backgroundColor: AppColors.brown.withOpacity(0.61),
+      backgroundColor: OldAppColors.brown.withOpacity(0.61),
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -54,7 +54,7 @@ class PhoneAuthPage extends StatelessWidget {
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   decoration: BoxDecoration(
-                    color: AppColors.black.withOpacity(0.60),
+                    color: OldAppColors.black.withOpacity(0.60),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(24.r),
                       topRight: Radius.circular(24.r),
@@ -82,7 +82,7 @@ class PhoneAuthPage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 24.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: AppColors.white,
+                                  color: OldAppColors.white,
                                 ),
                               ),
                               SizedBox(height: 16.h),
@@ -92,7 +92,7 @@ class PhoneAuthPage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.normal,
-                                  color: AppColors.white,
+                                  color: OldAppColors.white,
                                 ),
                               ),
                               SizedBox(height: 16.h),

@@ -9,7 +9,7 @@ class ProfileItem extends StatelessWidget {
       {super.key,
       required this.title,
       required this.onTap,
-      this.textColor = AppColors.black});
+      this.textColor = OldAppColors.black});
 
   final String title;
   final Function() onTap;
@@ -24,7 +24,7 @@ class ProfileItem extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 17.h),
           decoration: BoxDecoration(
-            color: AppColors.dividerGray.withOpacity(0.2),
+            color: OldAppColors.dividerGray.withOpacity(0.2),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
