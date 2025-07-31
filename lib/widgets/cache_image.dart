@@ -30,7 +30,6 @@ class CachedImage extends StatelessWidget {
         width: width,
         fit: fit,
         errorWidget: (context, url, error) {
-          print("Error loading image: $error");
           return Container(
             height: height,
             width: width,

@@ -1,6 +1,5 @@
 import 'package:doggzi/pages/main_page.dart';
 import 'package:doggzi/pages/on_boarding_page.dart';
-import 'package:doggzi/pages/profile_page/widget/my_pet_view.dart';
 import 'package:get/get.dart';
 
 import '../controllers/food_menu_controller.dart';
