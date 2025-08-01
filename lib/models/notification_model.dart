@@ -1,9 +1,15 @@
 // notification_model.dart
+enum NotificationType {
+  offer,
+  order,
+  news,
+}
+
 class NotificationModel {
   final String id;
   final String title;
   final String description;
-  final String type; // 'offer', 'order', 'news'
+  final NotificationType type; // 'offer', 'order', 'news'
   final DateTime createdAt;
   final bool isRead;
 

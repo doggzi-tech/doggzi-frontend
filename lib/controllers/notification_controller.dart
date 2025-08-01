@@ -66,43 +66,68 @@ class NotificationController extends GetxController {
         id: '1',
         title: 'Exciting Offer',
         description: 'Up to 50% off on selected items',
-        type: 'offer',
-        createdAt: DateTime.now().subtract(Duration(minutes: 5)),
+        type: NotificationType.offer,
+        createdAt: DateTime.now().subtract(
+          const Duration(
+            days: 1,
+            minutes: 5,
+          ),
+        ),
       ),
       NotificationModel(
         id: '2',
         title: 'Order Is On The Way',
         description: 'Your order will be delivered in 30 minutes',
-        type: 'order',
-        createdAt: DateTime.now().subtract(Duration(minutes: 10)),
+        type: NotificationType.order,
+        createdAt: DateTime.now().subtract(
+          const Duration(
+            minutes: 10,
+          ),
+        ),
       ),
       NotificationModel(
         id: '3',
         title: 'Order Is On The Way',
         description: 'Fresh Chicken Rice is on the way',
-        type: 'order',
-        createdAt: DateTime.now().subtract(Duration(minutes: 15)),
+        type: NotificationType.order,
+        createdAt: DateTime.now().subtract(
+          const Duration(
+            minutes: 15,
+          ),
+        ),
       ),
       NotificationModel(
         id: '4',
         title: 'Exciting Offer',
         description: 'Up to 50% off on selected items',
-        type: 'offer',
-        createdAt: DateTime.now().subtract(Duration(minutes: 30)),
+        type: NotificationType.offer,
+        createdAt: DateTime.now().subtract(
+          const Duration(
+            minutes: 30,
+          ),
+        ),
       ),
       NotificationModel(
         id: '5',
         title: 'Order Is On The Way',
         description: 'Your order will be delivered in 30 minutes',
-        type: 'order',
-        createdAt: DateTime.now().subtract(Duration(hours: 1)),
+        type: NotificationType.order,
+        createdAt: DateTime.now().subtract(
+          const Duration(
+            hours: 1,
+          ),
+        ),
       ),
       NotificationModel(
         id: '6',
         title: 'Great News',
         description: 'New restaurant added to your area',
-        type: 'news',
-        createdAt: DateTime.now().subtract(Duration(hours: 2)),
+        type: NotificationType.news,
+        createdAt: DateTime.now().subtract(
+          const Duration(
+            hours: 2,
+          ),
+        ),
       ),
     ]);
   }
