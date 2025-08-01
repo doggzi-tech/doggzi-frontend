@@ -23,7 +23,7 @@ class User {
     return User(
       id: json['id'],
       phoneNumber: json['phone_number'],
-      fullName: json["full_name"],
+      fullName: json["full_name"] ?? "",
       isActive: json['is_active'] ?? true,
       isVerified: json['is_verified'] ?? false,
       createdAt: DateTime.parse(json['created_at']),
@@ -87,21 +87,17 @@ class SendOTPRequest {
 class VerifyOTPRequest {
   final String phoneNumber;
   final String otpCode;
-  final String? firstName;
-  final String? lastName;
+  final String? fullName;
 
   VerifyOTPRequest({
     required this.phoneNumber,
     required this.otpCode,
-    this.firstName,
-    this.lastName,
+    this.fullName,
   });
 
   Map<String, dynamic> toJson() {
     final data = {'phone_number': phoneNumber, 'otp_code': otpCode};
-
-    if (firstName != null) data['first_name'] = firstName!;
-    if (lastName != null) data['last_name'] = lastName!;
+    if (fullName != null) data['full_name'] = fullName!;
 
     return data;
   }
@@ -138,16 +134,14 @@ class RefreshTokenRequest {
 }
 
 class UserUpdateRequest {
-  final String? firstName;
-  final String? lastName;
+  final String? fullName;
   final String? profileImage;
 
-  UserUpdateRequest({this.firstName, this.lastName, this.profileImage});
+  UserUpdateRequest({this.fullName, this.profileImage});
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    if (firstName != null) data['first_name'] = firstName;
-    if (lastName != null) data['last_name'] = lastName;
+    if (fullName != null) data['full_name'] = fullName;
     if (profileImage != null) data['profile_image'] = profileImage;
     return data;
   }
