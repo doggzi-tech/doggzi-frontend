@@ -24,7 +24,7 @@ class MenuItem extends StatelessWidget {
             top: 0,
             child: Center(
               child: CachedImage(
-                imageUrl: item.s3_url,
+                imageUrl: item.s3Url,
                 cacheKey: item.imageUrl,
                 width: 150.w,
                 height: 110.w,
@@ -134,7 +134,7 @@ class MenuItem extends StatelessWidget {
                               SizedBox(height: 4.h),
                               // Price text
                               Text(
-                                '\$${item.pricePerGram.toStringAsFixed(0)}',
+                                '\$${item.price.toStringAsFixed(0)}',
                                 style: DoggziTextStyles.bold16,
                               ),
                               SizedBox(height: 4.h),
@@ -158,59 +158,18 @@ class MenuItem extends StatelessWidget {
                       const Divider(
                         color: OldAppColors.dividerGray,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Protein",
-                            style: DoggziTextStyles.semiBold10.copyWith(
-                              color: OldAppColors.textMedium,
+                      for (final itemName in item.itemList)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              itemName,
+                              style: DoggziTextStyles.semiBold10.copyWith(
+                                color: OldAppColors.textDark,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "${item.proteinPerGram}g",
-                            style: DoggziTextStyles.semiBold10.copyWith(
-                              color: OldAppColors.textDark,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Fats",
-                            style: DoggziTextStyles.semiBold10.copyWith(
-                              color: OldAppColors.textMedium,
-                            ),
-                          ),
-                          SizedBox(width: 5.w),
-                          Text(
-                            "${item.fatPercent}%",
-                            style: DoggziTextStyles.semiBold10.copyWith(
-                              color: OldAppColors.textDark,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Calories",
-                            style: DoggziTextStyles.semiBold10.copyWith(
-                              color: OldAppColors.textMedium,
-                            ),
-                          ),
-                          SizedBox(width: 5.w),
-                          Text(
-                            "${item.caloriesPerGram}kcal",
-                            style: DoggziTextStyles.semiBold10.copyWith(
-                              color: OldAppColors.textDark,
-                            ),
-                          ),
-                        ],
-                      )
+                          ],
+                        )
                     ],
                   ),
                 ),
