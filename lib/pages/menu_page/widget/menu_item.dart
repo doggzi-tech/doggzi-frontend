@@ -46,7 +46,7 @@ class MenuItem extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: OldAppColors.black.withValues(alpha: 0.06),
+                      color: AppColors.darkGrey500.withValues(alpha: 0.06),
                       width: 1.w,
                     ),
                     borderRadius: BorderRadius.all(
@@ -72,18 +72,18 @@ class MenuItem extends StatelessWidget {
                                       'assets/images/cat_face.svg',
                                       width: 16.w,
                                       height: 16.h,
-                                      color: OldAppColors.primaryOrange,
+                                      color: AppColors.orange400,
                                     )
                                   : SvgPicture.asset(
                                       'assets/images/dog_face.svg',
                                       width: 24.w,
                                       height: 24.h,
-                                      color: OldAppColors.primaryOrange,
+                                      color: AppColors.orange400,
                                     ),
                               Text(
                                 item.species == "cat" ? 'Cat' : 'Dog',
-                                style: DoggziTextStyles.semiBold10.copyWith(
-                                  color: OldAppColors.black,
+                                style: TextStyles.actionS.copyWith(
+                                  color: AppColors.darkGrey500,
                                 ),
                               ),
                             ],
@@ -101,14 +101,14 @@ class MenuItem extends StatelessWidget {
                               children: [
                                 Text(
                                   item.name,
-                                  style: DoggziTextStyles.bold16.copyWith(
-                                    color: OldAppColors.doggziPink,
+                                  style: TextStyles.bodyL.copyWith(
+                                    color: AppColors.orange500,
                                   ),
                                 ),
                                 Text(
                                   'Quantity : ${item.quantity}g',
-                                  style: DoggziTextStyles.semiBold10.copyWith(
-                                    color: OldAppColors.textMedium,
+                                  style: TextStyles.actionS.copyWith(
+                                    color: AppColors.darkGrey400,
                                   ),
                                 ),
                               ],
@@ -135,7 +135,7 @@ class MenuItem extends StatelessWidget {
                               // Price text
                               Text(
                                 '\$${item.price.toStringAsFixed(0)}',
-                                style: DoggziTextStyles.bold16,
+                                style: TextStyles.bodyL,
                               ),
                               SizedBox(height: 4.h),
                               // Bottom decorative line
@@ -156,18 +156,13 @@ class MenuItem extends StatelessWidget {
                         ],
                       ),
                       const Divider(
-                        color: OldAppColors.dividerGray,
+                        color: AppColors.darkGrey300,
                       ),
                       for (final itemName in item.itemList)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              itemName,
-                              style: DoggziTextStyles.semiBold10.copyWith(
-                                color: OldAppColors.textDark,
-                              ),
-                            ),
+                            Text(itemName, style: TextStyles.actionS),
                           ],
                         )
                     ],
@@ -178,7 +173,7 @@ class MenuItem extends StatelessWidget {
                         height: 20.h,
                         width: 130.w,
                         decoration: BoxDecoration(
-                          color: OldAppColors.greenHighlight,
+                          color: AppColors.green300,
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(25.r),
                             bottomLeft: Radius.circular(25.r),
@@ -195,9 +190,6 @@ class MenuItem extends StatelessWidget {
                             SizedBox(width: 5.w),
                             Text(
                               "Freshly Cooked",
-                              style: DoggziTextStyles.semiBold10.copyWith(
-                                color: OldAppColors.white,
-                              ),
                             ),
                           ],
                         ),

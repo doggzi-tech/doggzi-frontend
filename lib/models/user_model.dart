@@ -1,9 +1,7 @@
 class User {
   final String id;
   final String phoneNumber;
-  final String firstName;
-  final String lastName;
-  final String? profileImage;
+  final String fullName;
   final bool isActive;
   final bool isVerified;
   final DateTime createdAt;
@@ -13,9 +11,7 @@ class User {
   User({
     required this.id,
     required this.phoneNumber,
-    required this.firstName,
-    required this.lastName,
-    this.profileImage,
+    required this.fullName,
     required this.isActive,
     required this.isVerified,
     required this.createdAt,
@@ -27,17 +23,14 @@ class User {
     return User(
       id: json['id'],
       phoneNumber: json['phone_number'],
-      firstName: json['first_name'] ?? '',
-      lastName: json['last_name'] ?? '',
-      profileImage: json['profile_image'],
+      fullName: json["full_name"],
       isActive: json['is_active'] ?? true,
       isVerified: json['is_verified'] ?? false,
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
-      lastLogin:
-          json['last_login'] != null
-              ? DateTime.parse(json['last_login'])
-              : null,
+      lastLogin: json['last_login'] != null
+          ? DateTime.parse(json['last_login'])
+          : null,
     );
   }
 
@@ -45,9 +38,7 @@ class User {
     return {
       'id': id,
       'phone_number': phoneNumber,
-      'first_name': firstName,
-      'last_name': lastName,
-      'profile_image': profileImage,
+      'full_name': fullName,
       'is_active': isActive,
       'is_verified': isVerified,
       'created_at': createdAt.toIso8601String(),
@@ -55,8 +46,6 @@ class User {
       'last_login': lastLogin?.toIso8601String(),
     };
   }
-
-  String get fullName => '$firstName $lastName';
 
   String get displayName => fullName;
 }

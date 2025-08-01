@@ -10,7 +10,7 @@ class CustomIcon extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.radius = 12,
-    this.iconColor = OldAppColors.textMedium,
+    this.iconColor = AppColors.lightGrey400,
   });
 
   final IconData? icon;

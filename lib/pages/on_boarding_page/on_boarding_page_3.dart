@@ -33,14 +33,14 @@ class OnboardingPage3 extends StatelessWidget {
                 SizedBox(height: 90.h),
                 Text(
                   '🕒 Timely Doorstep Delivery',
-                  style: DoggziTextStyles.heading1.copyWith(
-                    color: Colors.white,
+                  style: TextStyles.h2.copyWith(
+                    color: AppColors.darkGrey500,
                   ),
                 ),
                 SizedBox(height: 20.h),
                 Text("Fresh food delivered on your schedule.",
-                    style: DoggziTextStyles.heading2.copyWith(
-                      color: Colors.white,
+                    style: TextStyles.h4.copyWith(
+                      color: AppColors.darkGrey300,
                     )),
                 SizedBox(height: 60.h),
               ],

@@ -49,8 +49,8 @@ class _PetCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
-        gradient: OldAppColors.orangeGradient,
-        color: OldAppColors.white,
+        gradient: AppColors.orangeGradient,
+        color: AppColors.lightGrey100,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -78,10 +78,10 @@ class _PetCard extends StatelessWidget {
                     errorBuilder: (_, __, ___) => Container(
                       width: 80.w,
                       height: 80.h,
-                      color: OldAppColors.dividerGray,
+                      color: AppColors.darkGrey300,
                       child: Icon(
                         Icons.pets,
-                        color: OldAppColors.black,
+                        color: AppColors.darkGrey500,
                         size: 24.sp,
                       ),
                     ),
@@ -95,7 +95,7 @@ class _PetCard extends StatelessWidget {
                       Text(
                         pet.name,
                         style: TextStyle(
-                          color: OldAppColors.black,
+                          color: AppColors.darkGrey500,
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -104,7 +104,7 @@ class _PetCard extends StatelessWidget {
                       Text(
                         '${pet.species} • ${pet.breed}',
                         style: TextStyle(
-                          color: OldAppColors.black.withOpacity(0.9),
+                          color: AppColors.darkGrey500.withOpacity(0.9),
                           fontSize: 14.sp,
                         ),
                       ),
@@ -127,7 +127,7 @@ class _PetCard extends StatelessWidget {
                   ),
                 ),
                 Icon(Icons.arrow_forward_ios,
-                    color: OldAppColors.black.withOpacity(0.7), size: 16.sp),
+                    color: AppColors.darkGrey500.withOpacity(0.7), size: 16.sp),
               ],
             ),
           ),
@@ -148,17 +148,17 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: OldAppColors.white.withOpacity(0.2),
+        color: AppColors.lightGrey100.withOpacity(0.2),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(
         children: [
-          Icon(icon, size: 14.sp, color: OldAppColors.black),
+          Icon(icon, size: 14.sp, color: AppColors.darkGrey500),
           SizedBox(width: 4.w),
           Text(
             label,
             style: TextStyle(
-              color: OldAppColors.black,
+              color: AppColors.darkGrey500,
               fontSize: 12.sp,
             ),
           ),
