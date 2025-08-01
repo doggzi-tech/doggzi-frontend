@@ -25,6 +25,7 @@ class MainPage extends StatelessWidget {
       // Set resizeToAvoidBottomInset to true to make the body resize when keyboard appears
       resizeToAvoidBottomInset: true,
       body: SafeArea(
+        top: false,
         child: Obx(() {
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),

@@ -8,6 +8,8 @@ import '../pages/home_page/home_page.dart';
 import '../pages/notification_page/notification_page.dart';
 import '../pages/otp_verification_page.dart';
 import '../pages/phone_auth_page.dart';
+import '../pages/policies/privacy_policy.dart';
+import '../pages/policies/terms_of_services.dart';
 
 class AppRoutes {
   static const initial = "/on-boarding";
@@ -16,6 +18,8 @@ class AppRoutes {
   static const phoneAuth = "/phone-auth";
   static const mainPage = "/main-page";
   static const notifications = "/notifications";
+  static const termsAndConditions = "/terms-and-conditions";
+  static const privacyPolicy = "/privacy-policy";
 
   static final pages = [
     GetPage(name: initial, page: () => OnboardingPage()),
@@ -33,6 +37,16 @@ class AppRoutes {
       ],
     ),
     GetPage(name: notifications, page: () => NotificationsPage()),
+    GetPage(
+      name: termsAndConditions,
+      page: () => const TermsAndConditions(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: privacyPolicy,
+      page: () => const PrivacyPolicy(),
+      transition: Transition.rightToLeft,
+    ),
     // Assuming main page is same as home
   ];
 }

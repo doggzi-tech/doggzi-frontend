@@ -1,9 +1,3 @@
-import 'package:doggzi/theme/colors.dart';
-import 'package:doggzi/theme/colors.dart';
-import 'package:doggzi/theme/colors.dart';
-import 'package:doggzi/theme/colors.dart';
-import 'package:doggzi/theme/colors.dart';
-import 'package:doggzi/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,90 +16,90 @@ class TextStyles {
     fontSize: 28.sp,
   );
 
-  static const TextStyle h3 = TextStyle(
+  static TextStyle h3 = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w800,
-    fontSize: 24,
+    fontSize: 24.sp,
   );
 
-  static const TextStyle h4 = TextStyle(
+  static TextStyle h4 = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w800,
-    fontSize: 20,
+    fontSize: 20.sp,
   );
 
-  static const TextStyle h5 = TextStyle(
+  static TextStyle h5 = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w800,
-    fontSize: 16,
+    fontSize: 16.sp,
   );
 
   // Body
-  static const TextStyle bodyXL = TextStyle(
+  static TextStyle bodyXL = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400, // Regular
-    fontSize: 18,
+    fontSize: 18.sp,
   );
 
-  static const TextStyle bodyL = TextStyle(
+  static TextStyle bodyL = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w700, // Bold
-    fontSize: 16,
+    fontSize: 16.sp,
   );
 
-  static const TextStyle bodyM = TextStyle(
+  static TextStyle bodyM = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500, // Medium
-    fontSize: 14,
+    fontSize: 14.sp,
   );
 
-  static const TextStyle bodyS = TextStyle(
+  static TextStyle bodyS = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400, // Regular
-    fontSize: 12,
+    fontSize: 12.sp,
   );
 
-  static const TextStyle bodyXS = TextStyle(
+  static TextStyle bodyXS = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400, // Regular
-    fontSize: 10,
+    fontSize: 10.sp,
   );
 
   // Action
-  static const TextStyle actionL = TextStyle(
+  static TextStyle actionL = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w600, // Semi-Bold
-    fontSize: 18,
+    fontSize: 18.sp,
   );
 
-  static const TextStyle actionM = TextStyle(
+  static TextStyle actionM = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w600,
-    fontSize: 12,
+    fontSize: 12.sp,
   );
 
-  static const TextStyle actionS = TextStyle(
+  static TextStyle actionS = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w600,
-    fontSize: 10,
+    fontSize: 10.sp,
   );
 
   // Caption
-  static const TextStyle captionL = TextStyle(
+  static TextStyle captionL = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w600,
-    fontSize: 16,
+    fontSize: 16.sp,
   );
 
-  static const TextStyle captionM = TextStyle(
+  static TextStyle captionM = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w600,
-    fontSize: 14,
+    fontSize: 14.sp,
   );
 
-  static const TextStyle captionS = TextStyle(
+  static TextStyle captionS = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w600,
-    fontSize: 8,
+    fontSize: 8.sp,
   );
 }

@@ -1,10 +1,13 @@
+import 'package:doggzi/theme/colors.dart';
+import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-import '../theme/text_style.dart';
 import 'custom_icon.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
     this.leadingIcon = Icons.settings,
@@ -22,66 +25,91 @@ class CustomAppBar extends StatelessWidget {
   final IconData leadingIcon;
   final bool isLeadingIconVisible;
   final IconData trailingIcon;
-  final Function()? onLeadingIconTap;
+  final VoidCallback? onLeadingIconTap;
   final bool isTrailingIconVisible;
-  final Function()? onTrailingIconTap;
+  final VoidCallback? onTrailingIconTap;
   final bool showBackButton;
-  final Function()? onBackButtonTap;
+  final VoidCallback? onBackButtonTap;
+
+  @override
+  Size get preferredSize => Size.fromHeight(50.h + 44.h + 20.h);
 
   @override
   Widget build(BuildContext context) {
-    // Check if we can go back in navigation
     final canGoBack = Navigator.canPop(context);
     final shouldShowBackButton = showBackButton && canGoBack;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25.w),
+      decoration: BoxDecoration(
+        color: AppColors.orange400,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(17.r),
+          bottomRight: Radius.circular(17.r),
+        ),
+      ),
       child: Column(
         children: [
-          SizedBox(height: 20.h),
+          SizedBox(height: 50.h), // status bar / top padding
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Show back button if conditions are met, otherwise show leading icon
-              Visibility(
-                visible: shouldShowBackButton || isLeadingIconVisible,
-                maintainSize: true,
-                maintainAnimation: true,
-                maintainState: true,
-                child: CustomIcon(
-                  icon:
-                      shouldShowBackButton ? Icons.arrow_back_ios : leadingIcon,
-                  onTap: () {
-                    if (shouldShowBackButton) {
-                      if (onBackButtonTap != null) {
-                        onBackButtonTap!();
+              // Left slot (fixed size)
+              SizedBox(
+                width: 44.w,
+                height: 44.h,
+                child: Visibility(
+                  visible: shouldShowBackButton || isLeadingIconVisible,
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: CustomIcon(
+                    icon:
+                        shouldShowBackButton ? Icons.chevron_left : leadingIcon,
+                    onTap: () {
+                      if (shouldShowBackButton) {
+                        if (onBackButtonTap != null) {
+                          onBackButtonTap!();
+                        } else {
+                          Navigator.of(context).pop();
+                        }
                       } else {
-                        Navigator.pop(context);
+                        onLeadingIconTap?.call();
                       }
-                    } else {
-                      onLeadingIconTap?.call();
-                    }
-                  },
+                    },
+                  ),
                 ),
               ),
-              Text(
-                title,
-                style: TextStyles.h3,
-              ),
-              Visibility(
-                visible: isTrailingIconVisible,
-                maintainSize: true,
-                maintainAnimation: true,
-                maintainState: true,
-                child: CustomIcon(
-                  icon: trailingIcon,
-                  onTap: () {
-                    onTrailingIconTap?.call();
-                  },
+
+              // Center slot (expands, centers title)
+              Expanded(
+                child: Center(
+                  child: Text(
+                    title,
+                    style: TextStyles.h3.copyWith(
+                      color: AppColors.lightGrey100,
+                    ),
+                  ),
                 ),
-              )
+              ),
+
+              // Right slot (fixed size)
+              SizedBox(
+                width: 44.w,
+                height: 44.h,
+                child: Visibility(
+                  visible: isTrailingIconVisible,
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: CustomIcon(
+                    icon: trailingIcon,
+                    onTap: onTrailingIconTap,
+                  ),
+                ),
+              ),
             ],
           ),
+          SizedBox(height: 20.h),
         ],
       ),
     );

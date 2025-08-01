@@ -19,6 +19,7 @@ class MenuPage extends GetView<FoodMenuController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             CustomAppBar(

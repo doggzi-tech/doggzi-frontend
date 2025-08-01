@@ -100,7 +100,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 child: Icon(
                   isSelected ? items[index].activeIcon : items[index].icon,
                   color:
-                      isSelected ? AppColors.orange400 : AppColors.lightGrey400,
+                      isSelected ? AppColors.orange400 : AppColors.darkGrey300,
                   size: isSelected ? 26.sp : 24.sp,
                 ),
               ),
@@ -109,7 +109,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 style: TextStyle(
                   color:
-                      isSelected ? AppColors.orange400 : AppColors.lightGrey400,
+                      isSelected ? AppColors.orange400 : AppColors.darkGrey300,
                   fontSize: isSelected ? 12.sp : 11.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 ),

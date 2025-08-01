@@ -5,11 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class ProfileItem extends StatelessWidget {
-  const ProfileItem(
-      {super.key,
-      required this.title,
-      required this.onTap,
-      this.textColor = AppColors.darkGrey500});
+  const ProfileItem({
+    super.key,
+    required this.title,
+    required this.onTap,
+    this.textColor = AppColors.darkGrey500,
+  });
 
   final String title;
   final Function() onTap;
@@ -18,13 +19,13 @@ class ProfileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 6.0.h),
+      padding: EdgeInsets.symmetric(vertical: 10.0.h),
       child: ZoomTapAnimation(
         onTap: onTap,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 17.h),
           decoration: BoxDecoration(
-            color: AppColors.darkGrey300.withOpacity(0.2),
+            color: AppColors.lightGrey200,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
