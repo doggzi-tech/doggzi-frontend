@@ -66,7 +66,7 @@ class CustomAppBar extends StatelessWidget {
               ),
               Text(
                 title,
-                style: DoggziTextStyles.pageHeading,
+                style: TextStyles.h3,
               ),
               Visibility(
                 visible: isTrailingIconVisible,

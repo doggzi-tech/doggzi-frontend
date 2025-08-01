@@ -10,6 +10,8 @@ class AppColors {
   static const Color orange200 = Color(0xFFFFA097);
   static const Color orange100 = Color(0xFFFF7E70);
 
+  static const Color brown = Color(0xEB9E7A99);
+
   // Greens
   static const Color green400 = Color(0xFF279165);
   static const Color green300 = Color(0xFF15BE77);
@@ -29,55 +31,7 @@ class AppColors {
   static const Color lightGrey300 = Color(0xFFD9D9D9);
   static const Color lightGrey200 = Color(0xFFEFEFEC);
   static const Color lightGrey100 = Color(0xFFFFFFFF); // white
-}
 
-class OldAppColors {
-  // ─── MAPPED OLD PALETTE ─────────────────────────────────────────────────────
-
-  // Primary
-  static const Color primaryOrange = Color(0xFFF75322); // from doggziOrange
-  static const Color accentYellow = Color(0xFFFFE500);
-
-  // Backgrounds
-  static const Color brown = Color(0xEB9E7A99);
-
-  static const Color lightBackground = Color(0xFFEEF5FF);
-
-  // Text
-  static const Color textDark = Color(0xFF2D2D2D);
-  static const Color textMedium = Color(0xFF828282);
-
-  // Feedback
-  static const Color errorRed = Color(0xFFFF4B4B);
-  static const Color greenHighlight = Color(0xFF27AE60);
-
-  // Dividers & states
-  static const Color dividerGray = Color(0xFFE0E0E0);
-  static const Color disabled = Color(0xFFE0E0E0);
-
-  // Neutrals
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color transparent = Colors.transparent;
-
-  // ─── EXTRA NEW COLORS ───────────────────────────────────────────────────────
-
-  // Primary Blues
-  static const Color primaryBlue = Color(0xFF007AFE);
-  static const Color secondaryBlue = Color(0xFF0062E0);
-
-  // Accents
-  static const Color accentOrange = Color(0xFFFFB703);
-  static const Color accentPurple = Color(0xFF9B51E0);
-
-  // Greys & Blacks
-  static const Color black = Color(0xFF000000);
-
-  // Custom “Doggzi” Colors
-  static const Color doggziRed = Color(0xFFFF3C3C);
-  static const Color doggziPurple = Color(0xFF7C3AED);
-  static const Color doggziPink = Color(0xFFFF2D55);
-
-  // Gradients
   static const LinearGradient blueGradient = LinearGradient(
     colors: [Color(0xFFB7ABFD), Color(0xFF6D6697)],
     begin: Alignment.topLeft,

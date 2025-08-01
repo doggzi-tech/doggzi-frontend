@@ -25,16 +25,9 @@ class ProfileIntroItem extends GetView<PetController> {
           children: [
             Obx(
               () {
-                final firstName = authController.user?.firstName;
-                final lastName = authController.user?.lastName;
-
-                final displayName = (firstName != null && lastName != null)
-                    ? "$firstName $lastName"
-                    : 'User Name';
-
                 return Text(
-                  displayName,
-                  style: DoggziTextStyles.bold16,
+                  authController.user!.fullName,
+                  style: TextStyles.bodyL,
                 );
               },
             ),
@@ -44,7 +37,7 @@ class ProfileIntroItem extends GetView<PetController> {
                 controller.pets.isNotEmpty
                     ? '${controller.pets.length} Pets Added'
                     : 'No pets added',
-                style: DoggziTextStyles.bodyText.copyWith(
+                style: TextStyles.bodyM.copyWith(
                   color: Colors.grey,
                 ),
               ),

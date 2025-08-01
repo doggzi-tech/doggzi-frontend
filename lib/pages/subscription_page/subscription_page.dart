@@ -15,10 +15,10 @@ List<String> offerSliderItems = [
   "50 % off on 3 months subscription",
 ];
 List<LinearGradient> gradientList = [
-  OldAppColors.purpleGradient,
-  OldAppColors.blueGradient,
-  OldAppColors.orangeGradient,
-  OldAppColors.greenGradient
+  AppColors.purpleGradient,
+  AppColors.blueGradient,
+  AppColors.orangeGradient,
+  AppColors.greenGradient
 ];
 
 class SubscriptionPage extends GetView<PetController> {
@@ -63,14 +63,14 @@ class SubscriptionPage extends GetView<PetController> {
                       children: [
                         Icon(
                           FontAwesomeIcons.award,
-                          color: OldAppColors.white,
+                          color: AppColors.lightGrey100,
                           size: 20.sp,
                         ),
                         SizedBox(width: 5.w),
                         Text(
                           i,
-                          style: DoggziTextStyles.semiBold14.copyWith(
-                            color: OldAppColors.white,
+                          style: TextStyles.bodyS.copyWith(
+                            color: AppColors.lightGrey100,
                           ),
                         ),
                       ],
@@ -95,14 +95,14 @@ class SubscriptionPage extends GetView<PetController> {
                 SizedBox(height: 20.h),
                 Text(
                   "Your Pet’s Personalized Nutrition Plan",
-                  style: DoggziTextStyles.bold16.copyWith(
-                    color: OldAppColors.textDark,
+                  style: TextStyles.bodyL.copyWith(
+                    color: AppColors.darkGrey400,
                   ),
                 ),
                 Text(
                   "Crafted by experts. Delivered with care",
-                  style: DoggziTextStyles.semiBold14.copyWith(
-                    color: OldAppColors.textMedium,
+                  style: TextStyles.bodyS.copyWith(
+                    color: AppColors.lightGrey400,
                   ),
                 ),
               ],

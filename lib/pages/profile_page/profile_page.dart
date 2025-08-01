@@ -93,7 +93,7 @@ class ProfilePage extends StatelessWidget {
                       // Navigate to My Pets page
                       authController.logout();
                     },
-                    textColor: OldAppColors.errorRed,
+                    textColor: AppColors.orange500,
                   ),
                 ],
               ),

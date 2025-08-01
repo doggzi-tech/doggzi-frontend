@@ -13,8 +13,7 @@ class OnboardingPage4 extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image:
-              AssetImage('assets/images/onboarding4_bg.png'),
+          image: AssetImage('assets/images/onboarding4_bg.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -26,14 +25,14 @@ class OnboardingPage4 extends StatelessWidget {
             SizedBox(height: 90.h),
             Text(
               '🧠 Vet-Approved Diet Guidance',
-              style: DoggziTextStyles.heading1.copyWith(
-                color: Colors.white,
+              style: TextStyles.h2.copyWith(
+                color: AppColors.darkGrey500,
               ),
             ),
             SizedBox(height: 20.h),
             Text("Nutrition designed by experts for pet condition.",
-                style: DoggziTextStyles.heading2.copyWith(
-                  color: Colors.white,
+                style: TextStyles.h4.copyWith(
+                  color: AppColors.darkGrey300,
                 )),
             SizedBox(height: 60.h),
             // Pet tags

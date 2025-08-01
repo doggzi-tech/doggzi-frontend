@@ -52,10 +52,10 @@ class CustomBottomNavBar extends StatelessWidget {
     return Container(
       height: 90.h,
       decoration: BoxDecoration(
-        color: OldAppColors.white,
+        color: AppColors.lightGrey100,
         boxShadow: [
           BoxShadow(
-            color: OldAppColors.lightBackground,
+            color: AppColors.darkGrey200,
             blurRadius: 2.r,
             offset: Offset(0, -1.h),
           ),
@@ -88,7 +88,7 @@ class CustomBottomNavBar extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isSelected
-                ? OldAppColors.primaryOrange.withOpacity(0.1)
+                ? AppColors.orange400.withOpacity(0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(20.r),
           ),
@@ -99,9 +99,8 @@ class CustomBottomNavBar extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 child: Icon(
                   isSelected ? items[index].activeIcon : items[index].icon,
-                  color: isSelected
-                      ? OldAppColors.primaryOrange
-                      : OldAppColors.textMedium,
+                  color:
+                      isSelected ? AppColors.orange400 : AppColors.lightGrey400,
                   size: isSelected ? 26.sp : 24.sp,
                 ),
               ),
@@ -109,9 +108,8 @@ class CustomBottomNavBar extends StatelessWidget {
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
                 style: TextStyle(
-                  color: isSelected
-                      ? OldAppColors.primaryOrange
-                      : OldAppColors.textMedium,
+                  color:
+                      isSelected ? AppColors.orange400 : AppColors.lightGrey400,
                   fontSize: isSelected ? 12.sp : 11.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 ),
@@ -123,7 +121,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 height: 3.h,
                 width: isSelected ? 20.w : 0,
                 decoration: BoxDecoration(
-                  color: OldAppColors.primaryOrange,
+                  color: AppColors.orange400,
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),

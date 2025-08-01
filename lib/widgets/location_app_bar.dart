@@ -18,7 +18,7 @@ class LocationAppBar extends GetView<LocationController> {
         children: [
           CustomIcon(
             icon: Icons.location_on_outlined,
-            iconColor: OldAppColors.primaryOrange,
+            iconColor: AppColors.orange400,
             onTap: () {
               // Navigate to settings page
             },
@@ -29,8 +29,8 @@ class LocationAppBar extends GetView<LocationController> {
             children: [
               Text(
                 "Current Location",
-                style: DoggziTextStyles.semiBold14.copyWith(
-                  color: OldAppColors.textMedium,
+                style: TextStyles.bodyS.copyWith(
+                  color: AppColors.lightGrey400,
                 ),
               ),
               Obx(() {
@@ -38,7 +38,7 @@ class LocationAppBar extends GetView<LocationController> {
                   controller.currentPosition == null
                       ? "Fetching location..."
                       : "${controller.currentPosition?.latitude}, ${controller.currentPosition?.longitude}",
-                  style: DoggziTextStyles.bold14,
+                  style: TextStyles.bodyXS,
                 );
               }),
             ],

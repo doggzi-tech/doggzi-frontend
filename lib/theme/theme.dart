@@ -8,19 +8,19 @@ class DoggziTheme {
   static ThemeData get theme {
     return ThemeData(
       primarySwatch: Colors.orange,
-      primaryColor: OldAppColors.primaryOrange,
-      scaffoldBackgroundColor: OldAppColors.white,
+      primaryColor: AppColors.orange400,
+      scaffoldBackgroundColor: AppColors.lightGrey100,
       fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
-        backgroundColor: OldAppColors.white,
+        backgroundColor: AppColors.lightGrey100,
         elevation: 0,
-        iconTheme: IconThemeData(color: OldAppColors.textDark, size: 24.sp),
-        titleTextStyle: DoggziTextStyles.heading2,
+        iconTheme: IconThemeData(color: AppColors.darkGrey500, size: 24.sp),
+        titleTextStyle: TextStyles.bodyXL,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: OldAppColors.primaryOrange,
-          foregroundColor: OldAppColors.white,
+          backgroundColor: AppColors.orange400,
+          foregroundColor: AppColors.darkGrey500,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
@@ -29,19 +29,19 @@ class DoggziTheme {
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: OldAppColors.dividerGray, width: 1.w),
+          borderSide: BorderSide(color: AppColors.darkGrey400, width: 1.w),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: OldAppColors.primaryOrange, width: 2.w),
+          borderSide: BorderSide(color: AppColors.orange400, width: 2.w),
         ),
       ),
       colorScheme: const ColorScheme.light(
-        primary: OldAppColors.primaryOrange,
-        secondary: OldAppColors.accentYellow,
-        error: OldAppColors.errorRed,
-        surface: OldAppColors.white,
-        background: OldAppColors.lightBackground,
+        primary: AppColors.orange400,
+        secondary: AppColors.orange200,
+        error: AppColors.orange500,
+        surface: AppColors.darkGrey500,
+        background: AppColors.lightGrey300,
       ),
     );
   }

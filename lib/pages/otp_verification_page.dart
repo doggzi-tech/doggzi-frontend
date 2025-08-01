@@ -49,7 +49,7 @@ class OTPVerificationPage extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false, // Prevent automatic resizing
-      backgroundColor: OldAppColors.brown.withOpacity(0.61),
+      backgroundColor: AppColors.brown.withOpacity(0.61),
       body: SafeArea(
         bottom: false,
         top: false,
@@ -81,7 +81,7 @@ class OTPVerificationPage extends GetView<AuthController> {
                       0.9, // Dynamic height
                 ),
                 decoration: BoxDecoration(
-                  color: OldAppColors.black.withOpacity(0.60),
+                  color: AppColors.darkGrey500.withOpacity(0.60),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24.r),
                     topRight: Radius.circular(24.r),
@@ -104,7 +104,7 @@ class OTPVerificationPage extends GetView<AuthController> {
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
-                          color: OldAppColors.white,
+                          color: AppColors.lightGrey100,
                         ),
                       ),
                       SizedBox(height: 10.h),
@@ -114,14 +114,16 @@ class OTPVerificationPage extends GetView<AuthController> {
                           Flexible(
                             child: Text(
                               'Sent to ${controller.currentPhoneNumber}',
-                              style: const TextStyle(color: OldAppColors.white),
+                              style: const TextStyle(
+                                color: AppColors.lightGrey100,
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           SizedBox(width: 8.w),
                           Icon(
                             Icons.check_circle,
-                            color: OldAppColors.greenHighlight,
+                            color: AppColors.green300,
                             size: 20.sp,
                           ),
                           TextButton(
@@ -130,7 +132,7 @@ class OTPVerificationPage extends GetView<AuthController> {
                               'Change number?',
                               style: TextStyle(
                                 fontSize: 10,
-                                color: OldAppColors.textMedium,
+                                color: AppColors.lightGrey100,
                               ),
                             ),
                           ),
@@ -144,16 +146,16 @@ class OTPVerificationPage extends GetView<AuthController> {
                             width: 60.w,
                             height: 60.h,
                             decoration: BoxDecoration(
-                              color: OldAppColors.white,
+                              color: AppColors.lightGrey100,
                               border: Border.all(
-                                color: OldAppColors.primaryOrange,
+                                color: AppColors.orange400,
                                 width: 1.w,
                               ),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             textStyle: TextStyle(
                               fontSize: 24.sp,
-                              color: OldAppColors.textMedium,
+                              color: AppColors.lightGrey400,
                             ),
                           ),
                           onCompleted: (_) => _handleVerifyOTP(),
@@ -172,7 +174,7 @@ class OTPVerificationPage extends GetView<AuthController> {
                                 child: Text(
                                   'Expires in ${_formatTime(controller.otpExpiresIn)}',
                                   style: TextStyle(
-                                    color: OldAppColors.textMedium,
+                                    color: AppColors.lightGrey400,
                                     fontSize: 14.sp,
                                   ),
                                 ),
@@ -199,8 +201,7 @@ class OTPVerificationPage extends GetView<AuthController> {
                             children: [
                               const Text(
                                 'Did not receive code? ',
-                                style:
-                                    TextStyle(color: OldAppColors.textMedium),
+                                style: TextStyle(color: AppColors.lightGrey400),
                               ),
                               TextButton(
                                 onPressed: canResend ? _handleResendOTP : null,
@@ -208,14 +209,14 @@ class OTPVerificationPage extends GetView<AuthController> {
                                     ? const Text(
                                         'Resend',
                                         style: TextStyle(
-                                          color: OldAppColors.primaryOrange,
+                                          color: AppColors.orange400,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       )
                                     : Text(
                                         'Resend in ${_formatTime(controller.canResendIn)}',
                                         style: const TextStyle(
-                                          color: OldAppColors.textMedium,
+                                          color: AppColors.lightGrey400,
                                         ),
                                       ),
                               ),
