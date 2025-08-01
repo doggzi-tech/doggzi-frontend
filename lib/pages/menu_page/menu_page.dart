@@ -1,3 +1,4 @@
+import 'package:doggzi/models/menu_model.dart';
 import 'package:doggzi/pages/menu_page/widget/menu_item.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/widgets/custom_loader.dart';
@@ -41,11 +42,11 @@ class MenuPage extends GetView<FoodMenuController> {
                         // Food Type Filters
                         Row(
                           children: [
-                            _buildFoodTypeChip('All'),
+                            _buildFoodTypeChip(DietType.all),
                             SizedBox(width: 6.w),
-                            _buildFoodTypeChip('Veg'),
+                            _buildFoodTypeChip(DietType.vegetarian),
                             SizedBox(width: 6.w),
-                            _buildFoodTypeChip('Non-veg'),
+                            _buildFoodTypeChip(DietType.non_vegetarian),
                           ],
                         ),
 
@@ -54,9 +55,11 @@ class MenuPage extends GetView<FoodMenuController> {
                         // Pet Type Filters
                         Row(
                           children: [
-                            _buildPetTypeChip('Cat', FontAwesomeIcons.cat),
+                            _buildPetTypeChip(
+                                Species.cat, FontAwesomeIcons.cat),
                             _buildToggleButton(),
-                            _buildPetTypeChip('Dog', FontAwesomeIcons.dog),
+                            _buildPetTypeChip(
+                                Species.dog, FontAwesomeIcons.dog),
                           ],
                         ),
                       ],
@@ -66,28 +69,19 @@ class MenuPage extends GetView<FoodMenuController> {
                     Expanded(
                       // Make GridView take remaining space
                       child: Obx(() {
-                        if (!controller.isLoading) {
-                          return MasonryGridView.count(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10.w,
-                            mainAxisSpacing: 10.h,
-                            // Add vertical spacing
-                            itemCount: controller.menuItems.length,
-                            itemBuilder: (context, index) {
-                              return ZoomTapAnimation(
-                                child: MenuItem(
-                                  item: controller.menuItems[index],
-                                ),
-                              );
-                            },
-                          );
-                        }
-
-                        return const Center(
-                          child: CustomLoader(
-                            size: 50.0,
-                            color: OldAppColors.primaryOrange,
-                          ),
+                        return MasonryGridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10.w,
+                          mainAxisSpacing: 10.h,
+                          // Add vertical spacing
+                          itemCount: controller.allMenuItems.length,
+                          itemBuilder: (context, index) {
+                            return ZoomTapAnimation(
+                              child: MenuItem(
+                                item: controller.allMenuItems[index],
+                              ),
+                            );
+                          },
                         );
                       }),
                     ),
@@ -101,7 +95,7 @@ class MenuPage extends GetView<FoodMenuController> {
     );
   }
 
-  Widget _buildFoodTypeChip(String type) {
+  Widget _buildFoodTypeChip(DietType type) {
     return Obx(() => GestureDetector(
           onTap: () => controller.selectFoodType(type),
           child: Container(
@@ -119,7 +113,11 @@ class MenuPage extends GetView<FoodMenuController> {
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: Text(
-              type,
+              type == DietType.vegetarian
+                  ? 'Veg'
+                  : type == DietType.non_vegetarian
+                      ? 'Non-Veg'
+                      : 'All',
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
@@ -132,7 +130,7 @@ class MenuPage extends GetView<FoodMenuController> {
         ));
   }
 
-  Widget _buildPetTypeChip(String type, IconData icon) {
+  Widget _buildPetTypeChip(Species type, IconData icon) {
     return Obx(
       () => GestureDetector(
         onTap: () => controller.selectPetType(type),
@@ -153,7 +151,7 @@ class MenuPage extends GetView<FoodMenuController> {
               ),
               SizedBox(height: 2.h),
               Text(
-                type,
+                type.name.capitalizeFirst!,
                 style: TextStyle(
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w500,
@@ -173,9 +171,12 @@ class MenuPage extends GetView<FoodMenuController> {
     return Obx(() => GestureDetector(
           onTap: () {
             // Toggle between Cat and Dog
-            String newType =
-                controller.selectedPetType.value == 'Cat' ? 'Dog' : 'Cat';
-            controller.selectPetType(newType);
+            String newType = controller.selectedPetType.value == Species.cat
+                ? Species.dog.name
+                : Species.cat.name;
+            controller.selectPetType(
+              Species.values.firstWhere((e) => e.name == newType),
+            );
           },
           child: Container(
             width: 40.w,

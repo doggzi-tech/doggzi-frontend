@@ -99,26 +99,22 @@ class HomePage extends StatelessWidget {
                       Obx(() {
                         return SizedBox(
                           height: 255.h,
-                          child: menuController.menuItems.isEmpty
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: menuController.menuItems.length > 2
-                                      ? 2
-                                      : menuController.menuItems.length,
-                                  itemBuilder: (context, index) {
-                                    return ZoomTapAnimation(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(right: 12.w),
-                                        child: MenuItem(
-                                          item: menuController.menuItems[index],
-                                        ),
-                                      ),
-                                    );
-                                  },
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: menuController.homeMenuItems.length > 2
+                                ? 2
+                                : menuController.homeMenuItems.length,
+                            itemBuilder: (context, index) {
+                              return ZoomTapAnimation(
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 12.w),
+                                  child: MenuItem(
+                                    item: menuController.homeMenuItems[index],
+                                  ),
                                 ),
+                              );
+                            },
+                          ),
                         );
                       }),
 

@@ -1,35 +1,39 @@
 import 'dart:convert';
 
 /// Model representing a food product for a pet delivery app.
+enum DietType {
+  all,
+  vegetarian,
+  non_vegetarian,
+}
+
+enum Species { all, dog, cat }
+
 class MenuModel {
   final String id;
   final String name;
   final String description;
   final int quantity;
-  final num pricePerGram;
+  final int price;
   final String species;
-  final num proteinPerGram;
-  final num fatPercent;
-  final num caloriesPerGram;
+  final List<String> itemList;
   final String dietType;
   final bool freshlyCooked;
   final String imageUrl;
-  final String s3_url;
+  final String s3Url;
 
   MenuModel({
     required this.id,
     required this.name,
     required this.description,
     required this.quantity,
-    required this.pricePerGram,
+    required this.price,
     required this.species,
-    required this.proteinPerGram,
-    required this.fatPercent,
-    required this.caloriesPerGram,
+    required this.itemList,
     required this.dietType,
     required this.freshlyCooked,
     required this.imageUrl,
-    required this.s3_url,
+    required this.s3Url,
   });
 
   /// Creates a ProductModel from a JSON map.
@@ -38,16 +42,14 @@ class MenuModel {
       id: json['_id'].toString(),
       name: json['name'] as String,
       description: json['description'] as String,
-      quantity: json['quantity'] as int,
-      pricePerGram: json['price_per_gram'] as num,
-      species: json['species'] as String,
-      proteinPerGram: json['protein_per_gram'] as num,
-      fatPercent: json['fat_percent'] as num,
-      caloriesPerGram: json['calories_per_gram'] as num,
+      quantity: json['quantity'] ?? 0,
+      price: json['price_per_gram'] ?? 0,
+      species: json['species'] ?? Species.all,
+      itemList: List<String>.from(json['item_list'] ?? []),
       dietType: json['diet_type'] as String,
       freshlyCooked: json['freshly_cooked'] as bool,
       imageUrl: json['image_url'] as String,
-      s3_url: json['s3_url'] as String,
+      s3Url: json['s3_url'] as String,
     );
   }
 
@@ -58,15 +60,13 @@ class MenuModel {
       'name': name,
       'description': description,
       'quantity': quantity,
-      'price_per_gram': pricePerGram,
+      'price_per_gram': price,
       'species': species,
-      'protein_per_gram': proteinPerGram,
-      'fat_percent': fatPercent,
-      'calories_per_gram': caloriesPerGram,
+      'item_list': itemList,
       'diet_type': dietType,
       'freshly_cooked': freshlyCooked,
       'image_url': imageUrl,
-      's3_url': s3_url,
+      's3_url': s3Url,
     };
   }
 
