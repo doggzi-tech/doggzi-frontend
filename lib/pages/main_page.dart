@@ -41,7 +41,7 @@ class MainPage extends StatelessWidget {
           );
         }),
       ),
-      bottomNavigationBar: SafeArea(child: CustomBottomNavBar()),
+      bottomNavigationBar: CustomBottomNavBar(),
     );
   }
 }

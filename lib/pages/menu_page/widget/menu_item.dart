@@ -184,12 +184,15 @@ class MenuItem extends StatelessWidget {
                           children: [
                             SvgPicture.asset(
                               'assets/images/fresh.svg',
-                              width: 16.w,
-                              height: 16.h,
+                              width: 14.w,
+                              height: 14.h,
                             ),
                             SizedBox(width: 5.w),
                             Text(
                               "Freshly Cooked",
+                              style: TextStyles.actionS.copyWith(
+                                color: AppColors.lightGrey100,
+                              ),
                             ),
                           ],
                         ),
