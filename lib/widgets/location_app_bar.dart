@@ -3,12 +3,17 @@ import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../theme/colors.dart';
 import 'custom_icon.dart';
-
 class LocationAppBar extends GetView<LocationController> {
-  const LocationAppBar({super.key});
+  final bool showBackButton;
+
+  const LocationAppBar({
+    Key? key,
+    this.showBackButton = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,17 @@ class LocationAppBar extends GetView<LocationController> {
       ),
       child: Row(
         children: [
+          if (showBackButton) ...[
+            ZoomTapAnimation(
+              onTap: () => Get.back(),
+              child: Icon(
+                Icons.arrow_back,
+                color: AppColors.darkGrey100,
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: 10.w),
+          ],
           Icon(
             Icons.location_on,
             color: AppColors.darkGrey100,
@@ -55,7 +71,7 @@ class LocationAppBar extends GetView<LocationController> {
               }),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           CustomIcon(
             icon: Icons.notification_add,
             onTap: () {},
