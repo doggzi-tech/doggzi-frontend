@@ -3,6 +3,7 @@ import 'package:doggzi/controllers/bottom_nav_controller.dart';
 import 'package:doggzi/controllers/carousel_controller.dart';
 import 'package:doggzi/pages/home_page/widgets/explore_buttons.dart';
 import 'package:doggzi/pages/home_page/widgets/filter_buttons.dart';
+import 'package:doggzi/widgets/meal_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -192,16 +193,15 @@ class HomePage extends StatelessWidget {
                       ? 2
                       : menuController.homeMenuItems.length,
                   itemBuilder: (context, index) {
-                    return InkWell(
+                    final item = menuController.homeMenuItems[index];
+                    return ZoomTapAnimation(
                       onTap: () {
-                        controller.selectedIndex.value = 1;
-                      },
-                      child: ZoomTapAnimation(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16.w, right: 12.w),
-                          child: MenuItem(
-                            item: menuController.homeMenuItems[index],
-                          ),
+                      showMenuItemDetails(item.id);
+                    },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16.w, right: 12.w),
+                        child: MenuItem(
+                          item: item,
                         ),
                       ),
                     );

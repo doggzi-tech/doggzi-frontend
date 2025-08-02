@@ -1,7 +1,7 @@
 import 'package:doggzi/models/menu_model.dart';
 import 'package:doggzi/pages/menu_page/widget/menu_item.dart';
 import 'package:doggzi/theme/colors.dart';
-import 'package:doggzi/widgets/custom_loader.dart';
+import 'package:doggzi/widgets/meal_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -10,11 +10,10 @@ import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../controllers/food_menu_controller.dart';
 import '../../widgets/custom_app_bar.dart';
-import '../../widgets/custom_search_component.dart';
 
 class MenuPage extends GetView<FoodMenuController> {
-  const MenuPage({super.key});
-
+  MenuPage({super.key});
+  final menuController = Get.find<FoodMenuController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,20 +65,35 @@ class MenuPage extends GetView<FoodMenuController> {
                     Expanded(
                       // Make GridView take remaining space
                       child: Obx(() {
-                        return MasonryGridView.count(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10.w,
-                          mainAxisSpacing: 10.h,
-                          // Add vertical spacing
-                          itemCount: controller.allMenuItems.length,
-                          itemBuilder: (context, index) {
-                            return ZoomTapAnimation(
-                              child: MenuItem(
-                                item: controller.allMenuItems[index],
-                              ),
-                            );
-                          },
-                        );
+                        if (controller.isLoading.value) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.orange300,
+                            ),
+                          );
+                        } else {
+                          return MasonryGridView.count(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10.h,
+                            // Add vertical spacing
+                            itemCount: controller.allMenuItems.length,
+                            itemBuilder: (context, index) {
+                              final item = menuController.homeMenuItems[index];
+                              return ZoomTapAnimation(
+                                onTap: () {
+                                  showMenuItemDetails(item.id);
+                                },
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 16.w, right: 12.w),
+                                  child: MenuItem(
+                                    item: item,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
                       }),
                     ),
                   ],
@@ -168,12 +182,10 @@ class MenuPage extends GetView<FoodMenuController> {
     return Obx(() => GestureDetector(
           onTap: () {
             // Toggle between Cat and Dog
-            String newType = controller.selectedPetType.value == Species.cat
-                ? Species.dog.name
-                : Species.cat.name;
-            controller.selectPetType(
-              Species.values.firstWhere((e) => e.name == newType),
-            );
+            Species newType = controller.selectedPetType.value == Species.cat
+                ? Species.dog
+                : Species.cat;
+            controller.selectPetType(newType);
           },
           child: Container(
             width: 40.w,
@@ -190,7 +202,9 @@ class MenuPage extends GetView<FoodMenuController> {
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut,
-                  left: controller.selectedPetType.value == 'Cat' ? 2.w : 20.w,
+                  left: controller.selectedPetType.value == Species.cat
+                      ? 2.w
+                      : 20.w,
                   top: 3.h,
                   child: Container(
                     width: 16.w,

@@ -1,5 +1,9 @@
+import 'package:doggzi/pages/cart/cart.dart';
 import 'package:doggzi/pages/main_page.dart';
+import 'package:doggzi/pages/menu_page/menu_page.dart';
 import 'package:doggzi/pages/on_boarding_page.dart';
+import 'package:doggzi/pages/order_status/cancelled.dart';
+import 'package:doggzi/pages/order_status/confirmed.dart';
 import 'package:get/get.dart';
 
 import '../controllers/food_menu_controller.dart';
@@ -20,8 +24,17 @@ class AppRoutes {
   static const notifications = "/notifications";
   static const termsAndConditions = "/terms-and-conditions";
   static const privacyPolicy = "/privacy-policy";
+  static const confirmed = '/order-confirmed';
+  static const cancelled = '/order-cancelled';
+  static const cart = '/cart';
+  static const menu = '/menu';
 
   static final pages = [
+    GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
+    GetPage(name: cancelled, page: () => const OrderCancelledPage()),
+    GetPage(name: cart, page: () => const CartPage()),
+    GetPage(name: menu, page: () => MenuPage()),
+
     GetPage(name: initial, page: () => OnboardingPage()),
     GetPage(name: otpVerification, page: () => OTPVerificationPage()),
     GetPage(name: home, page: () => HomePage()),

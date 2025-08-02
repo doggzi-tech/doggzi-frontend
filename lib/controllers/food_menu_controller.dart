@@ -9,10 +9,18 @@ class FoodMenuController extends GetxController {
   final MenuService _menuService = MenuService();
   final RxList<MenuModel> allMenuItems = <MenuModel>[].obs;
   final RxList<MenuModel> homeMenuItems = <MenuModel>[].obs;
+
+  final Rxn<MenuModel> selectedMenuItem = Rxn<MenuModel>();
+
   Rx<DietType> selectedFoodType = DietType.all.obs;
   Rx<Species> selectedPetType = Species.all.obs;
 
   final ImageService imageService = ImageService();
+  RxBool isLoading = false.obs;
+
+  final RxBool isDetailsSheetOpen = false.obs;
+
+
 
   @override
   void onInit() {
@@ -21,12 +29,13 @@ class FoodMenuController extends GetxController {
   }
 
   Future<void> fetchMenuItems() async {
+    isLoading.value = true;
     try {
       final items = await _menuService.getMenuItems(
-          selectedFoodType.value, selectedPetType.value);
-      if (homeMenuItems.isEmpty) {
-        homeMenuItems.assignAll(items);
-      }
+        selectedFoodType.value,
+        selectedPetType.value,
+      );
+      homeMenuItems.assignAll(items);
       allMenuItems.assignAll(items);
     } catch (e) {
       customSnackBar.show(
@@ -34,7 +43,9 @@ class FoodMenuController extends GetxController {
         type: SnackBarType.error,
       );
       print("Failed to fetch menu items: $e");
-    } finally {}
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void selectFoodType(DietType type) {
