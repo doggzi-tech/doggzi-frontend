@@ -19,6 +19,7 @@ class MenuPage extends GetView<FoodMenuController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             CustomAppBar(
@@ -29,7 +30,6 @@ class MenuPage extends GetView<FoodMenuController> {
                 // Navigate to settings page
               },
             ),
-            const CustomSearchWidget(),
             Expanded(
               // Changed from Container to Expanded
               child: Container(
@@ -49,9 +49,7 @@ class MenuPage extends GetView<FoodMenuController> {
                             _buildFoodTypeChip(DietType.non_vegetarian),
                           ],
                         ),
-
-                        SizedBox(width: 37.w),
-
+                        const Spacer(),
                         // Pet Type Filters
                         Row(
                           children: [
@@ -64,7 +62,6 @@ class MenuPage extends GetView<FoodMenuController> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16.h), // Add some spacing
                     // GridView section
                     Expanded(
                       // Make GridView take remaining space

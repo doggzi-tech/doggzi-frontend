@@ -89,6 +89,12 @@ class AuthController extends GetxController {
       if (!refreshed) {
         // If refresh fails, clear stored data
         await _clearAuthData();
+        _resetOTPState();
+        Get.offAllNamed('/phone-auth');
+        customSnackBar.show(
+          message: 'You have been logged out from all devices',
+          type: SnackBarType.success,
+        );
       }
     }
   }

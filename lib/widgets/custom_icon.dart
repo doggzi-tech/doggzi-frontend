@@ -10,7 +10,7 @@ class CustomIcon extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.radius = 12,
-    this.iconColor = AppColors.lightGrey400,
+    this.iconColor = AppColors.lightGrey100,
   });
 
   final IconData? icon;
@@ -28,7 +28,7 @@ class CustomIcon extends StatelessWidget {
         width: 44.w,
         height: 44.h,
         decoration: BoxDecoration(
-          color: iconColor.withValues(alpha: 0.1),
+          color: iconColor.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(radius.toDouble().r),
         ),
         child: Center(

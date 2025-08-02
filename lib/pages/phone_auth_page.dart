@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../controllers/phone_auth_controller.dart';
+import '../core/app_routes.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
 
@@ -137,7 +138,8 @@ class PhoneAuthPage extends StatelessWidget {
                                       ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.to(() => const TermsOfService());
+                                          Get.toNamed(
+                                              AppRoutes.termsAndConditions);
                                         },
                                     ),
                                     const TextSpan(text: " and "),
@@ -149,7 +151,7 @@ class PhoneAuthPage extends StatelessWidget {
                                       ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.to(() => const PrivacyPolicy());
+                                          Get.toNamed(AppRoutes.privacyPolicy);
                                         },
                                     ),
                                   ],

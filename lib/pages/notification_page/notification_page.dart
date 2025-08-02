@@ -17,73 +17,71 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      body: SafeArea(
-        child: Column(
-          children: [
-            const CustomAppBar(
-              showBackButton: true,
-              title: 'Notifications',
-              isLeadingIconVisible: true,
-              isTrailingIconVisible: false,
-            ),
-            Obx(() {
-              if (controller.isLoading.value &&
-                  controller.notifications.isEmpty) {
-                return Expanded(child: Center(child: CustomLoader()));
-              }
+      body: Column(
+        children: [
+          const CustomAppBar(
+            showBackButton: true,
+            title: 'Notifications',
+            isLeadingIconVisible: true,
+            isTrailingIconVisible: false,
+          ),
+          Obx(() {
+            if (controller.isLoading.value &&
+                controller.notifications.isEmpty) {
+              return Expanded(child: Center(child: CustomLoader()));
+            }
 
-              if (controller.error.value.isNotEmpty &&
-                  controller.notifications.isEmpty) {
-                return Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 64.sp,
-                        color: Colors.grey,
+            if (controller.error.value.isNotEmpty &&
+                controller.notifications.isEmpty) {
+              return Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64.sp,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      'Failed to load notifications',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.grey[600],
                       ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        'Failed to load notifications',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: Colors.grey[600],
-                        ),
+                    ),
+                    SizedBox(height: 16.h),
+                    ElevatedButton(
+                      onPressed: controller.fetchNotifications,
+                      child: Text('Retry'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
                       ),
-                      SizedBox(height: 16.h),
-                      ElevatedButton(
-                        onPressed: controller.fetchNotifications,
-                        child: Text('Retry'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              return RefreshIndicator(
-                onRefresh: controller.refreshNotifications,
-                color: Colors.green,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(16.w),
-                  itemCount: controller.notifications.length,
-                  itemBuilder: (context, index) {
-                    final notification = controller.notifications[index];
-                    return NotificationCard(
-                      notification: notification,
-                      onTap: () => controller.markAsRead(notification.id),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               );
-            }),
-          ],
-        ),
+            }
+
+            return RefreshIndicator(
+              onRefresh: controller.refreshNotifications,
+              color: Colors.green,
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.all(16.w),
+                itemCount: controller.notifications.length,
+                itemBuilder: (context, index) {
+                  final notification = controller.notifications[index];
+                  return NotificationCard(
+                    notification: notification,
+                    onTap: () => controller.markAsRead(notification.id),
+                  );
+                },
+              ),
+            );
+          }),
+        ],
       ),
     );
   }

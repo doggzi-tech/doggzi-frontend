@@ -13,15 +13,25 @@ class LocationAppBar extends GetView<LocationController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25.w),
+      padding: EdgeInsets.only(
+        left: 25.w,
+        right: 25.w,
+        bottom: 20.h,
+        top: 50.h,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.orange400,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(17.r),
+          bottomRight: Radius.circular(17.r),
+        ),
+      ),
       child: Row(
         children: [
-          CustomIcon(
-            icon: Icons.location_on_outlined,
-            iconColor: AppColors.orange400,
-            onTap: () {
-              // Navigate to settings page
-            },
+          Icon(
+            Icons.location_on,
+            color: AppColors.darkGrey100,
+            size: 28.sp,
           ),
           SizedBox(width: 10.w),
           Column(
@@ -29,8 +39,8 @@ class LocationAppBar extends GetView<LocationController> {
             children: [
               Text(
                 "Current Location",
-                style: TextStyles.bodyS.copyWith(
-                  color: AppColors.lightGrey400,
+                style: TextStyles.bodyM.copyWith(
+                  color: AppColors.darkGrey100,
                 ),
               ),
               Obx(() {
@@ -38,7 +48,9 @@ class LocationAppBar extends GetView<LocationController> {
                   controller.currentPosition == null
                       ? "Fetching location..."
                       : "${controller.currentPosition?.latitude}, ${controller.currentPosition?.longitude}",
-                  style: TextStyles.bodyXS,
+                  style: TextStyles.bodyL.copyWith(
+                    color: AppColors.darkGrey100,
+                  ),
                 );
               }),
             ],

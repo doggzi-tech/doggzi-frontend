@@ -28,88 +28,90 @@ class SubscriptionPage extends GetView<PetController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+          top: false,
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomAppBar(
-            title: "Subscription",
-          ),
-          SizedBox(height: 30.h),
-          CarouselSlider(
-            options: CarouselOptions(
-              height: 50.h,
-              autoPlay: true,
-              // 🔁 Enables auto-rotation
-              autoPlayInterval: Duration(seconds: 3),
-              // ⏱ Interval between slides
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              // 🎞 Animation speed
-              autoPlayCurve: Curves.easeInOut, // 🌀 Smooth transition
-            ),
-            items: offerSliderItems.map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: 310.w,
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 3.w),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      gradient: gradientList[(offerSliderItems.indexOf(i) + 1) %
-                          gradientList.length],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.award,
-                          color: AppColors.lightGrey100,
-                          size: 20.sp,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppBar(
+                title: "Subscription",
+              ),
+              SizedBox(height: 30.h),
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: 50.h,
+                  autoPlay: true,
+                  // 🔁 Enables auto-rotation
+                  autoPlayInterval: Duration(seconds: 3),
+                  // ⏱ Interval between slides
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  // 🎞 Animation speed
+                  autoPlayCurve: Curves.easeInOut, // 🌀 Smooth transition
+                ),
+                items: offerSliderItems.map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                        width: 310.w,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 3.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          gradient: gradientList[
+                              (offerSliderItems.indexOf(i) + 1) %
+                                  gradientList.length],
                         ),
-                        SizedBox(width: 5.w),
-                        Text(
-                          i,
-                          style: TextStyles.bodyS.copyWith(
-                            color: AppColors.lightGrey100,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.award,
+                              color: AppColors.lightGrey100,
+                              size: 20.sp,
+                            ),
+                            SizedBox(width: 5.w),
+                            Text(
+                              i,
+                              style: TextStyles.bodyS.copyWith(
+                                color: AppColors.lightGrey100,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   );
-                },
-              );
-            }).toList(),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 30.h),
-                Image.asset(
-                  "assets/images/subscription_information.png",
-                  fit: BoxFit.cover,
-                  width: 360.w,
-                  height: 230.h,
+                }).toList(),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 30.h),
+                    Image.asset(
+                      "assets/images/subscription_information.png",
+                      fit: BoxFit.cover,
+                      width: 360.w,
+                      height: 230.h,
+                    ),
+                    SizedBox(height: 20.h),
+                    Text(
+                      "Your Pet’s Personalized Nutrition Plan",
+                      style: TextStyles.bodyL.copyWith(
+                        color: AppColors.darkGrey400,
+                      ),
+                    ),
+                    Text(
+                      "Crafted by experts. Delivered with care",
+                      style: TextStyles.bodyS.copyWith(
+                        color: AppColors.lightGrey400,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 20.h),
-                Text(
-                  "Your Pet’s Personalized Nutrition Plan",
-                  style: TextStyles.bodyL.copyWith(
-                    color: AppColors.darkGrey400,
-                  ),
-                ),
-                Text(
-                  "Crafted by experts. Delivered with care",
-                  style: TextStyles.bodyS.copyWith(
-                    color: AppColors.lightGrey400,
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      )),
+              )
+            ],
+          )),
     );
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../models/pet_model.dart';
 import '../../../theme/colors.dart';
+import '../../../theme/text_style.dart';
 import '../../../widgets/custom_app_bar.dart';
 
 class MyPetView extends StatelessWidget {
@@ -14,25 +17,26 @@ class MyPetView extends StatelessWidget {
   Widget build(BuildContext context) {
     // Initialize ScreenUtil in your app's entry point (usually in MaterialApp builder)
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            CustomAppBar(
-              title: "My Pets",
-              trailingIcon: Icons.notification_add,
-              isTrailingIconVisible: true,
-              onLeadingIconTap: () {
-                // Navigate to settings page
-              },
+      body: Column(
+        children: [
+          CustomAppBar(
+            title: "My Pets",
+            trailingIcon: Icons.notification_add,
+            isTrailingIconVisible: true,
+            onLeadingIconTap: () {
+              // Navigate to settings page
+            },
+          ),
+          GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(16.w),
-              itemCount: pets.length,
-              itemBuilder: (context, index) => _PetCard(pet: pets[index]),
-            ),
-          ],
-        ),
+            shrinkWrap: true,
+            padding: EdgeInsets.all(16.w),
+            itemCount: pets.length,
+            itemBuilder: (context, index) => _PetCard(pet: pets[index]),
+          ),
+        ],
       ),
     );
   }
@@ -41,128 +45,105 @@ class MyPetView extends StatelessWidget {
 class _PetCard extends StatelessWidget {
   final PetModel pet;
 
-  const _PetCard({super.key, required this.pet});
+  const _PetCard({required this.pet});
+
+  String _getPetImageAsset(String species) {
+    switch (species.toLowerCase()) {
+      case 'dog':
+        return 'assets/images/dog_left.svg';
+      case 'cat':
+        return 'assets/images/cat_left.svg';
+      default:
+        return 'assets/images/dog_left.svg'; // Default to dog if species is unknown
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.r),
-        gradient: AppColors.orangeGradient,
-        color: AppColors.lightGrey100,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8.r,
-            offset: Offset(0, 4.h),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
+    return ZoomTapAnimation(
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16.h),
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
-          onTap: () {},
-          child: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child: Image.network(
-                    "",
+          color: AppColors.lightGrey100,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 8.r,
+              offset: Offset(0, 4.h),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.r),
+              child: Container(
+                width: 60.w,
+                height: 60.h,
+                color: AppColors.lightGrey100,
+                child: SvgPicture.asset(
+                  _getPetImageAsset(pet.species),
+                  width: 80.w,
+                  height: 80.h,
+                  fit: BoxFit.cover,
+                  placeholderBuilder: (context) => Container(
                     width: 80.w,
                     height: 80.h,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      width: 80.w,
-                      height: 80.h,
-                      color: AppColors.darkGrey300,
-                      child: Icon(
-                        Icons.pets,
-                        color: AppColors.darkGrey500,
-                        size: 24.sp,
-                      ),
+                    color: AppColors.darkGrey300,
+                    child: Icon(
+                      Icons.pets,
+                      color: AppColors.darkGrey500,
+                      size: 24.sp,
                     ),
                   ),
                 ),
-                SizedBox(width: 16.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        pet.name,
-                        style: TextStyle(
-                          color: AppColors.darkGrey500,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        '${pet.species} • ${pet.breed}',
-                        style: TextStyle(
-                          color: AppColors.darkGrey500.withOpacity(0.9),
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Row(
-                        children: [
-                          _InfoChip(
-                            icon: Icons.cake,
-                            label:
-                                '${(pet.ageMonths / 12).floor()}y ${(pet.ageMonths % 12)}m',
-                          ),
-                          SizedBox(width: 8.w),
-                          _InfoChip(
-                            icon: Icons.fitness_center,
-                            label: '${pet.weightKg.toStringAsFixed(1)} kg',
-                          ),
-                        ],
-                      ),
-                    ],
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "${pet.name} , ${(pet.ageMonths / 12).floor()}y ${(pet.ageMonths % 12)}m",
+                    style: TextStyles.actionM,
                   ),
-                ),
-                Icon(Icons.arrow_forward_ios,
-                    color: AppColors.darkGrey500.withOpacity(0.7), size: 16.sp),
-              ],
+                  SizedBox(height: 4.h),
+                  Text(
+                    pet.breed,
+                    style: TextStyles.actionM.copyWith(
+                      color: AppColors.darkGrey300,
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    width: 100.w,
+                    height: 25.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4.r),
+                      border: Border.all(
+                        color: AppColors.orange400,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Edit Pet Details",
+                        style: TextStyles.actionS.copyWith(
+                          color: AppColors.orange400,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
+          ],
         ),
-      ),
-    );
-  }
-}
-
-class _InfoChip extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const _InfoChip({super.key, required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        color: AppColors.lightGrey100.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 14.sp, color: AppColors.darkGrey500),
-          SizedBox(width: 4.w),
-          Text(
-            label,
-            style: TextStyle(
-              color: AppColors.darkGrey500,
-              fontSize: 12.sp,
-            ),
-          ),
-        ],
       ),
     );
   }
