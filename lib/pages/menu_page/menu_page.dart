@@ -1,7 +1,6 @@
 import 'package:doggzi/models/menu_model.dart';
 import 'package:doggzi/pages/menu_page/widget/menu_item.dart';
 import 'package:doggzi/theme/colors.dart';
-import 'package:doggzi/widgets/meal_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -81,7 +80,7 @@ class MenuPage extends GetView<FoodMenuController> {
                               final item = menuController.homeMenuItems[index];
                               return ZoomTapAnimation(
                                 onTap: () {
-                                  showMenuItemDetails(item.id);
+                                  showMenuItemDetails(item);
                                 },
                                 child: Padding(
                                   padding:

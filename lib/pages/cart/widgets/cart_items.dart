@@ -1,4 +1,4 @@
-import 'package:doggzi/controllers/quantity_controller.dart';
+import 'package:doggzi/controllers/food_menu_controller.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-
-
 class CartItemCard extends StatelessWidget {
   const CartItemCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(QuantityController());
+    Get.put(FoodMenuController()).quantityController;
 
     return Container(
       width: 365.w,
@@ -73,14 +71,14 @@ class CartItemCard extends StatelessWidget {
                     children: [
                       ZoomTapAnimation(
                         onTap: () =>
-                            Get.find<QuantityController>().decrement(),
+                            Get.find<FoodMenuController>().quantityController.decrement(),
                         child: Icon(Icons.remove_circle,
                             size: 22.sp, color: AppColors.orange400),
                       ),
                       SizedBox(width: 8.w),
                       Obx(() {
                         final qty =
-                            Get.find<QuantityController>().quantity.value;
+                            Get.find<FoodMenuController>().quantityController.quantity.value;
                         return Text(
                           qty.toString(),
                           style: TextStyles.bodyM.copyWith(
@@ -91,7 +89,7 @@ class CartItemCard extends StatelessWidget {
                       SizedBox(width: 8.w),
                       ZoomTapAnimation(
                         onTap: () =>
-                            Get.find<QuantityController>().increment(),
+                            Get.find<FoodMenuController>().quantityController.increment(),
                         child: Icon(Icons.add_circle,
                             size: 22.sp, color: AppColors.orange400),
                       ),

@@ -1,11 +1,17 @@
 import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:doggzi/services/image_service.dart';
+import 'package:doggzi/widgets/meal_details.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/menu_model.dart';
 import '../services/menu_service.dart';
 
 class FoodMenuController extends GetxController {
+
+  final QuantityController quantityController = QuantityController();
+
+
   final MenuService _menuService = MenuService();
   final RxList<MenuModel> allMenuItems = <MenuModel>[].obs;
   final RxList<MenuModel> homeMenuItems = <MenuModel>[].obs;
@@ -56,5 +62,40 @@ class FoodMenuController extends GetxController {
   void selectPetType(Species type) {
     selectedPetType.value = type;
     fetchMenuItems();
+  }
+}
+
+void showMenuItemDetails(MenuModel item) {
+  final menuController = Get.find<FoodMenuController>();
+
+  if (menuController.isDetailsSheetOpen.value) return;
+  menuController.isDetailsSheetOpen.value = true;
+
+  menuController.selectedMenuItem.value = item;
+
+  Get.bottomSheet(
+    MenuItemDetailsSheet(item: item),
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+  ).then((_) {
+    menuController.selectedMenuItem.value = null;
+    menuController.isDetailsSheetOpen.value = false;
+    Get.find<FoodMenuController>().quantityController.reset(); 
+  });
+}
+
+class QuantityController extends GetxController {
+  var quantity = 1.obs;
+
+  void increment() {
+    quantity.value++;
+  }
+
+  void decrement() {
+    if (quantity.value > 1) quantity.value--;
+  }
+
+  void reset() {
+    quantity.value = 1;
   }
 }

@@ -1,76 +1,22 @@
 import 'package:doggzi/controllers/food_menu_controller.dart';
-import 'package:doggzi/controllers/quantity_controller.dart';
 import 'package:doggzi/core/app_routes.dart';
+import 'package:doggzi/models/menu_model.dart';
 import 'package:doggzi/widgets/bulge_lines.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../models/menu_model.dart';
-
-void showMenuItemDetails(String itemId) async {
-  final menuController = Get.find<FoodMenuController>();
-
-  if (menuController.isDetailsSheetOpen.value) return;
-  menuController.isDetailsSheetOpen.value = true;
-
-  // Try to get the item from local cache
-  final cachedItem = menuController.allMenuItems
-      .firstWhereOrNull((e) => e.id == itemId);
-
-  if (cachedItem != null) {
-    menuController.selectedMenuItem.value = cachedItem;
-
-    Get.bottomSheet(
-      MenuItemDetailsSheet(data: cachedItem.toJson()),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    ).then((_) {
-      menuController.selectedMenuItem.value = null;
-      menuController.isDetailsSheetOpen.value = false;
-    });
-
-    return;
-  }
-
-  // If not found in cache, fetch from API
-  final dio = Dio();
-
-  try {
-    final response =
-        await dio.get('https://backend.doggzi.com/api/v1/menu/$itemId');
-
-    if (response.statusCode == 200) {
-      final data = Map<String, dynamic>.from(response.data);
-      final item = MenuModel.fromJson(data);
-
-      menuController.selectedMenuItem.value = item;
-
-      Get.bottomSheet(
-        MenuItemDetailsSheet(data: data),
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-      ).then((_) {
-        menuController.selectedMenuItem.value = null;
-      });
-    } else {
-      Get.snackbar("Error", "Failed to fetch item details");
-    }
-  } catch (e) {
-    Get.snackbar("Error", "Something went wrong: $e");
-  }
-}
 
 class MenuItemDetailsSheet extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final MenuModel item;
 
-  final quantityController = Get.put(QuantityController());
+  final quantityController = Get.find<FoodMenuController>().quantityController;
 
-  MenuItemDetailsSheet({super.key, required this.data});
+  MenuItemDetailsSheet({super.key, required this.item});
 
   Widget _tag(String label, Color backgroundColor,
       {Widget? icon, bool iconLeft = false}) {
@@ -122,7 +68,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isFresh = data['freshly_cooked'] == true;
+    bool isFresh = item.freshlyCooked == true;
     return SizedBox(
       height: 772.h,
       width: 402.w,
@@ -138,22 +84,15 @@ class MenuItemDetailsSheet extends StatelessWidget {
               child: Column(
                 children: [
                   // Image
-                  if (data['s3_url'] == null)
-                    Text(
-                      "Could not load image. Retry later!",
-                      style: TextStyle(
-                          color: AppColors.orange500, fontSize: 16.sp),
-                    )
-                  else
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16.r),
-                      child: Image.network(
-                        data['s3_url'],
-                        height: 200.h,
-                        width: double.infinity,
-                        fit: BoxFit.scaleDown,
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16.r),
+                    child: Image.network(
+                      item.s3Url,
+                      height: 200.h,
+                      width: double.infinity,
+                      fit: BoxFit.scaleDown,
                     ),
+                  ),
                   SizedBox(height: 16.h),
 
                   // Name and Quantity
@@ -161,7 +100,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
                     children: [
                       // Name
                       Text(
-                        data['name'] ?? 'Unknown',
+                        item.name,
                         style: TextStyles.h3,
                       ),
 
@@ -181,7 +120,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            "Quantity: ${data['quantity'] ?? 'N/A'} Gm",
+                            "Quantity: ${item.quantity} Gm",
                             style: TextStyles.actionS.copyWith(
                               color: AppColors.orange500,
                             ),
@@ -219,13 +158,13 @@ class MenuItemDetailsSheet extends StatelessWidget {
                                   const Spacer(),
                                   _infoTag(
                                     icon: Image.asset(
-                                      data['diet_type'] == "vegetarian"
+                                      item.dietType == "vegetarian"
                                           ? 'assets/images/veg.png'
                                           : 'assets/images/non_veg.png',
                                       width: 19.w,
                                       height: 19.h,
                                     ),
-                                    text: data['diet_type'] == "vegetarian"
+                                    text: item.dietType == "vegetarian"
                                         ? "Veg"
                                         : "Non Veg",
                                   ),
@@ -248,7 +187,8 @@ class MenuItemDetailsSheet extends StatelessWidget {
                                       children: [
                                         ZoomTapAnimation(
                                           onTap: () =>
-                                              Get.find<QuantityController>()
+                                              Get.find<FoodMenuController>()
+                                                  .quantityController
                                                   .decrement(),
                                           child: Icon(Icons.remove_circle,
                                               size: 65.sp,
@@ -257,7 +197,8 @@ class MenuItemDetailsSheet extends StatelessWidget {
                                         SizedBox(width: 12.17.w),
                                         Obx(() {
                                           final qty =
-                                              Get.find<QuantityController>()
+                                              Get.find<FoodMenuController>()
+                                                  .quantityController
                                                   .quantity
                                                   .value;
                                           return Container(
@@ -278,7 +219,8 @@ class MenuItemDetailsSheet extends StatelessWidget {
                                         SizedBox(width: 12.17.w),
                                         ZoomTapAnimation(
                                           onTap: () =>
-                                              Get.find<QuantityController>()
+                                              Get.find<FoodMenuController>()
+                                                  .quantityController
                                                   .increment(),
                                           child: Icon(Icons.add_circle,
                                               size: 65.sp,
@@ -300,7 +242,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
 
                                     // Price text
                                     Text(
-                                      "₹${(data['price'] ?? 0).toStringAsFixed(0)}",
+                                      "₹${(item.price).toStringAsFixed(0)}",
                                       style: TextStyle(
                                           fontSize: 24.sp,
                                           fontWeight: FontWeight.w500),
@@ -330,8 +272,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
                               ),
                               SizedBox(height: 4.h),
                               Text(
-                                data['description'] ??
-                                    "No description available",
+                                item.description,
                                 style: TextStyles.bodyM.copyWith(
                                   color: AppColors.darkGrey300,
                                 ),
@@ -484,7 +425,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
                       ),
                       SizedBox(width: 12.w),
                       ZoomTapAnimation(
-                        onTap: (){
+                        onTap: () {
                           Get.toNamed(AppRoutes.cart);
                         },
                         child: Container(
@@ -507,59 +448,69 @@ class MenuItemDetailsSheet extends StatelessWidget {
               top: 180.h,
               left: 16.w,
               right: 16.w,
-              child: Row(
-                children: [
-                  isFresh
-                      ? _tag(
-                          "Freshly Cooked",
-                          AppColors.green300,
-                          icon: SvgPicture.asset(
-                            'assets/images/fresh.svg',
+              child: SizedBox(
+                width: double.infinity,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Left Tag
+                        isFresh
+                            ? _tag(
+                                "Freshly Cooked",
+                                AppColors.green300,
+                                icon: SvgPicture.asset(
+                                  'assets/images/fresh.svg',
+                                  width: 16.sp,
+                                  height: 16.sp,
+                                  color: AppColors.lightGrey100,
+                                ),
+                              )
+                            : _tag(
+                                "Packaged",
+                                AppColors.darkGrey300,
+                                icon: Icon(
+                                  Icons.storage,
+                                  size: 16.sp,
+                                  color: AppColors.lightGrey100,
+                                ),
+                              ),
+
+                        // Right Tag
+                        _tag(
+                          "Food For ${item.species.toString().capitalizeFirst}",
+                          AppColors.brown,
+                          icon: Image.asset(
+                            'assets/images/dog.png',
                             width: 16.sp,
                             height: 16.sp,
                             color: AppColors.lightGrey100,
+                            fit: BoxFit.contain,
                           ),
-                        )
-                      : _tag(
-                          "Packaged",
-                          AppColors.darkGrey300,
-                          icon: Icon(
-                            Icons.storage,
-                            size: 16.sp,
-                            color: AppColors.lightGrey100,
-                          ),
+                          iconLeft: true,
                         ),
-                  const Spacer(),
-                  Container(
-                    color: AppColors.lightGrey100,
-                    child: SizedBox(
-                      width: 27.w,
-                      height: 27.h,
-                      child: Image.asset(
-                        data['diet_type'] == "vegetarian"
-                            ? 'assets/images/veg.png'
-                            : 'assets/images/non_veg.png',
-                        fit: BoxFit.contain,
+                      ],
+                    ),
+
+                    Container(
+                      color: AppColors.lightGrey100,
+                      child: SizedBox(
+                        width: 27.w,
+                        height: 27.h,
+                        child: Image.asset(
+                          item.dietType == "vegetarian"
+                              ? 'assets/images/veg.png'
+                              : 'assets/images/non_veg.png',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
-                  ),
-                  const Spacer(),
-                  if (data['species'] != null)
-                    _tag(
-                      "Food For ${data['species'].toString().capitalizeFirst}",
-                      AppColors.brown,
-                      icon: Image.asset(
-                        'assets/images/dog.png',
-                        width: 16.sp,
-                        height: 16.sp,
-                        color: AppColors.lightGrey100,
-                        fit: BoxFit.contain,
-                      ),
-                      iconLeft: true,
-                    ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
