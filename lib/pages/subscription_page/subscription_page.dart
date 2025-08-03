@@ -5,15 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/auth_controller.dart';
 import '../../controllers/pet_controller.dart';
 import '../../theme/colors.dart';
 import '../../theme/text_style.dart';
 
-List<String> offerSliderItems = [
-  "30 % off on 3 months subscription",
-  "40 % off on 3 months subscription",
-  "50 % off on 3 months subscription",
-];
 List<LinearGradient> gradientList = [
   AppColors.purpleGradient,
   AppColors.blueGradient,
@@ -22,7 +18,9 @@ List<LinearGradient> gradientList = [
 ];
 
 class SubscriptionPage extends GetView<PetController> {
-  const SubscriptionPage({super.key});
+  SubscriptionPage({super.key});
+
+  final authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +30,7 @@ class SubscriptionPage extends GetView<PetController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(
+              const CustomAppBar(
                 title: "Subscription",
               ),
               SizedBox(height: 30.h),
@@ -47,7 +45,8 @@ class SubscriptionPage extends GetView<PetController> {
                   // 🎞 Animation speed
                   autoPlayCurve: Curves.easeInOut, // 🌀 Smooth transition
                 ),
-                items: offerSliderItems.map((i) {
+                items:
+                    authController.generalSettings.value.offerTaglines.map((i) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -56,9 +55,11 @@ class SubscriptionPage extends GetView<PetController> {
                         margin: EdgeInsets.symmetric(horizontal: 3.w),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.r),
-                          gradient: gradientList[
-                              (offerSliderItems.indexOf(i) + 1) %
-                                  gradientList.length],
+                          gradient: gradientList[(authController
+                                      .generalSettings.value.offerTaglines
+                                      .indexOf(i) +
+                                  1) %
+                              gradientList.length],
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +71,7 @@ class SubscriptionPage extends GetView<PetController> {
                             ),
                             SizedBox(width: 5.w),
                             Text(
-                              i,
+                              i.tagline,
                               style: TextStyles.bodyS.copyWith(
                                 color: AppColors.lightGrey100,
                               ),

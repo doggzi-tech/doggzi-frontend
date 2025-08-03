@@ -26,13 +26,13 @@ class OnboardingPage2 extends StatelessWidget {
             Text(
               '📦 Subscription-Based Deliveries',
               style: TextStyles.h2.copyWith(
-                color: AppColors.darkGrey500,
+                color: AppColors.lightGrey100,
               ),
             ),
             SizedBox(height: 20.h),
             Text("Auto-schedule meals with flexible delivery options.",
-                style: TextStyles.h4.copyWith(
-                  color: AppColors.darkGrey300,
+                style: TextStyles.bodyL.copyWith(
+                  color: AppColors.lightGrey100,
                 )),
             SizedBox(height: 60.h),
             // Pet tags

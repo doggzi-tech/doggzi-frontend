@@ -7,6 +7,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../theme/colors.dart';
 import 'custom_icon.dart';
+
 class LocationAppBar extends GetView<LocationController> {
   final bool showBackButton;
 
@@ -72,6 +73,20 @@ class LocationAppBar extends GetView<LocationController> {
             ],
           ),
           const Spacer(),
+          ZoomTapAnimation(
+            onTap: () {
+              // Get.to(() => const NetworkMonitorPage());
+            },
+            child: Container(
+              width: 50.w,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Text("Monitor", style: TextStyles.bodyM),
+            ),
+          ),
           CustomIcon(
             icon: Icons.notification_add,
             onTap: () {},

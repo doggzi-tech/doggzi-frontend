@@ -26,13 +26,13 @@ class OnboardingPage4 extends StatelessWidget {
             Text(
               '🧠 Vet-Approved Diet Guidance',
               style: TextStyles.h2.copyWith(
-                color: AppColors.darkGrey500,
+                color: AppColors.lightGrey100,
               ),
             ),
             SizedBox(height: 20.h),
             Text("Nutrition designed by experts for pet condition.",
-                style: TextStyles.h4.copyWith(
-                  color: AppColors.darkGrey300,
+                style: TextStyles.bodyL.copyWith(
+                  color: AppColors.lightGrey100,
                 )),
             SizedBox(height: 60.h),
             // Pet tags

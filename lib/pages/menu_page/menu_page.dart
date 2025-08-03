@@ -12,7 +12,9 @@ import '../../widgets/custom_app_bar.dart';
 
 class MenuPage extends GetView<FoodMenuController> {
   MenuPage({super.key});
+
   final menuController = Get.find<FoodMenuController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +82,7 @@ class MenuPage extends GetView<FoodMenuController> {
                               final item = menuController.homeMenuItems[index];
                               return ZoomTapAnimation(
                                 onTap: () {
-                                  showMenuItemDetails(item);
+                                  menuController.showMenuItemDetails(item);
                                 },
                                 child: Padding(
                                   padding:

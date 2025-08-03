@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 
-import 'base_service.dart';
+import 'base_api_service.dart';
 
 class ImageService extends BaseApiService {
   /// Upload file to backend `/upload` route
@@ -19,8 +19,6 @@ class ImageService extends BaseApiService {
       throw handleError(e);
     }
   }
-
-  
 
   /// Generate a pre-signed URL for direct S3 upload
   Future<String> generatePreSignedUploadUrl({

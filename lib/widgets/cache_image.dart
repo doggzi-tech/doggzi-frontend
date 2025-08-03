@@ -22,23 +22,32 @@ class CachedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: borderRadius,
-      child: CachedNetworkImage(
-        imageUrl: imageUrl,
-        cacheKey: cacheKey,
-        height: height,
-        width: width,
-        fit: fit,
-        errorWidget: (context, url, error) {
-          return Container(
+        borderRadius: borderRadius,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          cacheKey: cacheKey,
+          height: height,
+          width: width,
+          fit: fit,
+          placeholder: (context, url) => Container(
+            height: height,
+            width: width,
+            color: Colors.grey.shade200,
+            child: const Center(child: CircularProgressIndicator()),
+          ),
+          errorWidget: (context, url, error) => Container(
             height: height,
             width: width,
             color: Colors.grey.shade200,
             child: const Icon(Icons.broken_image, size: 40, color: Colors.grey),
-          );
-        },
-        fadeInDuration: const Duration(milliseconds: 300),
-      ),
-    );
+          ),
+          imageBuilder: (context, imageProvider) => Image(
+            image: imageProvider,
+            height: height,
+            width: width,
+            fit: fit,
+          ),
+          fadeInDuration: const Duration(milliseconds: 300),
+        ));
   }
 }

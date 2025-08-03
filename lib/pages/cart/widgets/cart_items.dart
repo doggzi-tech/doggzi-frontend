@@ -7,12 +7,12 @@ import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class CartItemCard extends StatelessWidget {
-  const CartItemCard({super.key});
+  CartItemCard({super.key});
+
+  final menuController = Get.find<FoodMenuController>();
 
   @override
   Widget build(BuildContext context) {
-    Get.put(FoodMenuController()).quantityController;
-
     return Container(
       width: 365.w,
       padding: EdgeInsets.all(12.w),
@@ -65,22 +65,19 @@ class CartItemCard extends StatelessWidget {
               Column(
                 children: [
                   // Quantity Row
-                  // quantity controller is not specific to item yet it is generalized. 
+                  // quantity controller is not specific to item yet it is generalized.
                   // need to assoicate quanitity controller with item id
                   Row(
                     children: [
                       ZoomTapAnimation(
-                        onTap: () =>
-                            Get.find<FoodMenuController>().quantityController.decrement(),
+                        onTap: () => menuController.itemQuantity.value--,
                         child: Icon(Icons.remove_circle,
                             size: 22.sp, color: AppColors.orange400),
                       ),
                       SizedBox(width: 8.w),
                       Obx(() {
-                        final qty =
-                            Get.find<FoodMenuController>().quantityController.quantity.value;
                         return Text(
-                          qty.toString(),
+                          menuController.itemQuantity.value.toString(),
                           style: TextStyles.bodyM.copyWith(
                             color: AppColors.darkGrey300,
                           ),
@@ -88,8 +85,7 @@ class CartItemCard extends StatelessWidget {
                       }),
                       SizedBox(width: 8.w),
                       ZoomTapAnimation(
-                        onTap: () =>
-                            Get.find<FoodMenuController>().quantityController.increment(),
+                        onTap: () => menuController.itemQuantity.value++,
                         child: Icon(Icons.add_circle,
                             size: 22.sp, color: AppColors.orange400),
                       ),

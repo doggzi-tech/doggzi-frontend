@@ -19,7 +19,6 @@ class PhoneAuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, // Key change: prevent automatic resizing
       backgroundColor: AppColors.brown.withOpacity(0.61),
       body: SafeArea(
         bottom: false,
@@ -48,12 +47,14 @@ class PhoneAuthPage extends StatelessWidget {
               child: SlideTransition(
                 position: controller.slideAnimation,
                 child: Container(
+                  height: 475.h,
                   width: double.infinity,
                   constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height *
                         0.9, // Use percentage instead of fixed height
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 50.h),
                   decoration: BoxDecoration(
                     color: AppColors.darkGrey500.withOpacity(0.60),
                     borderRadius: BorderRadius.only(
@@ -61,107 +62,90 @@ class PhoneAuthPage extends StatelessWidget {
                       topRight: Radius.circular(24.r),
                     ),
                   ),
-                  child: LayoutBuilder(
-                    builder: (_, constraints) {
-                      return SingleChildScrollView(
-                        reverse: true,
-                        physics: const BouncingScrollPhysics(),
-                        padding: EdgeInsets.only(
-                          bottom:
-                              MediaQuery.of(context).viewInsets.bottom + 20.h,
-                          top: 40.h,
+                  child: Form(
+                    key: controller.formKey,
+                    child: Column(
+                      // Important: minimize the column size
+                      children: [
+                        Text(
+                          'Phone Verification',
+                          style: TextStyle(
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.lightGrey100,
+                          ),
                         ),
-                        child: Form(
-                          key: controller.formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            // Important: minimize the column size
+                        SizedBox(height: 16.h),
+                        Text(
+                          'We need to register your phone number before getting started!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal,
+                            color: AppColors.lightGrey100,
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        CustomTextField(
+                          controller: controller.phoneController,
+                          hintText: '1234567890',
+                          keyboardType: TextInputType.phone,
+                          prefixIcon: Icons.phone,
+                          inputFormatter: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9+\-\s]'),
+                            ),
+                          ],
+                          validator: controller.validatePhoneNumber,
+                        ),
+                        const Spacer(),
+                        Obx(
+                          () => CustomButton(
+                            text: 'Get via SMS',
+                            onPressed: controller.authController.isLoading
+                                ? null
+                                : controller.handleSendOTP,
+                            isLoading: controller.authController.isLoading,
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                             children: [
-                              Text(
-                                'Phone Verification',
-                                style: TextStyle(
-                                  fontSize: 24.sp,
+                              const TextSpan(
+                                  text: "By clicking, I accept the "),
+                              TextSpan(
+                                text: "Terms of Services",
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: AppColors.lightGrey100,
+                                  decoration: TextDecoration.underline,
                                 ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Get.toNamed(AppRoutes.termsAndConditions);
+                                  },
                               ),
-                              SizedBox(height: 16.h),
-                              Text(
-                                'We need to register your phone number before getting started!',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.normal,
-                                  color: AppColors.lightGrey100,
+                              const TextSpan(text: " and "),
+                              TextSpan(
+                                text: "Privacy Policy",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
                                 ),
-                              ),
-                              SizedBox(height: 16.h),
-                              CustomTextField(
-                                controller: controller.phoneController,
-                                hintText: '1234567890',
-                                keyboardType: TextInputType.phone,
-                                prefixIcon: Icons.phone,
-                                inputFormatter: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp(r'[0-9+\-\s]'),
-                                  ),
-                                ],
-                                validator: controller.validatePhoneNumber,
-                              ),
-                              SizedBox(height: 40.h),
-                              Obx(
-                                () => CustomButton(
-                                  text: 'Get via SMS',
-                                  onPressed: controller.authController.isLoading
-                                      ? null
-                                      : controller.handleSendOTP,
-                                  isLoading:
-                                      controller.authController.isLoading,
-                                ),
-                              ),
-                              SizedBox(height: 20.h),
-                              RichText(
-                                text: TextSpan(
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
-                                  children: [
-                                    const TextSpan(
-                                        text: "By clicking, I accept the "),
-                                    TextSpan(
-                                      text: "Terms of Services",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Get.toNamed(
-                                              AppRoutes.termsAndConditions);
-                                        },
-                                    ),
-                                    const TextSpan(text: " and "),
-                                    TextSpan(
-                                      text: "Privacy Policy",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Get.toNamed(AppRoutes.privacyPolicy);
-                                        },
-                                    ),
-                                  ],
-                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Get.toNamed(AppRoutes.privacyPolicy);
+                                  },
                               ),
                             ],
                           ),
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   ),
                 ),
               ),

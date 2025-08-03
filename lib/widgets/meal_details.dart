@@ -13,13 +13,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class MenuItemDetailsSheet extends StatelessWidget {
   final MenuModel item;
-
-  final quantityController = Get.find<FoodMenuController>().quantityController;
+  final menuController = Get.find<FoodMenuController>();
 
   MenuItemDetailsSheet({super.key, required this.item});
 
-  Widget _tag(String label, Color backgroundColor,
-      {Widget? icon, bool iconLeft = false}) {
+  Widget _tag(
+    String label,
+    Color backgroundColor, {
+    Widget? icon,
+    bool iconLeft = false,
+  }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
@@ -69,450 +72,436 @@ class MenuItemDetailsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isFresh = item.freshlyCooked == true;
-    return SizedBox(
+    return Container(
       height: 772.h,
       width: 402.w,
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-        ),
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Image
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16.r),
-                    child: Image.network(
-                      item.s3Url,
-                      height: 200.h,
-                      width: double.infinity,
-                      fit: BoxFit.scaleDown,
-                    ),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      ),
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                // Image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16.r),
+                  child: Image.network(
+                    item.s3Url,
+                    height: 200.h,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
                   ),
-                  SizedBox(height: 16.h),
+                ),
+                SizedBox(height: 16.h),
 
-                  // Name and Quantity
-                  Row(
-                    children: [
-                      // Name
-                      Text(
-                        item.name,
-                        style: TextStyles.h3,
-                      ),
-
-                      const Spacer(),
-
-                      // Quantity Container
-                      Container(
-                        width: 117.25.w,
-                        height: 28.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.orange200,
-                          border: Border.all(
-                            color: AppColors.orange500,
-                            width: 0.88.w,
-                          ),
-                          borderRadius: BorderRadius.circular(8.75.r),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Quantity: ${item.quantity} Gm",
-                            style: TextStyles.actionS.copyWith(
-                              color: AppColors.orange500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 12.h),
-
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: 366.w,
-                        height: 315
-                            .h, // Set a fixed height for the scrollable content
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  _infoTag(
-                                    icon: Icon(Icons.star,
-                                        size: 24.sp, color: Colors.orange),
-                                    text: "4.8",
-                                  ),
-                                  const Spacer(),
-                                  _infoTag(
-                                    icon: Icon(Icons.delivery_dining,
-                                        size: 19.sp, color: Colors.blue),
-                                    text: "45 Min",
-                                  ),
-                                  const Spacer(),
-                                  _infoTag(
-                                    icon: Image.asset(
-                                      item.dietType == "vegetarian"
-                                          ? 'assets/images/veg.png'
-                                          : 'assets/images/non_veg.png',
-                                      width: 19.w,
-                                      height: 19.h,
-                                    ),
-                                    text: item.dietType == "vegetarian"
-                                        ? "Veg"
-                                        : "Non Veg",
-                                  ),
-                                ],
-                              ),
-
-                              SizedBox(height: 16.h),
-
-                              // Quantity row
-                              Row(children: [
-                                Container(
-                                    height: 72.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(36.52.r),
-                                      color: Colors
-                                          .transparent, // or set a background if needed
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        ZoomTapAnimation(
-                                          onTap: () =>
-                                              Get.find<FoodMenuController>()
-                                                  .quantityController
-                                                  .decrement(),
-                                          child: Icon(Icons.remove_circle,
-                                              size: 65.sp,
-                                              color: AppColors.orange400),
-                                        ),
-                                        SizedBox(width: 12.17.w),
-                                        Obx(() {
-                                          final qty =
-                                              Get.find<FoodMenuController>()
-                                                  .quantityController
-                                                  .quantity
-                                                  .value;
-                                          return Container(
-                                            width: 72.w,
-                                            height: 72.w,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.darkGrey100,
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                qty.toString(),
-                                                style: TextStyles.actionL,
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                        SizedBox(width: 12.17.w),
-                                        ZoomTapAnimation(
-                                          onTap: () =>
-                                              Get.find<FoodMenuController>()
-                                                  .quantityController
-                                                  .increment(),
-                                          child: Icon(Icons.add_circle,
-                                              size: 65.sp,
-                                              color: AppColors.orange400),
-                                        ),
-                                      ],
-                                    )),
-                                const Spacer(),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // Top line (bulge downward)
-                                    CustomPaint(
-                                      size: Size(60.w, 8.h),
-                                      painter: BulgedLinePainter(
-                                          color: AppColors.orange400),
-                                    ),
-                                    SizedBox(height: 4.h),
-
-                                    // Price text
-                                    Text(
-                                      "₹${(item.price).toStringAsFixed(0)}",
-                                      style: TextStyle(
-                                          fontSize: 24.sp,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(height: 4.h),
-
-                                    // Bottom line (bulge upward — flipped)
-                                    Transform(
-                                      alignment: Alignment.center,
-                                      transform: Matrix4.rotationX(3.14159),
-                                      child: CustomPaint(
-                                        size: Size(60.w, 8.h),
-                                        painter: BulgedLinePainter(
-                                            color: AppColors.orange400),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ]),
-
-                              SizedBox(height: 16.h),
-
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text("Description",
-                                    style: TextStyles.bodyL),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                item.description,
-                                style: TextStyles.bodyM.copyWith(
-                                  color: AppColors.darkGrey300,
-                                ),
-                              ),
-
-                              SizedBox(height: 16.h),
-
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Nutritional elements",
-                                  style: TextStyles.bodyL,
-                                ),
-                              ),
-
-                              SizedBox(height: 4.h),
-
-                              //below is only placeholder for now as no logic in backend defined
-
-                              // Nutritional Elements Container
-                              Container(
-                                width: double.infinity,
-                                height: 64.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xFFFF6D3E), // start
-                                      Color(0xFFFF7F52), // mid
-                                      Color(0xFFFF6D3E), // end
-                                    ],
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    // Protein
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Protein",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          "24g",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    // Fat
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Fat",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          "11%",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    // Calories
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Calories",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          "320 Kcal",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Add to Cart and Icon
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ZoomTapAnimation(
-                          onTap: () {
-                            //final qty = Get.find<QuantityController>().quantity.value;
-                            // Use qty in Add to Cart logic
-                            //Get.find<QuantityController>().reset();
-
-                            print("Add to Cart clicked");
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Add To Cart",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16.sp),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      ZoomTapAnimation(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.cart);
-                        },
-                        child: Container(
-                          width: 44.w,
-                          height: 44.w,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.darkGrey500,
-                          ),
-                          child: const Icon(Icons.shopping_bag_outlined,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-              top: 180.h,
-              left: 16.w,
-              right: 16.w,
-              child: SizedBox(
-                width: double.infinity,
-                child: Stack(
-                  alignment: Alignment.center,
+                // Name and Quantity
+                Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Left Tag
-                        isFresh
-                            ? _tag(
-                                "Freshly Cooked",
-                                AppColors.green300,
-                                icon: SvgPicture.asset(
-                                  'assets/images/fresh.svg',
-                                  width: 16.sp,
-                                  height: 16.sp,
-                                  color: AppColors.lightGrey100,
-                                ),
-                              )
-                            : _tag(
-                                "Packaged",
-                                AppColors.darkGrey300,
-                                icon: Icon(
-                                  Icons.storage,
-                                  size: 16.sp,
-                                  color: AppColors.lightGrey100,
-                                ),
-                              ),
-
-                        // Right Tag
-                        _tag(
-                          "Food For ${item.species.toString().capitalizeFirst}",
-                          AppColors.brown,
-                          icon: Image.asset(
-                            'assets/images/dog.png',
-                            width: 16.sp,
-                            height: 16.sp,
-                            color: AppColors.lightGrey100,
-                            fit: BoxFit.contain,
-                          ),
-                          iconLeft: true,
-                        ),
-                      ],
+                    // Name
+                    Text(
+                      item.name,
+                      style: TextStyles.h3,
                     ),
 
+                    const Spacer(),
+
+                    // Quantity Container
                     Container(
-                      color: AppColors.lightGrey100,
-                      child: SizedBox(
-                        width: 27.w,
-                        height: 27.h,
-                        child: Image.asset(
-                          item.dietType == "vegetarian"
-                              ? 'assets/images/veg.png'
-                              : 'assets/images/non_veg.png',
-                          fit: BoxFit.contain,
+                      width: 117.25.w,
+                      height: 28.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.orange200,
+                        border: Border.all(
+                          color: AppColors.orange500,
+                          width: 0.88.w,
+                        ),
+                        borderRadius: BorderRadius.circular(8.75.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Quantity: ${item.quantity} Gm",
+                          style: TextStyles.actionS.copyWith(
+                            color: AppColors.orange500,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
+
+                SizedBox(height: 12.h),
+
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 366.w,
+                      height: 315
+                          .h, // Set a fixed height for the scrollable content
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _infoTag(
+                                  icon: Icon(Icons.star,
+                                      size: 24.sp, color: Colors.orange),
+                                  text: "4.8",
+                                ),
+                                const Spacer(),
+                                _infoTag(
+                                  icon: Icon(Icons.delivery_dining,
+                                      size: 19.sp, color: Colors.blue),
+                                  text: "45 Min",
+                                ),
+                                const Spacer(),
+                                _infoTag(
+                                  icon: Image.asset(
+                                    item.dietType == "vegetarian"
+                                        ? 'assets/images/veg.png'
+                                        : 'assets/images/non_veg.png',
+                                    width: 19.w,
+                                    height: 19.h,
+                                  ),
+                                  text: item.dietType == "vegetarian"
+                                      ? "Veg"
+                                      : "Non Veg",
+                                ),
+                              ],
+                            ),
+
+                            SizedBox(height: 16.h),
+
+                            // Quantity row
+                            Row(children: [
+                              Container(
+                                  height: 72.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(36.52.r),
+                                    color: Colors
+                                        .transparent, // or set a background if needed
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      ZoomTapAnimation(
+                                        onTap: () =>
+                                            menuController.itemQuantity.value--,
+                                        child: Icon(Icons.remove_circle,
+                                            size: 65.sp,
+                                            color: AppColors.orange400),
+                                      ),
+                                      SizedBox(width: 12.17.w),
+                                      Obx(() {
+                                        return Container(
+                                          width: 72.w,
+                                          height: 72.w,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppColors.darkGrey100,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              menuController.itemQuantity.value
+                                                  .toString(),
+                                              style: TextStyles.actionL,
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                      SizedBox(width: 12.17.w),
+                                      ZoomTapAnimation(
+                                        onTap: () =>
+                                            menuController.itemQuantity.value++,
+                                        child: Icon(Icons.add_circle,
+                                            size: 65.sp,
+                                            color: AppColors.orange400),
+                                      ),
+                                    ],
+                                  )),
+                              const Spacer(),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Top line (bulge downward)
+                                  CustomPaint(
+                                    size: Size(60.w, 8.h),
+                                    painter: BulgedLinePainter(
+                                        color: AppColors.orange400),
+                                  ),
+                                  SizedBox(height: 4.h),
+
+                                  // Price text
+                                  Text(
+                                    "₹${(item.price).toStringAsFixed(0)}",
+                                    style: TextStyle(
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(height: 4.h),
+
+                                  // Bottom line (bulge upward — flipped)
+                                  Transform(
+                                    alignment: Alignment.center,
+                                    transform: Matrix4.rotationX(3.14159),
+                                    child: CustomPaint(
+                                      size: Size(60.w, 8.h),
+                                      painter: BulgedLinePainter(
+                                          color: AppColors.orange400),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ]),
+
+                            SizedBox(height: 16.h),
+
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child:
+                                  Text("Description", style: TextStyles.bodyL),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              item.description,
+                              style: TextStyles.bodyM.copyWith(
+                                color: AppColors.darkGrey300,
+                              ),
+                            ),
+
+                            SizedBox(height: 16.h),
+
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Nutritional elements",
+                                style: TextStyles.bodyL,
+                              ),
+                            ),
+
+                            SizedBox(height: 4.h),
+
+                            //below is only placeholder for now as no logic in backend defined
+
+                            // Nutritional Elements Container
+                            Container(
+                              width: double.infinity,
+                              height: 64.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                gradient: const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Color(0xFFFF6D3E), // start
+                                    Color(0xFFFF7F52), // mid
+                                    Color(0xFFFF6D3E), // end
+                                  ],
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  // Protein
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Protein",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        "24g",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  // Fat
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Fat",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        "11%",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  // Calories
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Calories",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        "320 Kcal",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Add to Cart and Icon
+                Row(
+                  children: [
+                    Expanded(
+                      child: ZoomTapAnimation(
+                        onTap: () {
+                          //final qty = Get.find<QuantityController>().quantity.value;
+                          // Use qty in Add to Cart logic
+                          //Get.find<QuantityController>().reset();
+
+                          print("Add to Cart clicked");
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Add To Cart",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.sp),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    ZoomTapAnimation(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.cart);
+                      },
+                      child: Container(
+                        width: 44.w,
+                        height: 44.w,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.darkGrey500,
+                        ),
+                        child: const Icon(Icons.shopping_bag_outlined,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            top: 180.h,
+            left: 16.w,
+            right: 16.w,
+            child: SizedBox(
+              width: double.infinity,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Left Tag
+                      isFresh
+                          ? _tag(
+                              "Freshly Cooked",
+                              AppColors.green300,
+                              icon: SvgPicture.asset(
+                                'assets/images/fresh.svg',
+                                width: 16.sp,
+                                height: 16.sp,
+                                color: AppColors.lightGrey100,
+                              ),
+                            )
+                          : _tag(
+                              "Packaged",
+                              AppColors.darkGrey300,
+                              icon: Icon(
+                                Icons.storage,
+                                size: 16.sp,
+                                color: AppColors.lightGrey100,
+                              ),
+                            ),
+
+                      // Right Tag
+                      _tag(
+                        "Food For ${item.species.toString().capitalizeFirst}",
+                        AppColors.brown,
+                        icon: Image.asset(
+                          'assets/images/dog.png',
+                          width: 16.sp,
+                          height: 16.sp,
+                          color: AppColors.lightGrey100,
+                          fit: BoxFit.contain,
+                        ),
+                        iconLeft: true,
+                      ),
+                    ],
+                  ),
+                  Container(
+                    color: AppColors.lightGrey100,
+                    child: SizedBox(
+                      width: 27.w,
+                      height: 27.h,
+                      child: Image.asset(
+                        item.dietType == "vegetarian"
+                            ? 'assets/images/veg.png'
+                            : 'assets/images/non_veg.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
