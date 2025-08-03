@@ -1,4 +1,6 @@
 import 'package:doggzi/core/common/CustomSnackbar.dart';
+import 'package:doggzi/models/general_model.dart';
+import 'package:doggzi/services/general_service.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../models/user_model.dart';
@@ -9,6 +11,14 @@ import '../services/onesignal_service.dart';
 
 class AuthController extends GetxController {
   final AuthService _apiService = AuthService();
+  final GeneralService generalService = GeneralService();
+  final Rx<GeneralModel> generalSettings = GeneralModel(
+    homeCarouselImages: [],
+    subscriptionCarouselImages: [],
+    offerTaglines: [],
+    catBreeds: [],
+    dogBreeds: [],
+  ).obs;
   final GetStorage _storage = GetStorage();
   final oneSignalService = OneSignalService();
 
@@ -52,6 +62,7 @@ class AuthController extends GetxController {
     super.onInit();
     _loadStoredAuth();
     _checkServerHealth();
+    _getGeneralSettings();
   }
 
   @override
@@ -59,6 +70,16 @@ class AuthController extends GetxController {
     _otpTimer?.cancel();
     _resendTimer?.cancel();
     super.onClose();
+  }
+
+  void _getGeneralSettings() async {
+    try {
+      final settings = await generalService.getGeneralSettings();
+      generalSettings.value = settings;
+    } catch (e) {
+      print('Failed to get general settings: $e');
+      // Handle error appropriately, maybe show a snackbar
+    }
   }
 
   void _loadStoredAuth() {
@@ -133,10 +154,6 @@ class AuthController extends GetxController {
 
       return true;
     } catch (e) {
-      customSnackBar.show(
-        message: 'Failed to send OTP: ${e.toString()}',
-        type: SnackBarType.error,
-      );
       return false;
     } finally {
       _isLoading.value = false;
@@ -231,13 +248,13 @@ class AuthController extends GetxController {
       print('Logout API call failed: $e');
       // Continue with logout even if API call fails
     } finally {
-      await _clearAuthData();
-      _resetOTPState();
       Get.offAllNamed('/phone-auth');
       customSnackBar.show(
         message: 'You have been logged out successfully',
         type: SnackBarType.success,
       );
+      await _clearAuthData();
+      _resetOTPState();
     }
   }
 

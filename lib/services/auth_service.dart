@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
+import '../core/common/CustomSnackbar.dart';
 import '../models/user_model.dart';
-import 'base_service.dart';
+import 'base_api_service.dart';
 
 class AuthService extends BaseApiService {
   Future<OTPResponse> sendOTP(SendOTPRequest request) async {
@@ -11,6 +12,12 @@ class AuthService extends BaseApiService {
       );
       return OTPResponse.fromJson(response.data);
     } on DioException catch (e) {
+      if (e.response?.statusCode != 200) {
+        customSnackBar.show(
+          message: e.response?.data['detail'],
+          type: SnackBarType.error,
+        );
+      }
       throw handleError(e);
     }
   }

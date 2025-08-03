@@ -1,4 +1,4 @@
-import 'package:doggzi/controllers/quantity_controller.dart';
+import 'package:doggzi/controllers/food_menu_controller.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
@@ -6,15 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-
-
 class CartItemCard extends StatelessWidget {
-  const CartItemCard({super.key});
+  CartItemCard({super.key});
+
+  final menuController = Get.find<FoodMenuController>();
 
   @override
   Widget build(BuildContext context) {
-    Get.put(QuantityController());
-
     return Container(
       width: 365.w,
       padding: EdgeInsets.all(12.w),
@@ -67,22 +65,19 @@ class CartItemCard extends StatelessWidget {
               Column(
                 children: [
                   // Quantity Row
-                  // quantity controller is not specific to item yet it is generalized. 
+                  // quantity controller is not specific to item yet it is generalized.
                   // need to assoicate quanitity controller with item id
                   Row(
                     children: [
                       ZoomTapAnimation(
-                        onTap: () =>
-                            Get.find<QuantityController>().decrement(),
+                        onTap: () => menuController.itemQuantity.value--,
                         child: Icon(Icons.remove_circle,
                             size: 22.sp, color: AppColors.orange400),
                       ),
                       SizedBox(width: 8.w),
                       Obx(() {
-                        final qty =
-                            Get.find<QuantityController>().quantity.value;
                         return Text(
-                          qty.toString(),
+                          menuController.itemQuantity.value.toString(),
                           style: TextStyles.bodyM.copyWith(
                             color: AppColors.darkGrey300,
                           ),
@@ -90,8 +85,7 @@ class CartItemCard extends StatelessWidget {
                       }),
                       SizedBox(width: 8.w),
                       ZoomTapAnimation(
-                        onTap: () =>
-                            Get.find<QuantityController>().increment(),
+                        onTap: () => menuController.itemQuantity.value++,
                         child: Icon(Icons.add_circle,
                             size: 22.sp, color: AppColors.orange400),
                       ),

@@ -10,8 +10,8 @@ class OnboardingPage3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFA1A1A1), // Background color
+      decoration: const BoxDecoration(
+        color: AppColors.darkGrey300,
       ),
       child: Stack(
         children: [
@@ -34,13 +34,13 @@ class OnboardingPage3 extends StatelessWidget {
                 Text(
                   '🕒 Timely Doorstep Delivery',
                   style: TextStyles.h2.copyWith(
-                    color: AppColors.darkGrey500,
+                    color: AppColors.lightGrey100,
                   ),
                 ),
                 SizedBox(height: 20.h),
                 Text("Fresh food delivered on your schedule.",
-                    style: TextStyles.h4.copyWith(
-                      color: AppColors.darkGrey300,
+                    style: TextStyles.bodyL.copyWith(
+                      color: AppColors.lightGrey100,
                     )),
                 SizedBox(height: 60.h),
               ],

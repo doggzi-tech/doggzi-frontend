@@ -15,7 +15,7 @@ class MainPage extends StatelessWidget {
   final List<Widget> pages = [
     HomePage(),
     MenuPage(),
-    const SubscriptionPage(),
+    SubscriptionPage(),
     ProfilePage(),
   ];
 

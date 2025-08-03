@@ -33,9 +33,8 @@ class CartPage extends StatelessWidget {
                       SizedBox(height: 16.h),
 
                       // Order Item Card, need to retrieve actual cart items
-                      const CartItemCard(),
+                      CartItemCard(),
 
-                      
                       ZoomTapAnimation(
                         onTap: () {},
                         child: Container(
@@ -50,8 +49,7 @@ class CartPage extends StatelessWidget {
                               Icon(Icons.discount,
                                   color: AppColors.orange500, size: 20.sp),
                               SizedBox(width: 30.w),
-                              Text("Apply Coupon",
-                                  style: TextStyles.captionM),
+                              Text("Apply Coupon", style: TextStyles.captionM),
                               const Spacer(),
                               Icon(Icons.arrow_forward_ios,
                                   size: 16.sp, color: Colors.grey),
@@ -78,16 +76,15 @@ class CartPage extends StatelessWidget {
                                     style: TextStyles.captionL.copyWith(
                                         color: AppColors.darkGrey500)),
                                 Text(" ₹199.00",
-                                    style: TextStyles.captionL.copyWith(
-                                        color: AppColors.green300)),
+                                    style: TextStyles.captionL
+                                        .copyWith(color: AppColors.green300)),
                               ],
                             ),
                             Divider(height: 24.h),
                             _row("Item Total", "₹199"),
                             _row("Coupon Code", "Nil"),
                             Divider(),
-                            _row("To Pay", "₹199",
-                                isBold: true),
+                            _row("To Pay", "₹199", isBold: true),
                           ],
                         ),
                       ),
@@ -104,7 +101,9 @@ class CartPage extends StatelessWidget {
                           color: const Color(0xFFFFF3E0),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
-                        child: Image.asset('assets/images/subscription_information.png', height: 60.h),
+                        child: Image.asset(
+                            'assets/images/subscription_information.png',
+                            height: 60.h),
                       ),
                     ],
                   ),
@@ -138,8 +137,7 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget _row(String label, String value,
-      {bool isBold = false}) {
+  Widget _row(String label, String value, {bool isBold = false}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: Row(
@@ -147,13 +145,15 @@ class CartPage extends StatelessWidget {
         children: [
           Text(label,
               style: TextStyles.captionM.copyWith(
-                  fontWeight: isBold ? FontWeight.bold : TextStyles.captionM.fontWeight,
-                  color: isBold ? AppColors.darkGrey500 : AppColors.darkGrey300,)
-              ),
+                fontWeight:
+                    isBold ? FontWeight.bold : TextStyles.captionM.fontWeight,
+                color: isBold ? AppColors.darkGrey500 : AppColors.darkGrey300,
+              )),
           Text(value,
               style: TextStyles.captionM.copyWith(
-                  fontWeight: isBold ? FontWeight.bold : TextStyles.captionM.fontWeight,
-                  color: isBold ? AppColors.darkGrey500 : AppColors.darkGrey300,
+                fontWeight:
+                    isBold ? FontWeight.bold : TextStyles.captionM.fontWeight,
+                color: isBold ? AppColors.darkGrey500 : AppColors.darkGrey300,
               )),
         ],
       ),

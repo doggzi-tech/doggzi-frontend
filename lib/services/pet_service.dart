@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../models/pet_model.dart';
-import 'base_service.dart';
+import 'base_api_service.dart';
 
 class PetService extends BaseApiService {
   /// GET /pets

@@ -1,5 +1,7 @@
 import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:doggzi/services/image_service.dart';
+import 'package:doggzi/widgets/meal_details.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/menu_model.dart';
@@ -9,18 +11,13 @@ class FoodMenuController extends GetxController {
   final MenuService _menuService = MenuService();
   final RxList<MenuModel> allMenuItems = <MenuModel>[].obs;
   final RxList<MenuModel> homeMenuItems = <MenuModel>[].obs;
-
-  final Rxn<MenuModel> selectedMenuItem = Rxn<MenuModel>();
-
   Rx<DietType> selectedFoodType = DietType.all.obs;
   Rx<Species> selectedPetType = Species.all.obs;
-
+  Rx<int> itemQuantity = 1.obs;
   final ImageService imageService = ImageService();
   RxBool isLoading = false.obs;
 
   final RxBool isDetailsSheetOpen = false.obs;
-
-
 
   @override
   void onInit() {
@@ -35,7 +32,9 @@ class FoodMenuController extends GetxController {
         selectedFoodType.value,
         selectedPetType.value,
       );
-      homeMenuItems.assignAll(items);
+      if (homeMenuItems.isEmpty) {
+        homeMenuItems.assignAll(items);
+      }
       allMenuItems.assignAll(items);
     } catch (e) {
       customSnackBar.show(
@@ -56,5 +55,16 @@ class FoodMenuController extends GetxController {
   void selectPetType(Species type) {
     selectedPetType.value = type;
     fetchMenuItems();
+  }
+
+  void showMenuItemDetails(MenuModel item) {
+    Get.bottomSheet(
+      MenuItemDetailsSheet(item: item),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    ).then((_) {
+      itemQuantity.value = 1;
+      isDetailsSheetOpen.value = false;
+    });
   }
 }

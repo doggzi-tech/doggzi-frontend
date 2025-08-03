@@ -2,6 +2,7 @@ import 'package:doggzi/controllers/pet_controller.dart';
 import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/services/onesignal_service.dart';
 import 'package:doggzi/theme/theme.dart';
+import 'package:doggzi/utils/logger_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,7 @@ void main() async {
       statusBarBrightness: Brightness.light, // For iOS
     ),
   );
+  Get.put(LoggerService(), permanent: true);
   Get.put(AuthController());
   Get.put(LocationController());
   Get.putAsync(() => OneSignalService().init());

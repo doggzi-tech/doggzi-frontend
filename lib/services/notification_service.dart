@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../models/notification_model.dart';
-import 'base_service.dart';
+import 'base_api_service.dart';
 
 class NotificationService extends BaseApiService {
   // Get notifications

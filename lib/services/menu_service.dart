@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:doggzi/models/menu_model.dart';
-import 'package:doggzi/services/base_service.dart';
+import 'package:doggzi/services/base_api_service.dart';
 
 class MenuService extends BaseApiService {
   Future<MenuModel> getMenuItem(String id) async {

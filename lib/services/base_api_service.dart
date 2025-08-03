@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../controllers/auth_controller.dart';
+import '../utils/logger_interceptor.dart';
 
 class BaseApiService {
   static String productionUrl = 'https://backend.doggzi.com';
@@ -52,6 +53,7 @@ class BaseApiService {
         compact: true,
       ),
     );
+    dio.interceptors.add(AppLoggerInterceptor());
 
     dio.interceptors.add(
       InterceptorsWrapper(
