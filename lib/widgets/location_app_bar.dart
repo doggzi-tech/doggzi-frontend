@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../logger/log_screen.dart';
 import '../theme/colors.dart';
 import 'custom_icon.dart';
 
@@ -75,17 +76,27 @@ class LocationAppBar extends GetView<LocationController> {
           const Spacer(),
           ZoomTapAnimation(
             onTap: () {
-              // Get.to(() => const NetworkMonitorPage());
+              Get.to(() => const LoggerScreen());
             },
             child: Container(
-              width: 50.w,
-              height: 50.h,
+              width: 60.w,
+              height: 30.h,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.orange300,
                 borderRadius: BorderRadius.circular(12.r),
               ),
-              child: Text("Monitor", style: TextStyles.bodyM),
+              child: Center(
+                child: Text(
+                  "Monitor",
+                  style: TextStyles.bodyS.copyWith(
+                    color: AppColors.lightGrey100,
+                  ),
+                ),
+              ),
             ),
+          ),
+          SizedBox(
+            width: 5.w,
           ),
           CustomIcon(
             icon: Icons.notification_add,
