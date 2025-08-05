@@ -51,7 +51,7 @@ class ProfilePage extends StatelessWidget {
                     title: "Pet Management",
                     onTap: () {
                       Get.to(
-                        () => MyPetView(pets: petController.pets),
+                        () => const MyPetView(),
                         transition: Transition.rightToLeft,
                       ); // Navigate to My Pets page
                     },

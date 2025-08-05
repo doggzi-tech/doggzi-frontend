@@ -9,8 +9,8 @@ import '../controllers/auth_controller.dart';
 import '../utils/logger_interceptor.dart';
 
 class BaseApiService {
-  static String productionUrl = 'https://backend.doggzi.com';
-  static String developmentUrl = "http://192.168.1.12:8000";
+  static String productionUrl = 'https://backend.doggzi.com/';
+  static String developmentUrl = "http://192.168.1.10:8000/";
   static String baseUrl = dotenv.env["ENVIRONMENT"] == "PRODUCTION"
       ? productionUrl
       : dotenv.env["ENVIRONMENT"] == "LOCAL"

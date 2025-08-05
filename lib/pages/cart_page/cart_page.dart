@@ -1,24 +1,30 @@
-import 'package:doggzi/pages/cart/widgets/cart_items.dart';
-import 'package:doggzi/pages/cart/widgets/delivery_address_card.dart';
+import 'package:doggzi/controllers/cart_controller.dart';
+import 'package:doggzi/pages/cart_page/widgets/cart_items.dart';
+import 'package:doggzi/pages/cart_page/widgets/delivery_address_card.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
 import 'package:doggzi/widgets/location_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../../controllers/location_controller.dart';
+
 class CartPage extends StatelessWidget {
-  const CartPage({Key? key}) : super(key: key);
+  CartPage({super.key});
+
+  final cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             const LocationAppBar(showBackButton: true),
-
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(

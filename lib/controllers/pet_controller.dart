@@ -1,3 +1,4 @@
+import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:doggzi/models/pet_model.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +22,7 @@ class PetController extends GetxController {
     try {
       pets.value = await petService.listPets();
     } catch (e) {
+      customSnackBar.show(message: "Failed to fetch pets: ${e.toString()}");
       error.value = e.toString();
     } finally {
       isLoading.value = false;

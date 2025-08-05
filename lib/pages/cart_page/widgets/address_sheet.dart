@@ -1,6 +1,3 @@
-
-
-
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
@@ -38,17 +35,15 @@ void openAddressSheet(BuildContext context) {
                   border: Border.all(color: Colors.grey.shade300),
                 ),
                 child: ZoomTapAnimation(
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                   child: Row(
                     children: [
                       Icon(Icons.add, size: 20.sp),
                       SizedBox(width: 10.w),
                       Expanded(
                         child: Text("Add Address",
-                            style: TextStyles.captionM.copyWith(
-                                color: AppColors.darkGrey500)),
+                            style: TextStyles.captionM
+                                .copyWith(color: AppColors.darkGrey500)),
                       ),
                       Icon(Icons.arrow_forward_ios,
                           size: 16.sp, color: Colors.grey),
@@ -82,15 +77,16 @@ void openAddressSheet(BuildContext context) {
                       Icon(Icons.location_pin,
                           color: Colors.green, size: 18.sp),
                       SizedBox(width: 8.w),
-                      Text("Delivers To",
-                          style: TextStyles.captionM),
+                      Text("Delivers To", style: TextStyles.captionM),
                     ],
                   ),
                   SizedBox(height: 8.h),
                   Text("Flat No. 101, Lohegaon, Pune, 411001",
-                      style: TextStyles.captionM.copyWith(color: AppColors.darkGrey300)),
+                      style: TextStyles.captionM
+                          .copyWith(color: AppColors.darkGrey300)),
                   Text("Harshita, +91-7631056337",
-                      style: TextStyles.captionM.copyWith(color: AppColors.darkGrey300)),
+                      style: TextStyles.captionM
+                          .copyWith(color: AppColors.darkGrey300)),
                   SizedBox(height: 24.h),
                 ],
               ),

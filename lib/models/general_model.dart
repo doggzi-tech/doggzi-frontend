@@ -96,20 +96,20 @@ class Breed {
   final String id;
   final String name;
   final String imageUrl;
-  final String? s3Url;
+  final String s3Url;
 
   Breed({
     required this.id,
     required this.name,
     required this.imageUrl,
-    this.s3Url,
+    required this.s3Url,
   });
 
   factory Breed.fromJson(Map<String, dynamic> json) => Breed(
         id: json['id'] as String,
         name: json['name'] as String,
         imageUrl: json['image_url'] as String,
-        s3Url: json['s3_url'] as String?,
+        s3Url: json['s3_url'] as String,
       );
 
   Map<String, dynamic> toJson() => {

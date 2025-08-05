@@ -20,7 +20,7 @@ class OnboardingPage3 extends StatelessWidget {
             left: 0,
             right: 0,
             child: Image.asset(
-              'assets/images/onboarding3_bg.png',
+              'assets/images/onboarding_3_bg.png',
               width: double.infinity,
               fit: BoxFit.contain,
             ),

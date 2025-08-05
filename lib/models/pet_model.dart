@@ -9,12 +9,12 @@ class PetModel {
   final double weightKg;
   final String gender;
   final String bodyCondition;
-  final String physicalActivity;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final bool isAllergic;
   final bool isNeuteredOrSpayed;
-  final String dietaryRestrictions;
+  bool? isAllergic;
+  String? dietaryRestrictions;
+  String? physicalActivity;
 
   PetModel({
     required this.id,
@@ -25,17 +25,17 @@ class PetModel {
     required this.weightKg,
     required this.gender,
     required this.bodyCondition,
-    required this.physicalActivity,
     required this.createdAt,
     required this.updatedAt,
-    required this.isAllergic,
     required this.isNeuteredOrSpayed,
-    required this.dietaryRestrictions,
+    this.isAllergic,
+    this.dietaryRestrictions,
+    this.physicalActivity,
   });
 
   factory PetModel.fromJson(Map<String, dynamic> json) {
     return PetModel(
-      id: json['id'] as String,
+      id: json['id'].toString(),
       name: json['name'] as String,
       species: json['species'] as String,
       breed: json['breed'] as String,
@@ -43,7 +43,7 @@ class PetModel {
       weightKg: (json['weight_kg'] as num).toDouble(),
       gender: json['gender'] as String,
       bodyCondition: json['body_condition'] as String,
-      physicalActivity: json['physical_activity'] as String,
+      physicalActivity: json['physical_activity'] ?? "",
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
       isAllergic: json['is_allergic'] as bool? ?? false,
@@ -71,17 +71,17 @@ class PetModel {
 }
 
 class PetCreate {
-  final String name;
-  final String species;
-  final String breed;
-  final String dateOfBirth;
-  final double weightKg;
-  final String gender;
-  final String bodyCondition;
-  final String physicalActivity;
-  final bool? isAllergic;
-  final bool? isNeuteredOrSpayed;
-  final String? dietaryRestrictions;
+  String name;
+  String species;
+  String breed;
+  String dateOfBirth;
+  double weightKg;
+  String gender;
+  String bodyCondition;
+  bool isNeuteredOrSpayed;
+  String? physicalActivity;
+  bool? isAllergic;
+  String? dietaryRestrictions;
 
   PetCreate({
     required this.name,
@@ -91,9 +91,9 @@ class PetCreate {
     required this.weightKg,
     required this.gender,
     required this.bodyCondition,
-    required this.physicalActivity,
+    this.physicalActivity,
     this.isAllergic,
-    this.isNeuteredOrSpayed,
+    required this.isNeuteredOrSpayed,
     this.dietaryRestrictions,
   });
 
@@ -106,16 +106,45 @@ class PetCreate {
     map["weight_kg"] = weightKg;
     map["gender"] = gender;
     map["body_condition"] = bodyCondition;
-    map["physical_activity"] = physicalActivity;
-    if (isAllergic != null) map["is_allergic"] = isAllergic;
-    if (isNeuteredOrSpayed != null) {
-      map["is_neutered_or_spayed"] = isNeuteredOrSpayed;
+    if (physicalActivity != null && physicalActivity!.isNotEmpty) {
+      map["physical_activity"] = physicalActivity;
     }
-    if (dietaryRestrictions != null) {
+    if (isAllergic != null) map["is_allergic"] = isAllergic;
+    map["is_neutered_or_spayed"] = isNeuteredOrSpayed;
+
+    if (dietaryRestrictions != null && dietaryRestrictions!.isNotEmpty) {
       map["dietary_restrictions"] = dietaryRestrictions;
     }
 
     return map;
+  }
+
+  PetCreate copyWith({
+    String? name,
+    String? species,
+    String? breed,
+    String? dateOfBirth,
+    double? weightKg,
+    String? gender,
+    String? bodyCondition,
+    String? physicalActivity,
+    bool? isAllergic,
+    bool? isNeuteredOrSpayed,
+    String? dietaryRestrictions,
+  }) {
+    return PetCreate(
+      name: name ?? this.name,
+      species: species ?? this.species,
+      breed: breed ?? this.breed,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      weightKg: weightKg ?? this.weightKg,
+      gender: gender ?? this.gender,
+      bodyCondition: bodyCondition ?? this.bodyCondition,
+      physicalActivity: physicalActivity ?? this.physicalActivity,
+      isAllergic: isAllergic ?? this.isAllergic,
+      isNeuteredOrSpayed: isNeuteredOrSpayed ?? this.isNeuteredOrSpayed,
+      dietaryRestrictions: dietaryRestrictions ?? this.dietaryRestrictions,
+    );
   }
 }
 

@@ -28,13 +28,12 @@ class PetService extends BaseApiService {
   }
 
   /// POST /pets
-  Future<PetModel> createPet(PetCreate pet) async {
+  Future<void> createPet(PetCreate pet) async {
     try {
       final response = await dio.post(
-        '/pets',
+        '/pets/',
         data: pet.toJson(),
       );
-      return PetModel.fromJson(response.data);
     } on DioException catch (e) {
       throw Exception(handleError(e));
     }

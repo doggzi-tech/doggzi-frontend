@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:doggzi/widgets/custom_app_bar.dart';
+import 'package:doggzi/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../controllers/pet_controller.dart';
+import '../../core/app_routes.dart';
 import '../../theme/colors.dart';
 import '../../theme/text_style.dart';
 
@@ -26,15 +28,16 @@ class SubscriptionPage extends GetView<PetController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          top: false,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomAppBar(
-                title: "Subscription",
-              ),
-              SizedBox(height: 30.h),
-              CarouselSlider(
+        top: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const CustomAppBar(
+              title: "Subscription",
+            ),
+            SizedBox(height: 30.h),
+            Obx(
+              () => CarouselSlider(
                 options: CarouselOptions(
                   height: 50.h,
                   autoPlay: true,
@@ -83,36 +86,45 @@ class SubscriptionPage extends GetView<PetController> {
                   );
                 }).toList(),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 30.h),
-                    Image.asset(
-                      "assets/images/subscription_information.png",
-                      fit: BoxFit.cover,
-                      width: 360.w,
-                      height: 230.h,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 30.h),
+                  Image.asset(
+                    "assets/images/subscription_information.png",
+                    fit: BoxFit.cover,
+                    width: 360.w,
+                    height: 230.h,
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    "Your Pet’s Personalized Nutrition Plan",
+                    style: TextStyles.bodyL.copyWith(
+                      color: AppColors.darkGrey400,
                     ),
-                    SizedBox(height: 20.h),
-                    Text(
-                      "Your Pet’s Personalized Nutrition Plan",
-                      style: TextStyles.bodyL.copyWith(
-                        color: AppColors.darkGrey400,
-                      ),
+                  ),
+                  Text(
+                    "Crafted by experts. Delivered with care",
+                    style: TextStyles.bodyS.copyWith(
+                      color: AppColors.lightGrey400,
                     ),
-                    Text(
-                      "Crafted by experts. Delivered with care",
-                      style: TextStyles.bodyS.copyWith(
-                        color: AppColors.lightGrey400,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
+                  ),
+                  SizedBox(height: 30.h),
+                  CustomButton(
+                    text: "Add New Pet",
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.petOnboarding1Page);
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:doggzi/controllers/cart_controller.dart';
 import 'package:doggzi/controllers/food_menu_controller.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
@@ -10,6 +11,7 @@ class CartItemCard extends StatelessWidget {
   CartItemCard({super.key});
 
   final menuController = Get.find<FoodMenuController>();
+  final cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {

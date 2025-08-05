@@ -30,7 +30,6 @@ void main() async {
   );
   Get.put(LoggerService(), permanent: true);
   Get.put(AuthController());
-  Get.put(LocationController());
   Get.putAsync(() => OneSignalService().init());
 
   runApp(const MyApp());

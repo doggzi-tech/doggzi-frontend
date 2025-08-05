@@ -1,22 +1,30 @@
+import 'package:doggzi/core/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../../../controllers/pet_controller.dart';
 import '../../../models/pet_model.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/text_style.dart';
 import '../../../widgets/custom_app_bar.dart';
 
-class MyPetView extends StatelessWidget {
-  final List<PetModel> pets;
-
-  const MyPetView({super.key, required this.pets});
+class MyPetView extends GetView<PetController> {
+  const MyPetView({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Initialize ScreenUtil in your app's entry point (usually in MaterialApp builder)
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.orange400,
+        child: Icon(Icons.add, size: 24.sp),
+        onPressed: () {
+          Get.toNamed(AppRoutes.petOnboarding1Page);
+        },
+      ),
       body: Column(
         children: [
           CustomAppBar(
@@ -27,15 +35,18 @@ class MyPetView extends StatelessWidget {
               // Navigate to settings page
             },
           ),
-          GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+          Obx(
+            () => GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              shrinkWrap: true,
+              padding: EdgeInsets.all(16.w),
+              itemCount: controller.pets.length,
+              itemBuilder: (context, index) =>
+                  _PetCard(pet: controller.pets[index]),
             ),
-            shrinkWrap: true,
-            padding: EdgeInsets.all(16.w),
-            itemCount: pets.length,
-            itemBuilder: (context, index) => _PetCard(pet: pets[index]),
-          ),
+          )
         ],
       ),
     );
@@ -113,7 +124,7 @@ class _PetCard extends StatelessWidget {
                     "${pet.name} , ${(pet.ageMonths / 12).floor()}y ${(pet.ageMonths % 12)}m",
                     style: TextStyles.actionM,
                   ),
-                  SizedBox(height: 4.h),
+                  const Spacer(),
                   Text(
                     pet.breed,
                     style: TextStyles.actionM.copyWith(

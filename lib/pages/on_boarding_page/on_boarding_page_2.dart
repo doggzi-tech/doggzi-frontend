@@ -13,7 +13,7 @@ class OnboardingPage2 extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/onboarding2_bg.png'),
+          image: AssetImage('assets/images/onboarding_2_bg.png'),
           fit: BoxFit.cover,
         ),
       ),

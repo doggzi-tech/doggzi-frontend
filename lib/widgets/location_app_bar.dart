@@ -13,9 +13,9 @@ class LocationAppBar extends GetView<LocationController> {
   final bool showBackButton;
 
   const LocationAppBar({
-    Key? key,
+    super.key,
     this.showBackButton = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,9 @@ class LocationAppBar extends GetView<LocationController> {
           Icon(
             Icons.location_on,
             color: AppColors.darkGrey100,
-            size: 28.sp,
+            size: 26.sp,
           ),
-          SizedBox(width: 10.w),
+          const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

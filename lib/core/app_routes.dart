@@ -1,4 +1,4 @@
-import 'package:doggzi/pages/cart/cart.dart';
+import 'package:doggzi/controllers/cart_controller.dart';
 import 'package:doggzi/pages/main_page.dart';
 import 'package:doggzi/pages/menu_page/menu_page.dart';
 import 'package:doggzi/pages/on_boarding_page.dart';
@@ -7,10 +7,16 @@ import 'package:doggzi/pages/order_status/confirmed.dart';
 import 'package:get/get.dart';
 
 import '../controllers/food_menu_controller.dart';
+import '../controllers/location_controller.dart';
 import '../controllers/pet_controller.dart';
+import '../controllers/pet_onboarding_controller.dart';
+import '../pages/cart_page/cart_page.dart';
 import '../pages/home_page/home_page.dart';
 import '../pages/notification_page/notification_page.dart';
 import '../pages/otp_verification_page.dart';
+import '../pages/pet_onboarding_page/pet_onboarding_1_page.dart';
+import '../pages/pet_onboarding_page/pet_onboarding_2_page.dart';
+import '../pages/pet_onboarding_page/pet_onboarding_3_page.dart';
 import '../pages/phone_auth_page.dart';
 import '../pages/policies/privacy_policy.dart';
 import '../pages/policies/terms_of_services.dart';
@@ -28,11 +34,14 @@ class AppRoutes {
   static const cancelled = '/order-cancelled';
   static const cart = '/cart';
   static const menu = '/menu';
+  static const petOnboarding1Page = '/pet-onboarding-1';
+  static const petOnboarding2Page = '/pet-onboarding-2';
+  static const petOnboarding3Page = '/pet-onboarding-3';
 
   static final pages = [
     GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
     GetPage(name: cancelled, page: () => const OrderCancelledPage()),
-    GetPage(name: cart, page: () => const CartPage()),
+    GetPage(name: cart, page: () => CartPage()),
     GetPage(name: menu, page: () => MenuPage()),
 
     GetPage(name: initial, page: () => OnboardingPage()),
@@ -44,6 +53,8 @@ class AppRoutes {
       page: () => MainPage(),
       bindings: [
         BindingsBuilder(() {
+          Get.put(LocationController(), permanent: true);
+          Get.put(CartController(), permanent: true);
           Get.put(FoodMenuController());
           Get.put(PetController());
         }),
@@ -58,6 +69,26 @@ class AppRoutes {
     GetPage(
       name: privacyPolicy,
       page: () => const PrivacyPolicy(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: petOnboarding1Page,
+      page: () => const PetOnboarding1Page(),
+      bindings: [
+        BindingsBuilder(() {
+          Get.put(PetOnboardingController(), permanent: false);
+        }),
+      ],
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: petOnboarding2Page,
+      page: () => const PetOnboarding2Page(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: petOnboarding3Page,
+      page: () => const PetOnboarding3Page(),
       transition: Transition.rightToLeft,
     ),
     // Assuming main page is same as home

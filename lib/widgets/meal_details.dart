@@ -1,3 +1,4 @@
+import 'package:doggzi/controllers/cart_controller.dart';
 import 'package:doggzi/controllers/food_menu_controller.dart';
 import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/models/menu_model.dart';
@@ -19,6 +20,8 @@ class MenuItemDetailsSheet extends StatelessWidget {
 
   // Get controller instance
   FoodMenuController get _menuController => Get.find<FoodMenuController>();
+
+  CartController get cartController => Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -501,20 +504,10 @@ class MenuItemDetailsSheet extends StatelessWidget {
     return item.price.toDouble() * _menuController.itemQuantity.value;
   }
 
-  void _handleAddToCart() {
+  void _handleAddToCart() async {
     final quantity = _menuController.itemQuantity.value;
-    // TODO: Implement actual add to cart logic
-    print("Adding ${item.name} to cart with quantity: $quantity");
-
-    // Show success message
-    Get.snackbar(
-      "Success",
-      "${item.name} added to cart",
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: AppColors.green300,
-      colorText: Colors.white,
-      duration: const Duration(seconds: 2),
-    );
+    await cartController.addToCart(item.id, quantity);
+    Get.offNamed(AppRoutes.cart);
   }
 
   Map<String, String> _getNutritionalData() {
