@@ -2,6 +2,7 @@ import 'package:doggzi/controllers/cart_controller.dart';
 import 'package:doggzi/controllers/food_menu_controller.dart';
 import 'package:doggzi/theme/colors.dart';
 import 'package:doggzi/theme/text_style.dart';
+import 'package:doggzi/widgets/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -35,78 +36,83 @@ class CartItemCard extends StatelessWidget {
           ),
           Divider(height: 18.h),
 
-          // Cart Item Section - change below as per backend
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.r),
-                child: Image.asset(
-                  'assets/images/content.png',
-                  width: 66.w,
-                  height: 50.h,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(width: 10.w),
-
-              // Name and Weight
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Chicken & Rice", style: TextStyles.bodyM),
-                  SizedBox(height: 4.h),
-                  Text("250 Gm", style: TextStyle(fontSize: 12.sp)),
-                ],
-              ),
-
-              const Spacer(),
-
-              // Quantity + Price
-              Column(
-                children: [
-                  // Quantity Row
-                  // quantity controller is not specific to item yet it is generalized.
-                  // need to assoicate quanitity controller with item id
+          Obx(() {
+            return Column(
+              children: [
+                for (var item in cartController.cart.value.items)
+                  // Cart Item Section - change below as per backend
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ZoomTapAnimation(
-                        onTap: () => menuController.itemQuantity.value--,
-                        child: Icon(Icons.remove_circle,
-                            size: 22.sp, color: AppColors.orange400),
+                      // Image
+                      CachedImage(
+                        imageUrl: item.menuItem.s3Url,
+                        cacheKey: item.menuItem.imageUrl,
+                        width: 66.w,
+                        height: 50.h,
+                        fit: BoxFit.cover,
                       ),
-                      SizedBox(width: 8.w),
-                      Obx(() {
-                        return Text(
-                          menuController.itemQuantity.value.toString(),
-                          style: TextStyles.bodyM.copyWith(
-                            color: AppColors.darkGrey300,
+                      SizedBox(width: 10.w),
+
+                      // Name and Weight
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(item.menuItem.name, style: TextStyles.bodyM),
+                          SizedBox(height: 4.h),
+                          Text(item.menuItem.quantity.toString(),
+                              style: TextStyle(fontSize: 12.sp)),
+                        ],
+                      ),
+
+                      const Spacer(),
+
+                      // Quantity + Price
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              ZoomTapAnimation(
+                                onTap: () => cartController.addToCart(
+                                    item.menuItem.id, -1),
+                                // Decrease quantity
+                                child: Icon(Icons.remove_circle,
+                                    size: 22.sp, color: AppColors.orange400),
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                item.quantity.toString(),
+                                style: TextStyles.bodyM.copyWith(
+                                  color: AppColors.darkGrey300,
+                                ),
+                              ),
+                              SizedBox(width: 8.w),
+                              ZoomTapAnimation(
+                                onTap: () => cartController.addToCart(
+                                    item.menuItem.id, 1),
+                                // Increase quantity
+                                child: Icon(Icons.add_circle,
+                                    size: 22.sp, color: AppColors.orange400),
+                              ),
+                            ],
                           ),
-                        );
-                      }),
-                      SizedBox(width: 8.w),
-                      ZoomTapAnimation(
-                        onTap: () => menuController.itemQuantity.value++,
-                        child: Icon(Icons.add_circle,
-                            size: 22.sp, color: AppColors.orange400),
-                      ),
+
+                          SizedBox(height: 8.h),
+
+                          // Price
+                          Text(
+                            "₹${item.menuItem.price.toStringAsFixed(2)}",
+                            style: TextStyles.bodyM.copyWith(
+                              color: AppColors.darkGrey300,
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-
-                  SizedBox(height: 8.h),
-
-                  // Price
-                  Text(
-                    "₹199",
-                    style: TextStyles.bodyM.copyWith(
-                      color: AppColors.darkGrey300,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+              ],
+            );
+          }),
 
           SizedBox(height: 12.h),
 
