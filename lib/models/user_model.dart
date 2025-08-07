@@ -2,6 +2,10 @@ class User {
   final String id;
   final String phoneNumber;
   final String fullName;
+  final String email;
+  String? gender;
+  DateTime? dateOfBirth;
+
   final bool isActive;
   final bool isVerified;
   final DateTime createdAt;
@@ -12,6 +16,9 @@ class User {
     required this.id,
     required this.phoneNumber,
     required this.fullName,
+    required this.email,
+    this.gender,
+    this.dateOfBirth,
     required this.isActive,
     required this.isVerified,
     required this.createdAt,
@@ -30,6 +37,11 @@ class User {
       updatedAt: DateTime.parse(json['updated_at']),
       lastLogin: json['last_login'] != null
           ? DateTime.parse(json['last_login'])
+          : null,
+      email: json["email"] ?? "",
+      gender: json["gender"] ?? "",
+      dateOfBirth: json["date_of_birth"] != null
+          ? DateTime.parse(json["date_of_birth"])
           : null,
     );
   }
@@ -134,15 +146,55 @@ class RefreshTokenRequest {
 }
 
 class UserUpdateRequest {
-  final String? fullName;
-  final String? profileImage;
+  final String fullName;
+  final String email;
+  final String gender;
+  final String dateOfBirth;
 
-  UserUpdateRequest({this.fullName, this.profileImage});
+  UserUpdateRequest({
+    this.fullName = "",
+    this.gender = "",
+    this.email = "",
+    this.dateOfBirth = "",
+  });
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    if (fullName != null) data['full_name'] = fullName;
-    if (profileImage != null) data['profile_image'] = profileImage;
+    if (fullName != "") data['full_name'] = fullName;
+    if (email != "") data['email'] = email;
+    if (gender != "") data["gender"] = gender;
+    if (dateOfBirth != "") data['date_of_birth'] = dateOfBirth;
     return data;
+  }
+
+  UserUpdateRequest copyWith({
+    String? fullName,
+    String? email,
+    String? gender,
+    String? dateOfBirth,
+  }) {
+    return UserUpdateRequest(
+      fullName: fullName ?? this.fullName,
+      email: email ?? this.email,
+      gender: gender ?? this.gender,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+    );
+  }
+}
+
+class UpdateUserResponse {
+  final User user;
+  final String accessToken;
+
+  UpdateUserResponse({
+    required this.user,
+    required this.accessToken,
+  });
+
+  factory UpdateUserResponse.fromJson(Map<String, dynamic> json) {
+    return UpdateUserResponse(
+      user: User.fromJson(json['user']),
+      accessToken: json['access_token'],
+    );
   }
 }

@@ -13,59 +13,171 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'cache_image.dart';
 
-class MenuItemDetailsSheet extends StatelessWidget {
-  final MenuModel item;
+class MenuItemDetailsSheet extends GetView<FoodMenuController> {
+  MenuItemDetailsSheet({super.key, required this.menu});
 
-  const MenuItemDetailsSheet({super.key, required this.item});
-
-  // Get controller instance
-  FoodMenuController get _menuController => Get.find<FoodMenuController>();
-
-  CartController get cartController => Get.find<CartController>();
+  final cartController = Get.find<CartController>();
+  final MenuModel menu;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 750.h,
       width: double.infinity,
-      padding: EdgeInsets.only(bottom: 16.h, left: 20.w, right: 20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
       ),
-      child: Stack(
+      child: Column(
         children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildItemImage(),
-                SizedBox(height: 16.h),
-                _buildNameAndQuantity(),
-                SizedBox(height: 12.h),
-                _buildMainContent(),
-                SizedBox(
-                  height: 10.h,
-                ),
-                _buildAddToCartSection(),
-              ],
+          SizedBox(
+            height: 670.h,
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 320.h,
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        CachedImage(
+                          cacheKey: menu.imageUrl,
+                          imageUrl: menu.s3Url,
+                          width: double.infinity,
+                          height: 300.h,
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 40.w,
+                          right: 40.w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildStatusTag(menu.freshlyCooked),
+                              _buildCenterDietIcon(),
+                              _buildSpeciesTag(),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 16.h),
+                        _buildNameAndQuantity(),
+                        SizedBox(height: 12.h),
+                        _buildMainContent(),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          _buildOverlayTags(),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: _buildAddToCartSection()),
         ],
       ),
     );
   }
 
-  Widget _buildItemImage() {
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(16.r),
-        child: CachedImage(
-          imageUrl: item.s3Url,
-          width: 366.w,
-          height: 300.h,
-          fit: BoxFit.cover,
-          cacheKey: item.imageUrl,
-        ));
+  Widget _buildStatusTag(bool isFresh) {
+    return _buildTag(
+      isFresh ? "Freshly Cooked" : "Packaged",
+      isFresh ? AppColors.green300 : AppColors.darkGrey300,
+      icon: isFresh
+          ? SvgPicture.asset(
+              'assets/images/fresh.svg',
+              width: 16.sp,
+              height: 16.sp,
+              color: AppColors.lightGrey100,
+            )
+          : Icon(
+              Icons.storage,
+              size: 16.sp,
+              color: AppColors.lightGrey100,
+            ),
+    );
+  }
+
+  Widget _buildSpeciesTag() {
+    return _buildTag(
+      "Food For ${menu.species.toString().capitalizeFirst}",
+      AppColors.brown500,
+      icon: SvgPicture.asset(
+        menu.species == "cat"
+            ? "assets/images/cat_face.svg"
+            : "assets/images/dog_face.svg",
+        color: AppColors.lightGrey100,
+        width: 18.sp,
+      ),
+      iconLeft: true,
+    );
+  }
+
+  Widget _buildDietTypeIcon() {
+    return Image.asset(
+      menu.dietType == "vegetarian"
+          ? 'assets/images/veg.png'
+          : 'assets/images/non_veg.png',
+      width: 19.w,
+      height: 19.h,
+      errorBuilder: (context, error, stackTrace) => Icon(
+        menu.dietType == "vegetarian" ? Icons.eco : Icons.restaurant,
+        size: 19.sp,
+        color: menu.dietType == "vegetarian" ? Colors.green : Colors.red,
+      ),
+    );
+  }
+
+  Widget _buildCenterDietIcon() {
+    return Container(
+      color: AppColors.lightGrey100,
+      child: SizedBox(
+        width: 27.w,
+        height: 27.h,
+        child: _buildDietTypeIcon(),
+      ),
+    );
+  }
+
+  Widget _buildTag(
+    String label,
+    Color backgroundColor, {
+    Widget? icon,
+    bool iconLeft = false,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(17.r),
+        border: Border.all(color: AppColors.lightGrey100),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null && iconLeft) ...[icon, SizedBox(width: 6.w)],
+          Text(
+            label,
+            style: TextStyles.actionS.copyWith(color: AppColors.lightGrey100),
+          ),
+          if (icon != null && !iconLeft) ...[SizedBox(width: 6.w), icon],
+        ],
+      ),
+    );
   }
 
   Widget _buildNameAndQuantity() {
@@ -73,7 +185,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            item.name,
+            menu.name,
             style: TextStyles.h3,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
@@ -97,7 +209,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.75.r),
       ),
       child: Text(
-        "Quantity: ${item.quantity} Gm",
+        "Quantity: ${menu.quantity} Gm",
         style: TextStyles.actionS.copyWith(
           color: AppColors.orange500,
         ),
@@ -106,23 +218,17 @@ class MenuItemDetailsSheet extends StatelessWidget {
   }
 
   Widget _buildMainContent() {
-    return SizedBox(
-      width: 366.w,
-      height: 315.h,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildInfoTags(),
-            SizedBox(height: 16.h),
-            _buildQuantityAndPriceRow(),
-            SizedBox(height: 16.h),
-            _buildDescription(),
-            SizedBox(height: 16.h),
-            _buildNutritionalElements(),
-          ],
-        ),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildInfoTags(),
+        SizedBox(height: 16.h),
+        _buildQuantityAndPriceRow(),
+        SizedBox(height: 16.h),
+        _buildDescription(),
+        SizedBox(height: 16.h),
+        _buildNutritionalElements(),
+      ],
     );
   }
 
@@ -140,24 +246,9 @@ class MenuItemDetailsSheet extends StatelessWidget {
         ),
         _buildInfoTag(
           icon: _buildDietTypeIcon(),
-          text: item.dietType == "vegetarian" ? "Veg" : "Non Veg",
+          text: menu.dietType == "vegetarian" ? "Veg" : "Non Veg",
         ),
       ],
-    );
-  }
-
-  Widget _buildDietTypeIcon() {
-    return Image.asset(
-      item.dietType == "vegetarian"
-          ? 'assets/images/veg.png'
-          : 'assets/images/non_veg.png',
-      width: 19.w,
-      height: 19.h,
-      errorBuilder: (context, error, stackTrace) => Icon(
-        item.dietType == "vegetarian" ? Icons.eco : Icons.restaurant,
-        size: 19.sp,
-        color: item.dietType == "vegetarian" ? Colors.green : Colors.red,
-      ),
     );
   }
 
@@ -205,7 +296,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
             onTap: () => _decrementQuantity(),
             child: Icon(
               Icons.remove_circle,
-              size: 65.sp,
+              size: 50.sp,
               color: AppColors.orange400,
             ),
           ),
@@ -216,7 +307,7 @@ class MenuItemDetailsSheet extends StatelessWidget {
             onTap: () => _incrementQuantity(),
             child: Icon(
               Icons.add_circle,
-              size: 65.sp,
+              size: 50.sp,
               color: AppColors.orange400,
             ),
           ),
@@ -227,123 +318,18 @@ class MenuItemDetailsSheet extends StatelessWidget {
 
   Widget _buildQuantityDisplay() {
     return Container(
-      width: 72.w,
-      height: 72.w,
+      width: 60.w,
+      height: 60.w,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.darkGrey100,
       ),
       child: Center(
         child: Text(
-          _menuController.itemQuantity.value.toString(),
+          controller.itemQuantity.value.toString(),
           style: TextStyles.actionL,
         ),
       ),
-    );
-  }
-
-  Widget _buildPriceSection() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomPaint(
-          size: Size(60.w, 8.h),
-          painter: BulgedLinePainter(color: AppColors.orange400),
-        ),
-        SizedBox(height: 4.h),
-        Obx(() => Text(
-              "₹${(_calculateTotalPrice()).toStringAsFixed(0)}",
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            )),
-        SizedBox(height: 4.h),
-        Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationX(3.14159),
-          child: CustomPaint(
-            size: Size(60.w, 8.h),
-            painter: BulgedLinePainter(color: AppColors.orange400),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDescription() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Description", style: TextStyles.bodyL),
-        SizedBox(height: 4.h),
-        Text(
-          item.description,
-          style: TextStyles.bodyM.copyWith(
-            color: AppColors.darkGrey300,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNutritionalElements() {
-    // Mock data - replace with actual nutritional data from MenuModel
-    final nutritionalData = _getNutritionalData();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Nutritional elements", style: TextStyles.bodyL),
-        SizedBox(height: 4.h),
-        Container(
-          width: double.infinity,
-          height: 64.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16.r),
-            gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFFFF6D3E),
-                Color(0xFFFF7F52),
-                Color(0xFFFF6D3E),
-              ],
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: nutritionalData.entries.map((entry) {
-              return _buildNutritionalItem(entry.key, entry.value);
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNutritionalItem(String label, String value) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          value,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 
@@ -392,131 +378,85 @@ class MenuItemDetailsSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildOverlayTags() {
-    final bool isFresh = item.freshlyCooked == true;
-
-    return Positioned(
-      top: 280.h,
-      left: 16.w,
-      right: 16.w,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildStatusTag(isFresh),
-              _buildSpeciesTag(),
-            ],
+  Widget _buildPriceSection() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomPaint(
+          size: Size(60.w, 8.h),
+          painter: BulgedLinePainter(color: AppColors.orange400),
+        ),
+        SizedBox(height: 4.h),
+        Obx(() => Text(
+              "₹${(_calculateTotalPrice()).toStringAsFixed(0)}",
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            )),
+        SizedBox(height: 4.h),
+        Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationX(3.14159),
+          child: CustomPaint(
+            size: Size(60.w, 8.h),
+            painter: BulgedLinePainter(color: AppColors.orange400),
           ),
-          _buildCenterDietIcon(),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _buildStatusTag(bool isFresh) {
-    return _buildTag(
-      isFresh ? "Freshly Cooked" : "Packaged",
-      isFresh ? AppColors.green300 : AppColors.darkGrey300,
-      icon: isFresh
-          ? SvgPicture.asset(
-              'assets/images/fresh.svg',
-              width: 16.sp,
-              height: 16.sp,
-              color: AppColors.lightGrey100,
-            )
-          : Icon(
-              Icons.storage,
-              size: 16.sp,
-              color: AppColors.lightGrey100,
-            ),
-    );
-  }
-
-  Widget _buildSpeciesTag() {
-    return _buildTag(
-      "Food For ${item.species.toString().capitalizeFirst}",
-      AppColors.brown500,
-      icon: SvgPicture.asset(
-        item.species == "cat"
-            ? "assets/images/cat_face.svg"
-            : "assets/images/dog_face.svg",
-        color: AppColors.lightGrey100,
-        width: 18.sp,
-      ),
-      iconLeft: true,
-    );
-  }
-
-  Widget _buildCenterDietIcon() {
-    return Container(
-      color: AppColors.lightGrey100,
-      child: SizedBox(
-        width: 27.w,
-        height: 27.h,
-        child: _buildDietTypeIcon(),
-      ),
-    );
-  }
-
-  Widget _buildTag(
-    String label,
-    Color backgroundColor, {
-    Widget? icon,
-    bool iconLeft = false,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(17.r),
-        border: Border.all(color: AppColors.lightGrey100),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null && iconLeft) ...[icon, SizedBox(width: 6.w)],
-          Text(
-            label,
-            style: TextStyles.actionS.copyWith(color: AppColors.lightGrey100),
+  Widget _buildDescription() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Description", style: TextStyles.bodyL),
+        SizedBox(height: 4.h),
+        Text(
+          menu.description,
+          style: TextStyles.bodyM.copyWith(
+            color: AppColors.darkGrey300,
           ),
-          if (icon != null && !iconLeft) ...[SizedBox(width: 6.w), icon],
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  // Helper methods
+  Widget _buildNutritionalElements() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Nutritional elements", style: TextStyles.bodyL),
+        SizedBox(height: 4.h),
+        for (String item in menu.itemList) _buildNutritionalItem(item),
+      ],
+    );
+  }
+
+  Widget _buildNutritionalItem(String value) {
+    return Text(value, style: TextStyles.bodyL);
+  }
+
   void _incrementQuantity() {
-    if (_menuController.itemQuantity.value < 99) {
-      _menuController.itemQuantity.value++;
+    if (controller.itemQuantity.value < 99) {
+      controller.itemQuantity.value++;
     }
   }
 
   void _decrementQuantity() {
-    if (_menuController.itemQuantity.value > 1) {
-      _menuController.itemQuantity.value--;
+    if (controller.itemQuantity.value > 1) {
+      controller.itemQuantity.value--;
     }
   }
 
   double _calculateTotalPrice() {
-    return item.price.toDouble() * _menuController.itemQuantity.value;
+    return menu.price.toDouble() * controller.itemQuantity.value;
   }
 
   void _handleAddToCart() async {
-    final quantity = _menuController.itemQuantity.value;
-    await cartController.addToCart(item.id, quantity);
+    final quantity = controller.itemQuantity.value;
+    await cartController.addToCart(menu.id, quantity);
     Get.offNamed(AppRoutes.cart);
-  }
-
-  Map<String, String> _getNutritionalData() {
-    // TODO: Replace with actual data from MenuModel
-    // This is placeholder data
-    return {
-      "Protein": "24g",
-      "Fat": "11%",
-      "Calories": "320 Kcal",
-    };
   }
 }

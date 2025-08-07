@@ -16,7 +16,6 @@ class PrivacyPolicy extends StatelessWidget {
             const CustomAppBar(
               title: 'PRIVACY POLICY',
               showBackButton: true,
-              isTrailingIconVisible: false,
             ),
             Expanded(
               child: SingleChildScrollView(

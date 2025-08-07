@@ -28,8 +28,6 @@ class ProfilePage extends StatelessWidget {
           children: [
             CustomAppBar(
               title: "Profile",
-              trailingIcon: Icons.notification_add,
-              isTrailingIconVisible: true,
               onLeadingIconTap: () {
                 // Navigate to settings page
               },

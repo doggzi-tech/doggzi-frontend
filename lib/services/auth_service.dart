@@ -56,10 +56,10 @@ class AuthService extends BaseApiService {
     }
   }
 
-  Future<User> updateProfile(UserUpdateRequest request) async {
+  Future<UpdateUserResponse> updateProfile(UserUpdateRequest request) async {
     try {
       final response = await dio.put('/users/me', data: request.toJson());
-      return User.fromJson(response.data);
+      return UpdateUserResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw handleError(e);
     }

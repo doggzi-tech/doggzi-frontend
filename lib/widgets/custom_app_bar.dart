@@ -12,9 +12,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.leadingIcon = Icons.settings,
     this.isLeadingIconVisible = false,
-    this.trailingIcon = Icons.notification_add,
+    this.trailingIcon,
     this.onLeadingIconTap,
-    this.isTrailingIconVisible = true,
+    this.isTrailingIconVisible = false,
     this.onTrailingIconTap,
     this.showBackButton = false,
     this.onBackButtonTap,
@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final IconData leadingIcon;
   final bool isLeadingIconVisible;
-  final IconData trailingIcon;
+  final IconData? trailingIcon;
   final VoidCallback? onLeadingIconTap;
   final bool isTrailingIconVisible;
   final VoidCallback? onTrailingIconTap;

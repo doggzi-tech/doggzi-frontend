@@ -113,11 +113,11 @@ class PetOnboarding1Page extends GetView<PetOnboardingController> {
                                 return Positioned(
                                   bottom: 0,
                                   child: Container(
-                                    width: 252.w,
-                                    height: 230.h,
+                                    width: 290.w,
+                                    height: 310.h,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: AppColors.green100,
+                                        color: AppColors.green200,
                                         width: 1.w,
                                       ),
                                       borderRadius: BorderRadius.all(
@@ -151,6 +151,8 @@ class PetOnboarding1Page extends GetView<PetOnboardingController> {
                       ),
                     ),
                     ZoomTapAnimation(
+                      beginCurve: Curves.elasticOut, // <- More bounce
+                      endCurve: Curves.easeOut,
                       onTap: () {
                         controller.petOnboarding.value = controller
                             .petOnboarding.value
@@ -184,11 +186,11 @@ class PetOnboarding1Page extends GetView<PetOnboardingController> {
                                 return Positioned(
                                   bottom: 0,
                                   child: Container(
-                                    width: 252.w,
-                                    height: 230.h,
+                                    width: 290.w,
+                                    height: 310.h,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: AppColors.green100,
+                                        color: AppColors.green200,
                                         width: 1.w,
                                       ),
                                       borderRadius: BorderRadius.all(

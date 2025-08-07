@@ -79,7 +79,7 @@ class HomePage extends GetView<AuthController> {
                   autoPlayInterval: const Duration(seconds: 3),
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   autoPlayCurve: Curves.easeInOut,
-                  height: 140.h,
+                  height: 160.h,
                   viewportFraction: 0.9,
                   enlargeCenterPage: true,
                   onPageChanged: (index, reason) {
@@ -95,7 +95,7 @@ class HomePage extends GetView<AuthController> {
                       imageUrl: i.s3Url,
                       fit: BoxFit.cover,
                       width: 350.w,
-                      height: 140.h,
+                      height: 160.h,
                     ),
                   );
                 }).toList(),

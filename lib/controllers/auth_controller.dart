@@ -1,6 +1,8 @@
+import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:doggzi/models/general_model.dart';
 import 'package:doggzi/services/general_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../models/user_model.dart';
@@ -42,6 +44,9 @@ class AuthController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
+  bool get isProfileComplete =>
+      _user.value!.email.isNotEmpty && _user.value!.fullName.isNotEmpty;
+
   bool get isLoggedIn => _user.value != null && _accessToken.isNotEmpty;
 
   String get accessToken => _accessToken.value;
@@ -56,6 +61,9 @@ class AuthController extends GetxController {
   int get canResendIn => _canResendIn.value;
 
   String get currentPhoneNumber => _currentPhoneNumber.value;
+
+  // user onboarding status
+  Rx<UserUpdateRequest> userOnboarding = UserUpdateRequest().obs;
 
   @override
   void onInit() {
@@ -104,6 +112,9 @@ class AuthController extends GetxController {
       final user = await _apiService.getProfile();
       _user.value = user;
       await _storage.write('user', user.toJson());
+      if (!isProfileComplete) {
+        Get.offNamed(AppRoutes.userOnboardingPage);
+      }
     } catch (e) {
       // If the token is invalid, try to refresh it
       final refreshed = await refreshTokens();
@@ -178,6 +189,11 @@ class AuthController extends GetxController {
         message: 'OTP verified successfully',
         type: SnackBarType.success,
       );
+      if (!isProfileComplete) {
+        Get.offNamed(AppRoutes.userOnboardingPage);
+      } else {
+        Get.offNamed(AppRoutes.mainPage);
+      }
       return true;
     } catch (e) {
       customSnackBar.show(
@@ -214,25 +230,30 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<bool> updateProfile(UserUpdateRequest request) async {
+  Future<bool> updateProfile() async {
     try {
       _isLoading.value = true;
 
-      final updatedUser = await _apiService.updateProfile(request);
-      _user.value = updatedUser;
-      await _storage.write('user', updatedUser.toJson());
+      final updatedUser = await _apiService.updateProfile(userOnboarding.value);
+      _user.value = updatedUser.user;
+      await _storage.write('user', updatedUser.user.toJson());
 
       customSnackBar.show(
         message: 'Profile updated successfully',
         type: SnackBarType.success,
       );
-
+      if (Navigator.canPop(Get.context!)) {
+        Get.back();
+      } else {
+        Get.offNamed(AppRoutes.mainPage);
+      }
       return true;
     } catch (e) {
       customSnackBar.show(
         message: 'Failed to update profile: ${e.toString()}',
         type: SnackBarType.error,
       );
+      print('Profile update error: $e');
       return false;
     } finally {
       _isLoading.value = false;

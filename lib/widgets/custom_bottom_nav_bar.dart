@@ -49,28 +49,14 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 90.h,
-      decoration: BoxDecoration(
-        color: AppColors.lightGrey100,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.darkGrey200,
-            blurRadius: 2.r,
-            offset: Offset(0, -1.h),
-          ),
-        ],
-      ),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(
-            items.length,
-            (index) => _buildNavItem(index),
-          ),
-        ),
-      ),
+    return NavigationBar(
+      shadowColor: AppColors.darkGrey300,
+      indicatorColor: Colors.white,
+      backgroundColor: AppColors.lightGrey100,
+      elevation: 10,
+      destinations: [
+        for (int i = 0; i < items.length; i++) _buildNavItem(i),
+      ],
     );
   }
 
@@ -110,7 +96,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 style: TextStyle(
                   color:
                       isSelected ? AppColors.orange400 : AppColors.darkGrey300,
-                  fontSize: isSelected ? 12.sp : 11.sp,
+                  fontSize: isSelected ? 9.5.sp : 8.5.sp,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 ),
                 child: Text(items[index].label),

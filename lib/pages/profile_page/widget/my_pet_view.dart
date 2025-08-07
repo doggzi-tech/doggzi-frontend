@@ -29,16 +29,15 @@ class MyPetView extends GetView<PetController> {
         children: [
           CustomAppBar(
             title: "My Pets",
-            trailingIcon: Icons.notification_add,
-            isTrailingIconVisible: true,
             onLeadingIconTap: () {
               // Navigate to settings page
             },
           ),
           Obx(
             () => GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
+                crossAxisSpacing: 16.w,
               ),
               shrinkWrap: true,
               padding: EdgeInsets.all(16.w),

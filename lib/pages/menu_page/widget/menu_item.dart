@@ -16,27 +16,16 @@ class MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 255.h,
-      width: 175.w,
+      width: 170.w,
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          Positioned(
-            top: 0,
-            child: Center(
-              child: CachedImage(
-                imageUrl: item.s3Url,
-                cacheKey: item.imageUrl,
-                width: 150.w,
-                height: 110.w,
-              ),
-            ),
-          ),
           Positioned(
             top: 75.h,
             child: Column(
               children: [
                 Container(
-                  width: 175.w,
+                  width: 168.w,
                   height: 160.h,
                   padding: EdgeInsets.only(
                     top: 7.h,
@@ -199,6 +188,17 @@ class MenuItem extends StatelessWidget {
                       )
                     : const SizedBox.shrink(),
               ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            child: Center(
+              child: CachedImage(
+                imageUrl: item.s3Url,
+                cacheKey: item.imageUrl,
+                width: 150.w,
+                height: 110.w,
+              ),
             ),
           ),
         ],

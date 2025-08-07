@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'dart:math';
 
 import '../../../controllers/pet_controller.dart';
+import '../../../core/app_routes.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/text_style.dart';
 
@@ -87,9 +90,25 @@ class ProfileIntroItem extends GetView<PetController> {
           ],
         ),
         const Spacer(),
-        GestureDetector(
+        ZoomTapAnimation(
           onTap: () {
-            // Handle edit profile action
+            final user = authController.user!;
+            final formattedDate = user.dateOfBirth == null
+                ? ""
+                : DateFormat('yyyy-MM-dd').format(user.dateOfBirth!);
+            final updatedOnboarding =
+                authController.userOnboarding.value.copyWith(
+              gender: user.gender,
+              fullName: user.fullName,
+              dateOfBirth: formattedDate,
+              email: user.email,
+            );
+
+            authController.userOnboarding.value = updatedOnboarding;
+
+            print(
+                'User Onboarding: ${authController.userOnboarding.value.toJson()}');
+            Get.toNamed(AppRoutes.userOnboardingPage);
           },
           child: Container(
             width: 40.w,

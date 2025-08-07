@@ -51,7 +51,6 @@ class LocationAppBar extends GetView<LocationController> {
             color: AppColors.darkGrey100,
             size: 26.sp,
           ),
-          const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -65,7 +64,7 @@ class LocationAppBar extends GetView<LocationController> {
                 return Text(
                   controller.currentPosition == null
                       ? "Fetching location..."
-                      : "${controller.currentPosition?.latitude}, ${controller.currentPosition?.longitude}",
+                      : controller.address.value,
                   style: TextStyles.bodyL.copyWith(
                     color: AppColors.darkGrey100,
                   ),
@@ -94,13 +93,6 @@ class LocationAppBar extends GetView<LocationController> {
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 5.w,
-          ),
-          CustomIcon(
-            icon: Icons.notification_add,
-            onTap: () {},
           ),
         ],
       ),

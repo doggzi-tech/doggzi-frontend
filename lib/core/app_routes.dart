@@ -4,6 +4,7 @@ import 'package:doggzi/pages/menu_page/menu_page.dart';
 import 'package:doggzi/pages/on_boarding_page.dart';
 import 'package:doggzi/pages/order_status/cancelled.dart';
 import 'package:doggzi/pages/order_status/confirmed.dart';
+import 'package:doggzi/pages/user_onboarding_page/user_onboarding_page.dart';
 import 'package:get/get.dart';
 
 import '../controllers/food_menu_controller.dart';
@@ -37,6 +38,7 @@ class AppRoutes {
   static const petOnboarding1Page = '/pet-onboarding-1';
   static const petOnboarding2Page = '/pet-onboarding-2';
   static const petOnboarding3Page = '/pet-onboarding-3';
+  static const userOnboardingPage = '/user-onboarding';
 
   static final pages = [
     GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
@@ -90,6 +92,10 @@ class AppRoutes {
       name: petOnboarding3Page,
       page: () => const PetOnboarding3Page(),
       transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: userOnboardingPage,
+      page: () => const UserOnboardingPage(),
     ),
     // Assuming main page is same as home
   ];

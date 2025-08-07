@@ -59,7 +59,7 @@ class FoodMenuController extends GetxController {
 
   void showMenuItemDetails(MenuModel item) {
     Get.bottomSheet(
-      MenuItemDetailsSheet(item: item),
+      MenuItemDetailsSheet(menu: item),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
     ).then((_) {

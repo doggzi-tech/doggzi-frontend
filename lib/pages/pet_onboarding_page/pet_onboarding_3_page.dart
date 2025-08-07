@@ -182,11 +182,11 @@ class PetOnboarding3Page extends GetView<PetOnboardingController> {
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.lightGrey100),
+              borderSide: const BorderSide(color: AppColors.lightGrey300),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.lightGrey100),
+              borderSide: const BorderSide(color: AppColors.lightGrey300),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -227,11 +227,11 @@ class PetOnboarding3Page extends GetView<PetOnboardingController> {
                     color: AppColors.darkGrey400),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: const BorderSide(color: AppColors.lightGrey100),
+                  borderSide: const BorderSide(color: AppColors.lightGrey300),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: const BorderSide(color: AppColors.lightGrey100),
+                  borderSide: const BorderSide(color: AppColors.lightGrey300),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
@@ -276,11 +276,11 @@ class PetOnboarding3Page extends GetView<PetOnboardingController> {
             suffixText: "kg",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.lightGrey100),
+              borderSide: const BorderSide(color: AppColors.lightGrey300),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.lightGrey100),
+              borderSide: const BorderSide(color: AppColors.lightGrey300),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -461,11 +461,11 @@ class PetOnboarding3Page extends GetView<PetOnboardingController> {
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.lightGrey100),
+              borderSide: const BorderSide(color: AppColors.lightGrey300),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: AppColors.lightGrey100),
+              borderSide: const BorderSide(color: AppColors.lightGrey300),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -492,7 +492,7 @@ class PetOnboarding3Page extends GetView<PetOnboardingController> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: isSelected ? AppColors.orange400 : AppColors.lightGrey100,
+            color: isSelected ? AppColors.orange400 : AppColors.lightGrey300,
             width: 2.w,
           ),
           color: isSelected
@@ -525,7 +525,7 @@ class PetOnboarding3Page extends GetView<PetOnboardingController> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: isSelected ? AppColors.orange400 : AppColors.lightGrey100,
+            color: isSelected ? AppColors.orange400 : AppColors.lightGrey300,
             width: 2.w,
           ),
           color: isSelected
@@ -593,7 +593,7 @@ class PetOnboarding3Page extends GetView<PetOnboardingController> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.deepPurple, // button text color
+                foregroundColor: AppColors.orange400, // button text color
               ),
             ),
           ),

@@ -12,7 +12,6 @@ class TermsAndConditions extends StatelessWidget {
           const CustomAppBar(
             title: 'TERMS OF SERVICE',
             showBackButton: true,
-            isTrailingIconVisible: false,
           ),
           Expanded(
             child: SingleChildScrollView(

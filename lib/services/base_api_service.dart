@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../controllers/auth_controller.dart';
+import '../core/common/CustomSnackbar.dart';
 import '../utils/logger_interceptor.dart';
 
 class BaseApiService {
@@ -109,7 +110,6 @@ class BaseApiService {
           // Refresh was successful, the queued request will be processed automatically
           return;
         } else {
-          // Refresh failed, request was already rejected in _processQueuedRequests
           return;
         }
       } catch (e) {

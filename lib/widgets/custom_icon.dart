@@ -21,9 +21,7 @@ class CustomIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
-      onTap: icon == Icons.notification_add
-          ? () => Get.toNamed('/notifications')
-          : onTap,
+      onTap: onTap,
       child: Container(
         width: 44.w,
         height: 44.h,

@@ -10,6 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:upgrader/upgrader.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/food_menu_controller.dart';
 import 'controllers/location_controller.dart';
@@ -50,8 +51,15 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: DoggziTheme.theme,
           initialRoute: _getInitialRoute(),
-          // initialRoute: '/otp-verification',
           getPages: AppRoutes.pages,
+          builder: (context, child) {
+            return UpgradeAlert(
+              barrierDismissible: false,
+              showLater: true,
+              upgrader: Upgrader(),
+              child: child!,
+            );
+          },
         );
       },
     );

@@ -22,13 +22,8 @@ class MenuPage extends GetView<FoodMenuController> {
         top: false,
         child: Column(
           children: [
-            CustomAppBar(
+            const CustomAppBar(
               title: "Menu",
-              trailingIcon: Icons.notification_add,
-              isTrailingIconVisible: true,
-              onLeadingIconTap: () {
-                // Navigate to settings page
-              },
             ),
             Expanded(
               // Changed from Container to Expanded
@@ -44,8 +39,18 @@ class MenuPage extends GetView<FoodMenuController> {
                           children: [
                             _buildFoodTypeChip(DietType.all),
                             SizedBox(width: 6.w),
-                            _buildFoodTypeChip(DietType.vegetarian),
-                            SizedBox(width: 6.w),
+                            Obx(() {
+                              if (menuController.selectedPetType.value ==
+                                  Species.dog) {
+                                return Row(
+                                  children: [
+                                    _buildFoodTypeChip(DietType.vegetarian),
+                                    SizedBox(width: 6.w),
+                                  ],
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            }),
                             _buildFoodTypeChip(DietType.non_vegetarian),
                           ],
                         ),
@@ -54,10 +59,14 @@ class MenuPage extends GetView<FoodMenuController> {
                         Row(
                           children: [
                             _buildPetTypeChip(
-                                Species.cat, FontAwesomeIcons.cat),
+                              Species.cat,
+                              FontAwesomeIcons.cat,
+                            ),
                             _buildToggleButton(),
                             _buildPetTypeChip(
-                                Species.dog, FontAwesomeIcons.dog),
+                              Species.dog,
+                              FontAwesomeIcons.dog,
+                            ),
                           ],
                         ),
                       ],
@@ -86,7 +95,7 @@ class MenuPage extends GetView<FoodMenuController> {
                                 },
                                 child: Padding(
                                   padding:
-                                      EdgeInsets.only(left: 16.w, right: 12.w),
+                                      EdgeInsets.only(left: 6.w, right: 6.w),
                                   child: MenuItem(
                                     item: item,
                                   ),

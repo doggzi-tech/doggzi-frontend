@@ -1,3 +1,5 @@
+import 'package:doggzi/core/common/CustomSnackbar.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -5,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 class LocationController extends GetxController {
   final Rx<Position?> _currentPosition = Rx<Position?>(null);
   final RxBool _isListening = false.obs;
+  final RxString address = "".obs;
 
   Position? get currentPosition => _currentPosition.value;
 
@@ -23,7 +26,7 @@ class LocationController extends GetxController {
     if (!hasPermission) return;
 
     await getCurrentLocation();
-    startListening();
+    // startListening();
   }
 
   Future<bool> _handlePermission() async {
@@ -32,8 +35,11 @@ class LocationController extends GetxController {
     if (status.isGranted) {
       return true;
     } else if (status.isPermanentlyDenied) {
-      Get.snackbar('Permission Denied',
-          'Location permission is permanently denied. Please enable it from settings.');
+      customSnackBar.show(
+        message:
+            'Location permission is permanently denied. Please enable it in settings.',
+        type: SnackBarType.error,
+      );
       await openAppSettings();
       return false;
     } else {
@@ -48,6 +54,7 @@ class LocationController extends GetxController {
         desiredAccuracy: LocationAccuracy.high,
       );
       _currentPosition.value = position;
+      getAddressFromLatLng(position.latitude, position.longitude);
     } catch (e) {
       Get.snackbar('Location Error', 'Failed to get location: $e');
     }
@@ -73,6 +80,22 @@ class LocationController extends GetxController {
   void stopListening() {
     _positionStream = null;
     _isListening.value = false;
+  }
+
+  Future<void> getAddressFromLatLng(double lat, double lng) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        address.value =
+            '${place.street}, ${place.locality}, ${place.postalCode}';
+      } else {
+        print('No address found');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+    }
   }
 
   @override

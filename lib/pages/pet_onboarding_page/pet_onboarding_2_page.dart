@@ -194,7 +194,7 @@ class PetOnboarding2Page extends GetView<PetOnboardingController> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: isSelected ? AppColors.green100 : AppColors.lightGrey100,
+                color: isSelected ? AppColors.green200 : AppColors.lightGrey100,
                 width: 2.w,
               ),
             ),
@@ -231,7 +231,7 @@ class PetOnboarding2Page extends GetView<PetOnboardingController> {
 
                   // Breed name
                   Positioned(
-                    bottom: 5.h,
+                    bottom: 0.h,
                     left: 12.w,
                     right: 12.w,
                     child: Text(
@@ -254,7 +254,7 @@ class PetOnboarding2Page extends GetView<PetOnboardingController> {
                         width: 24.w,
                         height: 24.h,
                         decoration: const BoxDecoration(
-                          color: AppColors.green100,
+                          color: AppColors.green200,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(

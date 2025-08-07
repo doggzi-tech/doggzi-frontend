@@ -29,10 +29,6 @@ class OTPVerificationPage extends GetView<AuthController> {
     }
 
     final success = await controller.verifyOTP(_otpController.text);
-
-    if (success) {
-      Get.offAllNamed(AppRoutes.mainPage);
-    }
   }
 
   Future<void> _handleResendOTP() async {

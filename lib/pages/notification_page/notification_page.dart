@@ -23,7 +23,6 @@ class NotificationsPage extends StatelessWidget {
             showBackButton: true,
             title: 'Notifications',
             isLeadingIconVisible: true,
-            isTrailingIconVisible: false,
           ),
           Obx(() {
             if (controller.isLoading.value &&

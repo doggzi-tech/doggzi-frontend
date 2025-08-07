@@ -7,10 +7,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/auth_controller.dart';
+import '../../controllers/carousel_controller.dart';
 import '../../controllers/pet_controller.dart';
 import '../../core/app_routes.dart';
 import '../../theme/colors.dart';
 import '../../theme/text_style.dart';
+import '../../widgets/cache_image.dart';
 
 List<LinearGradient> gradientList = [
   AppColors.purpleGradient,
@@ -93,12 +95,39 @@ class SubscriptionPage extends GetView<PetController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 30.h),
-                  Image.asset(
-                    "assets/images/subscription_information.png",
-                    fit: BoxFit.cover,
-                    width: 360.w,
-                    height: 230.h,
-                  ),
+                  Obx(() {
+                    final images = authController
+                        .generalSettings.value.subscriptionCarouselImages;
+                    return CarouselSlider(
+                      carouselController: carouselController,
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.easeInOut,
+                        height: 220.h,
+                        viewportFraction: 0.9,
+                        enlargeCenterPage: true,
+                        onPageChanged: (index, reason) {
+                          currentIndex.value = index;
+                        },
+                      ),
+                      items: images.map((i) {
+                        return Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: CachedImage(
+                            cacheKey: i.imageUrl,
+                            imageUrl: i.s3Url,
+                            fit: BoxFit.cover,
+                            width: 350.w,
+                            height: 220.h,
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }),
                   SizedBox(height: 20.h),
                   Text(
                     "Your Pet’s Personalized Nutrition Plan",
