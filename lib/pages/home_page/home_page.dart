@@ -153,54 +153,164 @@ class HomePage extends GetView<AuthController> {
               ),
             ),
 
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Meals for Pet",
-                    style:
-                        TextStyles.bodyL.copyWith(color: AppColors.darkGrey500),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.darkGrey500,
-                      size: 15.sp,
-                    ),
-                    onPressed: () {
-                      bottomNavController.selectedIndex.value = 1;
-                    },
-                  ),
-                ],
-              ),
-            ),
-
             Obx(() {
-              return SizedBox(
-                height: 255.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: menuController.homeMenuItems.length > 2
-                      ? 2
-                      : menuController.homeMenuItems.length,
-                  itemBuilder: (context, index) {
-                    final item = menuController.homeMenuItems[index];
-                    return ZoomTapAnimation(
-                      onTap: () {
-                        menuController.showMenuItemDetails(item);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 16.w, right: 12.w),
-                        child: MenuItem(
-                          item: item,
-                        ),
+              if (menuController.dogMeals.isNotEmpty) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Meals for Dog",
+                            style: TextStyles.bodyL
+                                .copyWith(color: AppColors.darkGrey500),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.darkGrey500,
+                              size: 15.sp,
+                            ),
+                            onPressed: () {
+                              bottomNavController.selectedIndex.value = 1;
+                            },
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
-              );
+                    ),
+                    SizedBox(
+                      height: 255.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: menuController.dogMeals.length,
+                        itemBuilder: (context, index) {
+                          final item = menuController.dogMeals[index];
+                          return ZoomTapAnimation(
+                            onTap: () {
+                              menuController.showMenuItemDetails(item);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 16.w, right: 12.w),
+                              child: MenuItem(
+                                item: item,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox.shrink();
+            }),
+            Obx(() {
+              if (menuController.catMeals.isNotEmpty) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Meals for Cat",
+                            style: TextStyles.bodyL
+                                .copyWith(color: AppColors.darkGrey500),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.darkGrey500,
+                              size: 15.sp,
+                            ),
+                            onPressed: () {
+                              bottomNavController.selectedIndex.value = 1;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 255.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: menuController.catMeals.length,
+                        itemBuilder: (context, index) {
+                          final item = menuController.catMeals[index];
+                          return ZoomTapAnimation(
+                            onTap: () {
+                              menuController.showMenuItemDetails(item);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 16.w, right: 12.w),
+                              child: MenuItem(
+                                item: item,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox.shrink();
+            }),
+            Obx(() {
+              if (menuController.dogTreats.isNotEmpty) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Treats for Dog",
+                            style: TextStyles.bodyL
+                                .copyWith(color: AppColors.darkGrey500),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.darkGrey500,
+                              size: 15.sp,
+                            ),
+                            onPressed: () {
+                              bottomNavController.selectedIndex.value = 1;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 255.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: menuController.dogTreats.length,
+                        itemBuilder: (context, index) {
+                          final item = menuController.dogTreats[index];
+                          return ZoomTapAnimation(
+                            onTap: () {
+                              menuController.showMenuItemDetails(item);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 16.w, right: 12.w),
+                              child: MenuItem(
+                                item: item,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox.shrink();
             }),
           ],
         ),

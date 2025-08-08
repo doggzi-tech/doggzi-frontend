@@ -7,10 +7,14 @@ import 'package:doggzi/pages/order_status/confirmed.dart';
 import 'package:doggzi/pages/user_onboarding_page/user_onboarding_page.dart';
 import 'package:get/get.dart';
 
+import '../controllers/address_controller.dart';
 import '../controllers/food_menu_controller.dart';
 import '../controllers/location_controller.dart';
 import '../controllers/pet_controller.dart';
 import '../controllers/pet_onboarding_controller.dart';
+import '../pages/address_page/address_form_page.dart';
+import '../pages/address_page/address_list_page.dart';
+import '../pages/address_page/map_pick_page.dart';
 import '../pages/cart_page/cart_page.dart';
 import '../pages/home_page/home_page.dart';
 import '../pages/notification_page/notification_page.dart';
@@ -39,6 +43,9 @@ class AppRoutes {
   static const petOnboarding2Page = '/pet-onboarding-2';
   static const petOnboarding3Page = '/pet-onboarding-3';
   static const userOnboardingPage = '/user-onboarding';
+  static const addressListPage = '/address-list';
+  static const mapPickPage = '/map-pick';
+  static const addressFormPage = '/address-form';
 
   static final pages = [
     GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
@@ -96,6 +103,23 @@ class AppRoutes {
     GetPage(
       name: userOnboardingPage,
       page: () => const UserOnboardingPage(),
+    ),
+    GetPage(
+      name: addressListPage,
+      page: () => const AddressListPage(),
+      bindings: [
+        BindingsBuilder(() {
+          Get.put(AddressController(), permanent: true);
+        }),
+      ],
+    ),
+    GetPage(
+      name: mapPickPage,
+      page: () => const MapPickPage(),
+    ),
+    GetPage(
+      name: addressFormPage,
+      page: () => const AddressFormPage(),
     ),
     // Assuming main page is same as home
   ];

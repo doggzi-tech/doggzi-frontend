@@ -242,11 +242,9 @@ class AuthController extends GetxController {
         message: 'Profile updated successfully',
         type: SnackBarType.success,
       );
-      if (Navigator.canPop(Get.context!)) {
-        Get.back();
-      } else {
-        Get.offNamed(AppRoutes.mainPage);
-      }
+
+      Get.offNamed(AppRoutes.mainPage);
+
       return true;
     } catch (e) {
       customSnackBar.show(

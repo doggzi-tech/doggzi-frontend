@@ -23,8 +23,28 @@ class MenuService extends BaseApiService {
         '/menu',
         queryParameters: parameters,
       );
-      List<dynamic> data = response.data;
-      return data.map((item) => MenuModel.fromJson(item)).toList();
+
+      return (response.data as List)
+          .map((item) => MenuModel.fromJson(item))
+          .toList();
+    } on DioException catch (e) {
+      throw handleError(e);
+    }
+  }
+
+  Future<MenuModelList> getAllMenuItems(
+      DietType dietType, Species species) async {
+    try {
+      Map<String, String> parameters = {
+        if (dietType != DietType.all) 'diet_type': dietType.name,
+        if (species != Species.all) 'species': species.name,
+      };
+      final response = await dio.get(
+        '/menu/all',
+        queryParameters: parameters,
+      );
+
+      return MenuModelList.fromJson(response.data);
     } on DioException catch (e) {
       throw handleError(e);
     }

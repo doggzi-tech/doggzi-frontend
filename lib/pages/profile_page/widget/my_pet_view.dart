@@ -33,8 +33,22 @@ class MyPetView extends GetView<PetController> {
               // Navigate to settings page
             },
           ),
-          Obx(
-            () => GridView.builder(
+          Obx(() {
+            if (controller.pets.isEmpty) {
+              return Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: Text(
+                      "You have no pets yet. Add your first pet!",
+                      style: TextStyles.actionM,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              );
+            }
+            return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.w,
@@ -44,8 +58,8 @@ class MyPetView extends GetView<PetController> {
               itemCount: controller.pets.length,
               itemBuilder: (context, index) =>
                   _PetCard(pet: controller.pets[index]),
-            ),
-          )
+            );
+          })
         ],
       ),
     );

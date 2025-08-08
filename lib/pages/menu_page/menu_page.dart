@@ -88,7 +88,7 @@ class MenuPage extends GetView<FoodMenuController> {
                             // Add vertical spacing
                             itemCount: controller.allMenuItems.length,
                             itemBuilder: (context, index) {
-                              final item = menuController.homeMenuItems[index];
+                              final item = menuController.allMenuItems[index];
                               return ZoomTapAnimation(
                                 onTap: () {
                                   menuController.showMenuItemDetails(item);

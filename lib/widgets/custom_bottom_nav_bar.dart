@@ -50,10 +50,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationBar(
-      shadowColor: AppColors.darkGrey300,
-      indicatorColor: Colors.white,
-      backgroundColor: AppColors.lightGrey100,
-      elevation: 10,
+      backgroundColor: Colors.transparent,
       destinations: [
         for (int i = 0; i < items.length; i++) _buildNavItem(i),
       ],
@@ -70,12 +67,8 @@ class CustomBottomNavBar extends StatelessWidget {
           curve: Curves.easeInOut,
           padding: EdgeInsets.symmetric(
             horizontal: isSelected ? 16.w : 12.w,
-            vertical: 8.h,
           ),
           decoration: BoxDecoration(
-            color: isSelected
-                ? AppColors.orange400.withOpacity(0.1)
-                : Colors.transparent,
             borderRadius: BorderRadius.circular(20.r),
           ),
           child: Column(
@@ -83,10 +76,16 @@ class CustomBottomNavBar extends StatelessWidget {
             children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
+                padding: EdgeInsets.all(isSelected ? 8.w : 0.w),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected ? AppColors.orange400 : Colors.transparent,
+                ),
                 child: Icon(
                   isSelected ? items[index].activeIcon : items[index].icon,
-                  color:
-                      isSelected ? AppColors.orange400 : AppColors.darkGrey300,
+                  color: isSelected
+                      ? AppColors.lightGrey100
+                      : AppColors.darkGrey300,
                   size: isSelected ? 26.sp : 24.sp,
                 ),
               ),
@@ -102,15 +101,6 @@ class CustomBottomNavBar extends StatelessWidget {
                 child: Text(items[index].label),
               ),
               SizedBox(height: 2.h),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                height: 3.h,
-                width: isSelected ? 20.w : 0,
-                decoration: BoxDecoration(
-                  color: AppColors.orange400,
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
             ],
           ),
         ),

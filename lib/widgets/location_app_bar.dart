@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../core/app_routes.dart';
 import '../logger/log_screen.dart';
 import '../theme/colors.dart';
 import 'custom_icon.dart';
@@ -46,31 +47,40 @@ class LocationAppBar extends GetView<LocationController> {
             ),
             SizedBox(width: 10.w),
           ],
-          Icon(
-            Icons.location_on,
-            color: AppColors.darkGrey100,
-            size: 26.sp,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Current Location",
-                style: TextStyles.bodyM.copyWith(
+          ZoomTapAnimation(
+            onTap: () {
+              Get.toNamed(AppRoutes.addressListPage);
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.location_on,
                   color: AppColors.darkGrey100,
+                  size: 26.sp,
                 ),
-              ),
-              Obx(() {
-                return Text(
-                  controller.currentPosition == null
-                      ? "Fetching location..."
-                      : controller.address.value,
-                  style: TextStyles.bodyL.copyWith(
-                    color: AppColors.darkGrey100,
-                  ),
-                );
-              }),
-            ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Current Location",
+                      style: TextStyles.bodyM.copyWith(
+                        color: AppColors.darkGrey100,
+                      ),
+                    ),
+                    Obx(() {
+                      return Text(
+                        controller.currentPosition == null
+                            ? "Fetching location..."
+                            : controller.address.value,
+                        style: TextStyles.bodyL.copyWith(
+                          color: AppColors.darkGrey100,
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ],
+            ),
           ),
           const Spacer(),
           ZoomTapAnimation(

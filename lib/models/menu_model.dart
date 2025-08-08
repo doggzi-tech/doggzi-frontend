@@ -73,3 +73,35 @@ class MenuModel {
   @override
   String toString() => jsonEncode(toJson());
 }
+
+class MenuModelList {
+  final List<MenuModel> dogMeals;
+  final List<MenuModel> catMeals;
+
+  final List<MenuModel> dogTreats;
+  final List<MenuModel> completeMenu;
+
+  MenuModelList({
+    required this.dogMeals,
+    required this.catMeals,
+    required this.dogTreats,
+    required this.completeMenu,
+  });
+
+  factory MenuModelList.fromJson(Map<String, dynamic> json) {
+    return MenuModelList(
+      dogMeals: (json['dog_meals'] as List)
+          .map((item) => MenuModel.fromJson(item))
+          .toList(),
+      catMeals: (json['cat_meals'] as List)
+          .map((item) => MenuModel.fromJson(item))
+          .toList(),
+      dogTreats: (json['dog_treats'] as List)
+          .map((item) => MenuModel.fromJson(item))
+          .toList(),
+      completeMenu: (json['all_menus'] as List)
+          .map((item) => MenuModel.fromJson(item))
+          .toList(),
+    );
+  }
+}
