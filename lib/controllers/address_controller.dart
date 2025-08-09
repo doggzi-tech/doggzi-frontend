@@ -1,39 +1,50 @@
+import 'package:doggzi/core/common/CustomSnackbar.dart';
+import 'package:doggzi/services/address_service.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 import '../models/address_model.dart';
+import 'auth_controller.dart';
 
 class AddressController extends GetxController {
   final RxList<AddressModel> addresses = <AddressModel>[].obs;
+  final addressService = AddressService();
+  final AddressModel defaultAddress = AddressModel(
+    address: '',
+    id: '',
+    additionalAddressInformation: '',
+    label: AddressType.home,
+    lat: 0.0,
+    lng: 0.0,
+    receiverName: '',
+    receiverPhone: '',
+  );
 
   final Rxn<AddressModel> selected = Rxn<AddressModel>();
 
   final RxString searchQuery = ''.obs;
 
-  // Dummy loader to simulate fetch from DB
+  @override
+  void onInit() {
+    super.onInit();
+    loadAddresses();
+  }
+
   Future<void> loadAddresses() async {
-    // In production: call backend -> load from DB
-    addresses.assignAll([
-      AddressModel(
-        id: '1',
-        userId: 'u1',
-        receiverName: 'Harshita',
-        receiverPhone: '+91-7631056337',
-        flat: 'Flat No. 101',
-        area: 'Lohegaon',
-        city: 'Pune',
-        state: 'Maharashtra',
-        postalCode: '411001',
-        country: 'India',
-        lat: 18.560,
-        lng: 73.914,
-        label: 'Home',
-      ),
-    ]);
+    try {
+      final List<AddressModel> loadedAddresses =
+          await addressService.getAddresses();
+      addresses.assignAll(loadedAddresses);
+    } catch (e) {
+      print('Error loading addresses: $e');
+      customSnackBar.show(
+          message: 'Failed to load addresses', type: SnackBarType.error);
+    }
   }
 
   Future<AddressModel> getCurrentLocationAsAddress() async {
+    final authController = Get.find<AuthController>();
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -52,24 +63,21 @@ class AddressController extends GetxController {
 
     final p = placemarks.first;
     final model = AddressModel(
-      userId: 'u1',
-      receiverName: '',
-      // UI will ask for receiver details later
-      receiverPhone: '',
-      flat: '${p.subThoroughfare ?? ''} ${p.thoroughfare ?? ''}'.trim(),
-      area: p.subLocality ?? p.locality ?? '',
-      city: p.locality ?? '',
-      state: p.administrativeArea ?? '',
-      postalCode: p.postalCode ?? '',
-      country: p.country ?? '',
+      address: "${p.name}, ${p.locality}, ${p.administrativeArea}",
+      id: "",
+      label: AddressType.home,
+      additionalAddressInformation: '',
       lat: pos.latitude,
       lng: pos.longitude,
+      receiverName: authController.user!.fullName,
+      receiverPhone: authController.user!.phoneNumber,
     );
 
     return model;
   }
 
   Future<AddressModel?> geocodeAddressString(String q) async {
+    final authController = Get.find<AuthController>();
     if (q.trim().isEmpty) return null;
     final locations = await locationFromAddress(q);
     if (locations.isEmpty) return null;
@@ -78,36 +86,16 @@ class AddressController extends GetxController {
         await placemarkFromCoordinates(loc.latitude, loc.longitude);
     final p = placemarks.first;
     return AddressModel(
-      userId: 'u1',
-      receiverName: '',
-      receiverPhone: '',
-      flat: '${p.subThoroughfare ?? ''} ${p.thoroughfare ?? ''}'.trim(),
-      area: p.subLocality ?? p.locality ?? '',
-      city: p.locality ?? '',
-      state: p.administrativeArea ?? '',
-      postalCode: p.postalCode ?? '',
-      country: p.country ?? '',
+      address: "${p.name}, ${p.locality}, ${p.administrativeArea}",
+      id: "",
+      label: AddressType.home,
+      additionalAddressInformation: '',
       lat: loc.latitude,
       lng: loc.longitude,
+      receiverName: authController.user!.fullName,
+      receiverPhone: authController.user!.phoneNumber,
     );
   }
 
-  void saveAddress(AddressModel a) {
-    // In production: call backend to create and return created id
-    if (a.id == null) {
-      a.id = DateTime.now().millisecondsSinceEpoch.toString();
-      addresses.insert(0, a);
-    } else {
-      final idx = addresses.indexWhere((e) => e.id == a.id);
-      if (idx != -1) addresses[idx] = a;
-    }
-    addresses.refresh();
-  }
-
-  void setDefault(String id) {
-    for (var a in addresses) {
-      a.isDefault = a.id == id;
-    }
-    addresses.refresh();
-  }
+  void saveAddress(AddressModel a) {}
 }

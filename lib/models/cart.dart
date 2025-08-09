@@ -8,7 +8,7 @@ class Cart {
 
   factory Cart.fromJson(Map<String, dynamic> json) {
     return Cart(
-      total: json["total"],
+      total: json['total']?.toDouble() ?? 0.0,
       items: (json['items'] as List)
           .map((item) => CartItem.fromJson(item))
           .toList(),

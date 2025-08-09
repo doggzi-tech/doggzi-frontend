@@ -10,11 +10,11 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 val env = Properties()
-val envFile = rootProject.file(".env")
+val envFile = rootProject.file("../.env")
 if (envFile.exists()) {
     envFile.inputStream().use { env.load(it) }
 }
-
+val mapsKey = env.getProperty("MAPS_API_KEY") ?: ""
 android {
     namespace = "com.doggzi.doggzi"
     compileSdk = flutter.compileSdkVersion

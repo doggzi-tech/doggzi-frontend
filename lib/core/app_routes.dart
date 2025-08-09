@@ -12,7 +12,6 @@ import '../controllers/food_menu_controller.dart';
 import '../controllers/location_controller.dart';
 import '../controllers/pet_controller.dart';
 import '../controllers/pet_onboarding_controller.dart';
-import '../pages/address_page/address_form_page.dart';
 import '../pages/address_page/address_list_page.dart';
 import '../pages/address_page/map_pick_page.dart';
 import '../pages/cart_page/cart_page.dart';
@@ -45,7 +44,6 @@ class AppRoutes {
   static const userOnboardingPage = '/user-onboarding';
   static const addressListPage = '/address-list';
   static const mapPickPage = '/map-pick';
-  static const addressFormPage = '/address-form';
 
   static final pages = [
     GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
@@ -115,11 +113,7 @@ class AppRoutes {
     ),
     GetPage(
       name: mapPickPage,
-      page: () => const MapPickPage(),
-    ),
-    GetPage(
-      name: addressFormPage,
-      page: () => const AddressFormPage(),
+      page: () => MapPickPage(),
     ),
     // Assuming main page is same as home
   ];

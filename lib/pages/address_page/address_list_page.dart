@@ -6,21 +6,8 @@ import 'package:get/get.dart';
 import '../../controllers/address_controller.dart';
 import '../../models/address_model.dart';
 
-class AddressListPage extends StatefulWidget {
+class AddressListPage extends GetView<AddressController> {
   const AddressListPage({super.key});
-
-  @override
-  State<AddressListPage> createState() => _AddressListPageState();
-}
-
-class _AddressListPageState extends State<AddressListPage> {
-  final AddressController c = Get.find();
-
-  @override
-  void initState() {
-    super.initState();
-    c.loadAddresses();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +37,18 @@ class _AddressListPageState extends State<AddressListPage> {
             ),
             SizedBox(height: 8.h),
             Expanded(child: Obx(() {
-              if (c.addresses.isEmpty) {
+              if (controller.addresses.isEmpty) {
                 return Center(
                     child: Text('No saved addresses',
                         style: TextStyle(fontSize: 14.sp)));
               }
               return ListView.separated(
                 itemBuilder: (ctx, i) {
-                  final a = c.addresses[i];
+                  final a = controller.addresses[i];
                   return _addressTile(a);
                 },
                 separatorBuilder: (_, __) => SizedBox(height: 10.h),
-                itemCount: c.addresses.length,
+                itemCount: controller.addresses.length,
               );
             })),
           ],
@@ -73,7 +60,7 @@ class _AddressListPageState extends State<AddressListPage> {
   Widget _buildSearchBar() {
     return TextField(
       onSubmitted: (q) async {
-        final res = await c.geocodeAddressString(q);
+        final res = await controller.geocodeAddressString(q);
         if (res != null) {
           Get.toNamed(AppRoutes.mapPickPage,
               arguments: {'addressCandidate': res});
@@ -117,7 +104,8 @@ class _AddressListPageState extends State<AddressListPage> {
             trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () async {
               try {
-                final candidate = await c.getCurrentLocationAsAddress();
+                final candidate =
+                    await controller.getCurrentLocationAsAddress();
                 // pass to form
                 Get.toNamed(AppRoutes.mapPickPage,
                     arguments: {'addressCandidate': candidate});
@@ -133,6 +121,7 @@ class _AddressListPageState extends State<AddressListPage> {
 
   Widget _addressTile(AddressModel a) {
     return Card(
+      color: AppColors.lightGrey100,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
         padding: EdgeInsets.all(12.w),
@@ -142,7 +131,7 @@ class _AddressListPageState extends State<AddressListPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(a.label,
+                Text(a.label.name.capitalizeFirst!,
                     style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 14.sp)),
                 if (a.isDefault)
@@ -159,30 +148,27 @@ class _AddressListPageState extends State<AddressListPage> {
               ],
             ),
             SizedBox(height: 8.h),
-            Text('${a.flat}, ${a.area}, ${a.city}, ${a.postalCode}',
+            Text('${a.address}, ${a.additionalAddressInformation}',
                 style: TextStyle(fontSize: 13.sp)),
             SizedBox(height: 6.h),
             Text('${a.receiverName}, ${a.receiverPhone}',
                 style: TextStyle(color: Colors.grey[700], fontSize: 12.sp)),
-            SizedBox(height: 8.h),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Get.toNamed(AppRoutes.mapPickPage, arguments: {'edit': a});
-                  },
-                  child: const Text('Edit'),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () {
-                    // set default
-                    Get.find<AddressController>().setDefault(a.id!);
-                  },
-                  child: const Text('Set Default'),
-                ),
-              ],
-            )
+            // SizedBox(height: 8.h),
+            // Row(
+            //   children: [
+            //     TextButton(
+            //       onPressed: () {
+            //         Get.toNamed(AppRoutes.mapPickPage, arguments: {'edit': a});
+            //       },
+            //       child: const Text('Edit'),
+            //     ),
+            //     const Spacer(),
+            //     TextButton(
+            //       onPressed: () {},
+            //       child: const Text('Set Default'),
+            //     ),
+            //   ],
+            // )
           ],
         ),
       ),
