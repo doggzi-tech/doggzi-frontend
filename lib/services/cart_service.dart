@@ -24,13 +24,18 @@ class CartService extends BaseApiService {
     }
   }
 
-  Future<Cart> updateCartItem(String cartItemId, int quantity) async {
+  Future<void> placeOrder(String promoCode, String addressId) async {
     try {
-      final response = await dio.put(
-        '/cart/update',
-        data: {'cart_item_id': cartItemId, 'quantity': quantity},
+      Map<String, dynamic> data = {
+        'address_id': addressId,
+      };
+      if (promoCode.isNotEmpty && promoCode != '') {
+        data['promo_code'] = promoCode;
+      }
+      await dio.post(
+        '/orders/',
+        data: data,
       );
-      return Cart.fromJson(response.data);
     } on DioException catch (e) {
       throw Exception(handleError(e));
     }

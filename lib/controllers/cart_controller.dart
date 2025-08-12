@@ -27,4 +27,13 @@ class CartController extends GetxController {
       print("failed to update cart items: $e");
     }
   }
+
+  Future<void> placeOrder(String promoCode, String addressId) async {
+    try {
+      await cartService.placeOrder(promoCode, addressId);
+      fetchCart();
+    } catch (e) {
+      print("failed to place order: $e");
+    }
+  }
 }

@@ -190,9 +190,9 @@ class AuthController extends GetxController {
         type: SnackBarType.success,
       );
       if (!isProfileComplete) {
-        Get.offAll(AppRoutes.userOnboardingPage);
+        Get.offAllNamed(AppRoutes.userOnboardingPage);
       } else {
-        Get.offAll(AppRoutes.mainPage);
+        Get.offAllNamed(AppRoutes.mainPage);
       }
       return true;
     } catch (e) {
@@ -200,6 +200,7 @@ class AuthController extends GetxController {
         message: 'OTP verification failed: ${e.toString()}',
         type: SnackBarType.error,
       );
+      print('OTP verification error: $e');
       return false;
     } finally {
       _isLoading.value = false;

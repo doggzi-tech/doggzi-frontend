@@ -48,7 +48,7 @@ class MenuModel {
   factory MenuModel.fromJson(Map<String, dynamic> json) {
     return MenuModel(
       foodType: json['food_type'] == 'meals' ? FoodType.meals : FoodType.treats,
-      id: json['_id'].toString(),
+      id: json['id'].toString(),
       name: json['name'] as String,
       description: json['description'] as String,
       quantity: json['quantity'] ?? 0,

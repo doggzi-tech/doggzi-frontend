@@ -17,38 +17,46 @@ class AddressListPage extends GetView<AddressController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-        child: Column(
-          children: [
-            CustomAppBar(title: "Saved Addresses"),
-            _buildSearchBar(),
-            SizedBox(height: 12.h),
-            _buildActionButtons(),
-            SizedBox(height: 18.h),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Saved Address',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[700])),
+      body: Column(
+        children: [
+          CustomAppBar(title: "Saved Addresses"),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              child: Column(
+                children: [
+                  SizedBox(height: 12.h),
+                  _buildSearchBar(),
+                  SizedBox(height: 12.h),
+                  _buildActionButtons(),
+                  SizedBox(height: 18.h),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Saved Address',
+                        style: TextStyle(
+                            fontSize: 14.sp, color: Colors.grey[700])),
+                  ),
+                  SizedBox(height: 8.h),
+                  Expanded(child: Obx(() {
+                    if (controller.addresses.isEmpty) {
+                      return Center(
+                          child: Text('No saved addresses',
+                              style: TextStyle(fontSize: 14.sp)));
+                    }
+                    return ListView.separated(
+                      itemBuilder: (ctx, i) {
+                        final a = controller.addresses[i];
+                        return _addressTile(a);
+                      },
+                      separatorBuilder: (_, __) => SizedBox(height: 10.h),
+                      itemCount: controller.addresses.length,
+                    );
+                  })),
+                ],
+              ),
             ),
-            SizedBox(height: 8.h),
-            Expanded(child: Obx(() {
-              if (controller.addresses.isEmpty) {
-                return Center(
-                    child: Text('No saved addresses',
-                        style: TextStyle(fontSize: 14.sp)));
-              }
-              return ListView.separated(
-                itemBuilder: (ctx, i) {
-                  final a = controller.addresses[i];
-                  return _addressTile(a);
-                },
-                separatorBuilder: (_, __) => SizedBox(height: 10.h),
-                itemCount: controller.addresses.length,
-              );
-            })),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
