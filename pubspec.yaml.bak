@@ -1,7 +1,7 @@
 name: doggzi
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.32+33
+version: 1.0.37+38
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -38,6 +38,8 @@ dependencies:
   intl: ^0.20.2
   geocoding: ^4.0.0
   upgrader: ^11.4.0
+  google_maps_flutter: ^2.12.3
+  animated_bottom_navigation_bar: ^1.4.0
 
 dev_dependencies:
   flutter_test:

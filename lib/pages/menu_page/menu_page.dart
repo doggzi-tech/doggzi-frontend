@@ -41,7 +41,9 @@ class MenuPage extends GetView<FoodMenuController> {
                             SizedBox(width: 6.w),
                             Obx(() {
                               if (menuController.selectedPetType.value ==
-                                  Species.dog) {
+                                      Species.dog ||
+                                  menuController.selectedPetType.value ==
+                                      Species.all) {
                                 return Row(
                                   children: [
                                     _buildFoodTypeChip(DietType.vegetarian),

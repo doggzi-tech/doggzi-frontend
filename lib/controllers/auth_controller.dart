@@ -190,9 +190,9 @@ class AuthController extends GetxController {
         type: SnackBarType.success,
       );
       if (!isProfileComplete) {
-        Get.offNamed(AppRoutes.userOnboardingPage);
+        Get.offAll(AppRoutes.userOnboardingPage);
       } else {
-        Get.offNamed(AppRoutes.mainPage);
+        Get.offAll(AppRoutes.mainPage);
       }
       return true;
     } catch (e) {

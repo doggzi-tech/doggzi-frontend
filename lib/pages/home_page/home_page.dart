@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:doggzi/controllers/auth_controller.dart';
 import 'package:doggzi/controllers/bottom_nav_controller.dart';
 import 'package:doggzi/controllers/carousel_controller.dart';
+import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/pages/home_page/widgets/explore_buttons.dart';
 import 'package:doggzi/pages/home_page/widgets/filter_buttons.dart';
 import 'package:doggzi/widgets/cache_image.dart';
@@ -11,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../controllers/food_menu_controller.dart';
+import '../../models/menu_model.dart';
 import '../../theme/colors.dart';
 import '../../theme/text_style.dart';
 import '../../widgets/location_app_bar.dart';
@@ -142,13 +144,24 @@ class HomePage extends GetView<AuthController> {
               child: Row(
                 children: [
                   buildExploreContainer("Dog's Fav",
-                      imagePath: "assets/images/dog_fav.png", onPressed: () {}),
+                      imagePath: "assets/images/dog_fav.png", onPressed: () {
+                    menuController.selectPetType(Species.dog);
+                    bottomNavController.selectedIndex.value = 1;
+                  }),
                   buildExploreContainer("Cat's Fav",
-                      imagePath: "assets/images/cat_fav.png", onPressed: () {}),
+                      imagePath: "assets/images/cat_fav.png", onPressed: () {
+                    menuController.selectPetType(Species.cat);
+                    bottomNavController.selectedIndex.value = 1;
+                  }),
                   buildExploreContainer("Offers",
-                      imagePath: "assets/images/offers.png", onPressed: () {}),
+                      imagePath: "assets/images/offers.png", onPressed: () {
+                    Get.toNamed(AppRoutes.offers);
+                  }),
                   buildExploreContainer("Treats",
-                      imagePath: "assets/images/treats.png", onPressed: () {}),
+                      imagePath: "assets/images/treats.png", onPressed: () {
+                    menuController.selectFoodCategory(FoodType.treats);
+                    bottomNavController.selectedIndex.value = 1;
+                  }),
                 ],
               ),
             ),

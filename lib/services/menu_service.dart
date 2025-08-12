@@ -13,11 +13,12 @@ class MenuService extends BaseApiService {
   }
 
   Future<List<MenuModel>> getMenuItems(
-      DietType dietType, Species species) async {
+      DietType dietType, Species species, FoodType foodType) async {
     try {
       Map<String, String> parameters = {
         if (dietType != DietType.all) 'diet_type': dietType.name,
         if (species != Species.all) 'species': species.name,
+        if (foodType != FoodType.all) 'food_type': foodType.name,
       };
       final response = await dio.get(
         '/menu',
@@ -32,16 +33,10 @@ class MenuService extends BaseApiService {
     }
   }
 
-  Future<MenuModelList> getAllMenuItems(
-      DietType dietType, Species species) async {
+  Future<MenuModelList> getAllMenuItems() async {
     try {
-      Map<String, String> parameters = {
-        if (dietType != DietType.all) 'diet_type': dietType.name,
-        if (species != Species.all) 'species': species.name,
-      };
       final response = await dio.get(
         '/menu/all',
-        queryParameters: parameters,
       );
 
       return MenuModelList.fromJson(response.data);

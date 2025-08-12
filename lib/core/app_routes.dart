@@ -1,6 +1,8 @@
 import 'package:doggzi/controllers/cart_controller.dart';
+import 'package:doggzi/controllers/promo_code_controller.dart';
 import 'package:doggzi/pages/main_page.dart';
 import 'package:doggzi/pages/menu_page/menu_page.dart';
+import 'package:doggzi/pages/offers_page/offers_page.dart';
 import 'package:doggzi/pages/on_boarding_page.dart';
 import 'package:doggzi/pages/order_status/cancelled.dart';
 import 'package:doggzi/pages/order_status/confirmed.dart';
@@ -44,6 +46,7 @@ class AppRoutes {
   static const userOnboardingPage = '/user-onboarding';
   static const addressListPage = '/address-list';
   static const mapPickPage = '/map-pick';
+  static const offers = '/offers';
 
   static final pages = [
     GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
@@ -104,7 +107,7 @@ class AppRoutes {
     ),
     GetPage(
       name: addressListPage,
-      page: () => const AddressListPage(),
+      page: () => AddressListPage(),
       bindings: [
         BindingsBuilder(() {
           Get.put(AddressController(), permanent: true);
@@ -114,6 +117,15 @@ class AppRoutes {
     GetPage(
       name: mapPickPage,
       page: () => MapPickPage(),
+    ),
+    GetPage(
+      name: offers,
+      page: () => OffersPage(), // Assuming offers is part of the main page
+      bindings: [
+        BindingsBuilder(() {
+          Get.put(PromoCodeController());
+        }),
+      ],
     ),
     // Assuming main page is same as home
   ];

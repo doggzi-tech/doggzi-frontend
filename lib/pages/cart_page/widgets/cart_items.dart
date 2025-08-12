@@ -55,14 +55,23 @@ class CartItemCard extends StatelessWidget {
                       SizedBox(width: 10.w),
 
                       // Name and Weight
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.menuItem.name, style: TextStyles.bodyM),
-                          SizedBox(height: 4.h),
-                          Text(item.menuItem.quantity.toString(),
-                              style: TextStyle(fontSize: 12.sp)),
-                        ],
+                      SizedBox(
+                        width: 150.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.menuItem.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              // Adds "..." at the end
+                              style: TextStyles.bodyM,
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(item.menuItem.quantity.toString(),
+                                style: TextStyle(fontSize: 12.sp)),
+                          ],
+                        ),
                       ),
 
                       const Spacer(),

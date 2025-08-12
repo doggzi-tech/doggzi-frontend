@@ -1,31 +1,27 @@
+import 'package:doggzi/controllers/location_controller.dart';
 import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/theme/colors.dart';
+import 'package:doggzi/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../controllers/address_controller.dart';
 import '../../models/address_model.dart';
 
 class AddressListPage extends GetView<AddressController> {
-  const AddressListPage({super.key});
+  AddressListPage({super.key});
+
+  final locationController = Get.find<LocationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-        title: Text('SELECT LOCATION', style: TextStyle(fontSize: 18.sp)),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Get.back(),
-        ),
-      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         child: Column(
           children: [
+            CustomAppBar(title: "Saved Addresses"),
             _buildSearchBar(),
             SizedBox(height: 12.h),
             _buildActionButtons(),
@@ -120,56 +116,64 @@ class AddressListPage extends GetView<AddressController> {
   }
 
   Widget _addressTile(AddressModel a) {
-    return Card(
-      color: AppColors.lightGrey100,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Padding(
-        padding: EdgeInsets.all(12.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(a.label.name.capitalizeFirst!,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 14.sp)),
-                if (a.isDefault)
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                    decoration: BoxDecoration(
-                        color: Colors.green[50],
-                        borderRadius: BorderRadius.circular(16.r)),
-                    child: Text('Delivers To',
-                        style: TextStyle(
-                            color: Colors.green[800], fontSize: 12.sp)),
-                  ),
-              ],
-            ),
-            SizedBox(height: 8.h),
-            Text('${a.address}, ${a.additionalAddressInformation}',
-                style: TextStyle(fontSize: 13.sp)),
-            SizedBox(height: 6.h),
-            Text('${a.receiverName}, ${a.receiverPhone}',
-                style: TextStyle(color: Colors.grey[700], fontSize: 12.sp)),
-            // SizedBox(height: 8.h),
-            // Row(
-            //   children: [
-            //     TextButton(
-            //       onPressed: () {
-            //         Get.toNamed(AppRoutes.mapPickPage, arguments: {'edit': a});
-            //       },
-            //       child: const Text('Edit'),
-            //     ),
-            //     const Spacer(),
-            //     TextButton(
-            //       onPressed: () {},
-            //       child: const Text('Set Default'),
-            //     ),
-            //   ],
-            // )
-          ],
+    return ZoomTapAnimation(
+      onTap: () {
+        controller.defaultAddress.value = a;
+        locationController.address.value = a.address;
+        Get.back();
+      },
+      child: Card(
+        color: AppColors.lightGrey100,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        child: Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(a.label.name.capitalizeFirst!,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 14.sp)),
+                  if (a.isDefault)
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                          color: Colors.green[50],
+                          borderRadius: BorderRadius.circular(16.r)),
+                      child: Text('Delivers To',
+                          style: TextStyle(
+                              color: Colors.green[800], fontSize: 12.sp)),
+                    ),
+                ],
+              ),
+              SizedBox(height: 8.h),
+              Text('${a.address}, ${a.additionalAddressInformation}',
+                  style: TextStyle(fontSize: 13.sp)),
+              SizedBox(height: 6.h),
+              Text('${a.receiverName}, ${a.receiverPhone}',
+                  style: TextStyle(color: Colors.grey[700], fontSize: 12.sp)),
+              // SizedBox(height: 8.h),
+              // Row(
+              //   children: [
+              //     TextButton(
+              //       onPressed: () {
+              //         Get.toNamed(AppRoutes.mapPickPage, arguments: {'edit': a});
+              //       },
+              //       child: const Text('Edit'),
+              //     ),
+              //     const Spacer(),
+              //     TextButton(
+              //       onPressed: () {},
+              //       child: const Text('Set Default'),
+              //     ),
+              //   ],
+              // )
+            ],
+          ),
         ),
       ),
     );

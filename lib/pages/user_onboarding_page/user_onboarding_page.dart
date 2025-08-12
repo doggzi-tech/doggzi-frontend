@@ -37,6 +37,7 @@ class UserOnboardingPage extends GetView<AuthController> {
             CustomAppBar(
               title: "My Profile",
               trailingIcon: Icons.logout,
+              showBackButton: true,
               isTrailingIconVisible: true,
               onTrailingIconTap: () {
                 controller.logout();

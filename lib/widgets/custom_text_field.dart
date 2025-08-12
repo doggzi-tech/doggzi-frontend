@@ -42,23 +42,29 @@ class CustomTextField extends StatelessWidget {
       style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade800),
       decoration: InputDecoration(
         hintText: hintText,
-        prefixIcon: Container(
-          padding: EdgeInsets.only(right: 8.w, left: 8.w),
-          constraints: BoxConstraints(minWidth: 60.w), // Give enough width
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (prefixIcon != null) ...[
-                Icon(prefixIcon, color: Colors.grey.shade600, size: 20.sp),
-                SizedBox(width: 4.w),
-              ],
-              Text(
-                "+91",
-                style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade800),
-              ),
-            ],
-          ),
-        ),
+        prefixIcon: prefixIcon != null || keyboardType == TextInputType.phone
+            ? Container(
+                padding: EdgeInsets.only(right: 8.w, left: 8.w),
+                constraints:
+                    BoxConstraints(minWidth: 60.w), // Give enough width
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (prefixIcon != null) ...[
+                      Icon(prefixIcon,
+                          color: Colors.grey.shade600, size: 20.sp),
+                      SizedBox(width: 4.w),
+                    ],
+                    if (keyboardType == TextInputType.phone)
+                      Text(
+                        "+91",
+                        style: TextStyle(
+                            fontSize: 16.sp, color: Colors.grey.shade800),
+                      ),
+                  ],
+                ),
+              )
+            : null,
         suffixIcon: suffixIcon,
         filled: true,
         fillColor: Colors.grey.shade50,

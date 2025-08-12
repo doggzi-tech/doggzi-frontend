@@ -7,6 +7,12 @@ enum DietType {
   non_vegetarian,
 }
 
+enum FoodType {
+  all,
+  meals,
+  treats,
+}
+
 enum Species { all, dog, cat }
 
 class MenuModel {
@@ -14,15 +20,17 @@ class MenuModel {
   final String name;
   final String description;
   final int quantity;
-  final int price;
+  final double price;
   final String species;
   final List<String> itemList;
   final String dietType;
+  final FoodType foodType;
   final bool freshlyCooked;
   final String imageUrl;
   final String s3Url;
 
   MenuModel({
+    required this.foodType,
     required this.id,
     required this.name,
     required this.description,
@@ -39,11 +47,12 @@ class MenuModel {
   /// Creates a ProductModel from a JSON map.
   factory MenuModel.fromJson(Map<String, dynamic> json) {
     return MenuModel(
+      foodType: json['food_type'] == 'meals' ? FoodType.meals : FoodType.treats,
       id: json['_id'].toString(),
       name: json['name'] as String,
       description: json['description'] as String,
       quantity: json['quantity'] ?? 0,
-      price: json['price_per_gram'] ?? 0,
+      price: json['price'] ?? 0,
       species: json['species'] ?? Species.all,
       itemList: List<String>.from(json['item_list'] ?? []),
       dietType: json['diet_type'] as String,
@@ -52,26 +61,6 @@ class MenuModel {
       s3Url: json['s3_url'] as String,
     );
   }
-
-  /// Converts the ProductModel instance to JSON.
-  Map<String, dynamic> toJson() {
-    return {
-      '_id': id,
-      'name': name,
-      'description': description,
-      'quantity': quantity,
-      'price_per_gram': price,
-      'species': species,
-      'item_list': itemList,
-      'diet_type': dietType,
-      'freshly_cooked': freshlyCooked,
-      'image_url': imageUrl,
-      's3_url': s3Url,
-    };
-  }
-
-  @override
-  String toString() => jsonEncode(toJson());
 }
 
 class MenuModelList {

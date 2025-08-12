@@ -136,8 +136,6 @@ class MapPickController extends GetxController {
       Get.snackbar('No location', 'Pick a location first.');
       return;
     }
-    Get.toNamed('/addressForm',
-        arguments: {'addressCandidate': candidate.value});
   }
 
   @override

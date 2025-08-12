@@ -73,3 +73,26 @@ class AddressModel {
     };
   }
 }
+
+extension AddressCopyWith on AddressModel {
+  AddressModel copyWith({
+    String? receiverName,
+    String? receiverPhone,
+    String? additionalAddressInformation,
+    AddressType? label,
+    bool? isDefault,
+  }) {
+    return AddressModel(
+      id: id,
+      address: address,
+      additionalAddressInformation:
+          additionalAddressInformation ?? this.additionalAddressInformation,
+      label: label ?? this.label,
+      lat: lat,
+      lng: lng,
+      receiverName: receiverName ?? this.receiverName,
+      receiverPhone: receiverPhone ?? this.receiverPhone,
+      isDefault: isDefault ?? this.isDefault,
+    );
+  }
+}

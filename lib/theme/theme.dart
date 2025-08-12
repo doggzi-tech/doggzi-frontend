@@ -29,7 +29,7 @@ class DoggziTheme {
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: AppColors.darkGrey400, width: 1.w),
+          borderSide: BorderSide(color: AppColors.darkGrey100, width: 1.w),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -40,7 +40,7 @@ class DoggziTheme {
         primary: AppColors.orange400,
         secondary: AppColors.orange200,
         error: AppColors.orange500,
-        surface: AppColors.darkGrey500,
+        surface: AppColors.lightGrey100,
         background: AppColors.lightGrey300,
       ),
     );

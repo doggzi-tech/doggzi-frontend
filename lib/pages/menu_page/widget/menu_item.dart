@@ -21,6 +21,16 @@ class MenuItem extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           Positioned(
+            top: 0,
+            child: CachedImage(
+              imageUrl: item.s3Url,
+              cacheKey: item.imageUrl,
+              width: 150.w,
+              height: 110.h,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
             top: 75.h,
             child: Column(
               children: [
@@ -28,10 +38,10 @@ class MenuItem extends StatelessWidget {
                   width: 168.w,
                   height: 160.h,
                   padding: EdgeInsets.only(
-                    top: 7.h,
-                    left: 10.w,
-                    right: 10.w,
-                    bottom: 10.h,
+                    top: 5.h,
+                    left: 5.w,
+                    right: 5.w,
+                    bottom: 5.h,
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -59,14 +69,14 @@ class MenuItem extends StatelessWidget {
                               item.species == "cat"
                                   ? SvgPicture.asset(
                                       'assets/images/cat_face.svg',
-                                      width: 16.w,
-                                      height: 16.h,
+                                      width: 12.w,
+                                      height: 12.h,
                                       color: AppColors.orange400,
                                     )
                                   : SvgPicture.asset(
                                       'assets/images/dog_face.svg',
-                                      width: 24.w,
-                                      height: 24.h,
+                                      width: 20.w,
+                                      height: 20.h,
                                       color: AppColors.orange400,
                                     ),
                               Text(
@@ -79,7 +89,7 @@ class MenuItem extends StatelessWidget {
                           )
                         ],
                       ),
-                      SizedBox(height: 3.h),
+                      SizedBox(height: 1.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -90,7 +100,10 @@ class MenuItem extends StatelessWidget {
                               children: [
                                 Text(
                                   item.name,
-                                  style: TextStyles.bodyL.copyWith(
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  // Adds "..." at the end
+                                  style: TextStyles.bodyS.copyWith(
                                     color: AppColors.orange500,
                                   ),
                                 ),
@@ -109,7 +122,7 @@ class MenuItem extends StatelessWidget {
                             children: [
                               // Top decorative line
                               Container(
-                                width: 60.w,
+                                width: 40.w,
                                 height: 1.h,
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
@@ -129,7 +142,7 @@ class MenuItem extends StatelessWidget {
                               SizedBox(height: 4.h),
                               // Bottom decorative line
                               Container(
-                                width: 60.w,
+                                width: 40.w,
                                 height: 1.h,
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
@@ -188,17 +201,6 @@ class MenuItem extends StatelessWidget {
                       )
                     : const SizedBox.shrink(),
               ],
-            ),
-          ),
-          Positioned(
-            top: 0,
-            child: Center(
-              child: CachedImage(
-                imageUrl: item.s3Url,
-                cacheKey: item.imageUrl,
-                width: 150.w,
-                height: 110.w,
-              ),
             ),
           ),
         ],

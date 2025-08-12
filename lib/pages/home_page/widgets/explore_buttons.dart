@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../theme/colors.dart';
 import '../../../theme/text_style.dart';
@@ -11,7 +12,7 @@ Widget buildExploreContainer(
 }) {
   return Padding(
     padding: EdgeInsets.only(right: 12.w),
-    child: GestureDetector(
+    child: ZoomTapAnimation(
       onTap: onPressed,
       child: Container(
         width: 80.w,

@@ -11,7 +11,7 @@ import '../utils/logger_interceptor.dart';
 
 class BaseApiService {
   static String productionUrl = 'https://backend.doggzi.com/';
-  static String developmentUrl = "http://192.168.1.4:8000/";
+  static String developmentUrl = dotenv.env["BASE_URL"]!;
   static String baseUrl = dotenv.env["ENVIRONMENT"] == "PRODUCTION"
       ? productionUrl
       : dotenv.env["ENVIRONMENT"] == "LOCAL"

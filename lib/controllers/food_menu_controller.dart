@@ -14,7 +14,8 @@ class FoodMenuController extends GetxController {
   final RxList<MenuModel> catMeals = <MenuModel>[].obs;
   final RxList<MenuModel> dogTreats = <MenuModel>[].obs;
   Rx<DietType> selectedFoodType = DietType.all.obs;
-  Rx<Species> selectedPetType = Species.all.obs;
+  Rx<Species> selectedPetType = Species.dog.obs;
+  Rx<FoodType> selectedFoodCategory = FoodType.all.obs;
   Rx<int> itemQuantity = 1.obs;
   final ImageService imageService = ImageService();
   RxBool isLoading = false.obs;
@@ -30,10 +31,7 @@ class FoodMenuController extends GetxController {
   Future<void> fetchAllMenuItems() async {
     isLoading.value = true;
     try {
-      final items = await _menuService.getAllMenuItems(
-        selectedFoodType.value,
-        selectedPetType.value,
-      );
+      final items = await _menuService.getAllMenuItems();
       allMenuItems.assignAll(items.completeMenu);
       if (dogMeals.isEmpty && catMeals.isEmpty && dogTreats.isEmpty) {
         dogMeals.assignAll(items.dogMeals);
@@ -57,6 +55,7 @@ class FoodMenuController extends GetxController {
       final items = await _menuService.getMenuItems(
         selectedFoodType.value,
         selectedPetType.value,
+        selectedFoodCategory.value,
       );
       allMenuItems.assignAll(items);
     } catch (e) {
@@ -71,12 +70,20 @@ class FoodMenuController extends GetxController {
   }
 
   void selectFoodType(DietType type) {
+    resetFilters();
     selectedFoodType.value = type;
     fetchMenuItems();
   }
 
   void selectPetType(Species type) {
+    resetFilters();
     selectedPetType.value = type;
+    fetchMenuItems();
+  }
+
+  void selectFoodCategory(FoodType type) {
+    resetFilters();
+    selectedFoodCategory.value = type;
     fetchMenuItems();
   }
 
@@ -89,5 +96,11 @@ class FoodMenuController extends GetxController {
       itemQuantity.value = 1;
       isDetailsSheetOpen.value = false;
     });
+  }
+
+  void resetFilters() {
+    selectedFoodType.value = DietType.all;
+    selectedPetType.value = Species.dog;
+    selectedFoodCategory.value = FoodType.all;
   }
 }

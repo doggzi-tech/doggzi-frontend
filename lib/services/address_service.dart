@@ -16,7 +16,7 @@ class AddressService extends BaseApiService {
 
   Future<AddressModel> addAddress(AddressModel address) async {
     try {
-      final response = await dio.post('/addresses', data: address.toJson());
+      final response = await dio.post('/addresses/', data: address.toJson());
       return AddressModel.fromJson(response.data);
     } on DioException catch (e) {
       throw handleError(e);
