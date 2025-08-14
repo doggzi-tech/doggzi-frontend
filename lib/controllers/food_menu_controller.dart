@@ -70,19 +70,16 @@ class FoodMenuController extends GetxController {
   }
 
   void selectFoodType(DietType type) {
-    resetFilters();
     selectedFoodType.value = type;
     fetchMenuItems();
   }
 
   void selectPetType(Species type) {
-    resetFilters();
     selectedPetType.value = type;
     fetchMenuItems();
   }
 
   void selectFoodCategory(FoodType type) {
-    resetFilters();
     selectedFoodCategory.value = type;
     fetchMenuItems();
   }

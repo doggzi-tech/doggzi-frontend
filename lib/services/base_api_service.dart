@@ -29,7 +29,7 @@ class BaseApiService {
 
   // Configuration for parallel processing
   bool enableParallelProcessing = true; // Set to false for sequential
-  int maxConcurrentRequests = 5; // Limit concurrent requests
+  static int maxConcurrentRequests = 3; // Limit concurrent requests
 
   BaseApiService() {
     dio = Dio(
@@ -249,7 +249,9 @@ class BaseApiService {
 
   // Process requests in parallel with concurrency limit
   Future<void> _processRequestsInParallel(
-      List<_QueuedRequest> requests, AuthController authController) async {
+    List<_QueuedRequest> requests,
+    AuthController authController,
+  ) async {
     print(
         '⚡ Processing ${requests.length} requests in parallel (max concurrent: $maxConcurrentRequests)');
 
@@ -290,7 +292,9 @@ class BaseApiService {
 
   // Process requests sequentially (original behavior)
   Future<void> _processRequestsSequentially(
-      List<_QueuedRequest> requests, AuthController authController) async {
+    List<_QueuedRequest> requests,
+    AuthController authController,
+  ) async {
     print('🔄 Processing ${requests.length} requests sequentially');
 
     for (final queuedRequest in requests) {

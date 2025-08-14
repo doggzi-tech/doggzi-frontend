@@ -1,5 +1,6 @@
 import 'package:doggzi/controllers/promo_code_controller.dart';
 import 'package:doggzi/widgets/custom_app_bar.dart';
+import 'package:doggzi/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,7 +36,7 @@ class OffersPage extends GetView<PromoCodeController> {
           ),
           Obx(
             () => controller.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
+                ? const Expanded(child: const Center(child: CustomLoader()))
                 : controller.offers.isEmpty
                     ? const Center(child: Text("No offers available"))
                     : _buildOffersList(),

@@ -20,8 +20,8 @@ class CartPage extends StatelessWidget {
   CartPage({super.key});
 
   final cartController = Get.find<CartController>();
-  final promoCodeController = Get.put(PromoCodeController());
-  final addressController = Get.put(AddressController());
+  final promoCodeController = Get.put(PromoCodeController(), permanent: true);
+  final addressController = Get.put(AddressController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {

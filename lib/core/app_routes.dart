@@ -64,9 +64,9 @@ class AppRoutes {
       bindings: [
         BindingsBuilder(() {
           Get.put(LocationController(), permanent: true);
-          Get.put(CartController(), permanent: true);
           Get.put(FoodMenuController());
           Get.put(PetController());
+          Get.put(CartController(), permanent: true);
         }),
       ],
     ),
@@ -120,10 +120,11 @@ class AppRoutes {
     ),
     GetPage(
       name: offers,
-      page: () => OffersPage(), // Assuming offers is part of the main page
+      page: () => const OffersPage(),
+      // Assuming offers is part of the main page
       bindings: [
         BindingsBuilder(() {
-          Get.put(PromoCodeController());
+          Get.put(PromoCodeController(), permanent: true);
         }),
       ],
     ),
