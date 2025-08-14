@@ -46,14 +46,35 @@ android {
     }
 
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+        getByName("release") {
             signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+            )
         }
     }
+
 }
 
 flutter {
     source = "../.."
+}
+dependencies {
+    // Google Play Services Credentials API for SmartAuth
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation("com.google.android.gms:play-services-auth-api-phone:18.1.0")
+    implementation("com.google.android.gms:play-services-identity:18.1.0")
+
+    // Google Pay In-App Payments API (for Razorpay GPay support)
+    implementation("com.google.android.gms:play-services-wallet:19.4.0")
+
+    // Additional core services that might be needed
+    implementation("com.google.android.gms:play-services-base:18.5.0")
+
+    // Google Play Core (required for Flutter's deferred components)
+    implementation("com.google.android.play:core:1.10.3")
+    implementation("com.google.android.play:core-ktx:1.8.1")
 }

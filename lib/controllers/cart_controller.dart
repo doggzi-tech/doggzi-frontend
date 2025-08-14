@@ -32,6 +32,7 @@ class CartController extends GetxController {
     try {
       await cartService.placeOrder(promoCode, addressId);
       fetchCart();
+      Get.back();
     } catch (e) {
       print("failed to place order: $e");
     }
