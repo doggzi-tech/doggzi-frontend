@@ -100,16 +100,22 @@ class AuthController extends GetxController {
   Future<void> _initializeMainPageControllers() async {
     try {
       await Get.putAsync<LocationController>(
-          () async => await LocationController().init(),
-          permanent: true);
+        () async => await LocationController().init(),
+        permanent: true,
+      );
       await Get.putAsync<FoodMenuController>(
-          () async => await FoodMenuController().init());
+        () async => await FoodMenuController().init(),
+        permanent: true,
+      );
       if (isLoggedIn) {
         await Get.putAsync<PetController>(
-            () async => await PetController().init());
+          () async => await PetController().init(),
+          permanent: true,
+        );
         await Get.putAsync<CartController>(
-            () async => await CartController().init(),
-            permanent: true);
+          () async => await CartController().init(),
+          permanent: true,
+        );
       }
     } catch (e) {
       print('Error initializing main page controllers: $e');
@@ -232,13 +238,12 @@ class AuthController extends GetxController {
         message: 'OTP verified successfully',
         type: SnackBarType.success,
       );
-      _isInitializing.value = true;
       await Get.putAsync<PetController>(
-          () async => await PetController().init());
+          () async => await PetController().init(),
+          permanent: true);
       await Get.putAsync<CartController>(
           () async => await CartController().init(),
           permanent: true);
-      _isInitializing.value = false;
       if (!isProfileComplete) {
         Get.offAllNamed(AppRoutes.userOnboardingPage);
       } else {

@@ -1,4 +1,5 @@
 import 'package:doggzi/theme/colors.dart';
+import 'package:doggzi/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,16 +49,7 @@ class CustomButton extends StatelessWidget {
           disabledForegroundColor: Colors.grey.shade600,
         ),
         child: isLoading
-            ? SizedBox(
-                width: 20.w,
-                height: 20.h,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    textColor ?? Colors.white,
-                  ),
-                ),
-              )
+            ? const CustomLoader()
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

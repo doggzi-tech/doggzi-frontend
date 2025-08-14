@@ -22,8 +22,8 @@ class LocationAppBar extends GetView<LocationController> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        left: 25.w,
-        right: 25.w,
+        left: 20.w,
+        right: 20.w,
         bottom: 20.h,
         top: 50.h,
       ),
@@ -37,15 +37,11 @@ class LocationAppBar extends GetView<LocationController> {
       child: Row(
         children: [
           if (showBackButton) ...[
-            ZoomTapAnimation(
+            CustomIcon(
               onTap: () => Get.back(),
-              child: Icon(
-                Icons.arrow_back,
-                color: AppColors.darkGrey100,
-                size: 24.sp,
-              ),
+              icon: Icons.chevron_left,
             ),
-            SizedBox(width: 10.w),
+            SizedBox(width: 5.w),
           ],
           ZoomTapAnimation(
             onTap: () {
@@ -58,12 +54,13 @@ class LocationAppBar extends GetView<LocationController> {
                   color: AppColors.darkGrey100,
                   size: 26.sp,
                 ),
+                SizedBox(width: 5.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Current Location",
-                      style: TextStyles.bodyM.copyWith(
+                      style: TextStyles.bodyS.copyWith(
                         color: AppColors.darkGrey100,
                       ),
                     ),
@@ -72,7 +69,7 @@ class LocationAppBar extends GetView<LocationController> {
                         controller.currentPosition == null
                             ? "Fetching location..."
                             : controller.address.value,
-                        style: TextStyles.bodyL.copyWith(
+                        style: TextStyles.bodyM.copyWith(
                           color: AppColors.darkGrey100,
                         ),
                       );
@@ -88,7 +85,7 @@ class LocationAppBar extends GetView<LocationController> {
               Get.to(() => const LoggerScreen());
             },
             child: Container(
-              width: 60.w,
+              width: 50.w,
               height: 30.h,
               decoration: BoxDecoration(
                 color: AppColors.orange300,
@@ -97,7 +94,7 @@ class LocationAppBar extends GetView<LocationController> {
               child: Center(
                 child: Text(
                   "Monitor",
-                  style: TextStyles.bodyS.copyWith(
+                  style: TextStyles.bodyXS.copyWith(
                     color: AppColors.lightGrey100,
                   ),
                 ),
