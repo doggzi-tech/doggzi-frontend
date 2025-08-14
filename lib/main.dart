@@ -11,6 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:doggzi/widgets/splash_loader.dart';
+
 import 'controllers/auth_controller.dart';
 import 'firebase_options.dart';
 
@@ -44,20 +46,28 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return GetMaterialApp(
-          title: 'Doggzi',
-          debugShowCheckedModeBanner: false,
-          theme: DoggziTheme.theme,
-          initialRoute: _getInitialRoute(),
-          getPages: AppRoutes.pages,
-          builder: (context, child) {
-            return UpgradeAlert(
-              barrierDismissible: false,
-              showLater: true,
-              upgrader: Upgrader(),
-              child: child!,
-            );
-          },
+        return Obx(
+          () => GetMaterialApp(
+            title: 'Doggzi',
+            debugShowCheckedModeBanner: false,
+            theme: DoggziTheme.theme,
+            initialRoute: _getInitialRoute(),
+            getPages: AppRoutes.pages,
+            builder: (context, child) {
+              final authController = Get.find<AuthController>();
+              return Obx(() {
+                if (authController.isInitializing) {
+                  return const SplashLoader();
+                }
+                return UpgradeAlert(
+                  barrierDismissible: false,
+                  showLater: true,
+                  upgrader: Upgrader(),
+                  child: child ?? const SizedBox.shrink(),
+                );
+              });
+            },
+          ),
         );
       },
     );

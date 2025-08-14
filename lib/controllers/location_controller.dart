@@ -15,10 +15,9 @@ class LocationController extends GetxController {
 
   Stream<Position>? _positionStream;
 
-  @override
-  void onInit() {
-    super.onInit();
-    _initLocationService();
+  Future<LocationController> init() async {
+    await _initLocationService();
+    return this;
   }
 
   Future<void> _initLocationService() async {

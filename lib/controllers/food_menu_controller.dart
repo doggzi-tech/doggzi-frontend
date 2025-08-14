@@ -22,10 +22,9 @@ class FoodMenuController extends GetxController {
 
   final RxBool isDetailsSheetOpen = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchAllMenuItems();
+  Future<FoodMenuController> init() async {
+    await fetchAllMenuItems();
+    return this;
   }
 
   Future<void> fetchAllMenuItems() async {

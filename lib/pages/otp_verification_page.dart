@@ -3,6 +3,7 @@ import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import '../controllers/auth_controller.dart';
@@ -57,8 +58,8 @@ class OTPVerificationPage extends GetView<AuthController> {
             top: 0,
             left: 20.w,
             right: 20.w,
-            child: Image.asset(
-              'assets/images/logo.png',
+            child: SvgPicture.asset(
+              'assets/images/doggzi_logo.svg',
               fit: BoxFit.fitHeight,
             ),
           ),

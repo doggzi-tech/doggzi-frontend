@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../controllers/phone_auth_controller.dart';
 import '../core/app_routes.dart';
@@ -34,8 +35,8 @@ class PhoneAuthPage extends StatelessWidget {
               top: 0,
               left: 20.w,
               right: 20.w,
-              child: Image.asset(
-                'assets/images/logo.png',
+              child: SvgPicture.asset(
+                'assets/images/doggzi_logo.svg',
                 fit: BoxFit.fitHeight,
               ),
             ),

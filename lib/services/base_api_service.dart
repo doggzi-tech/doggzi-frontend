@@ -29,7 +29,7 @@ class BaseApiService {
 
   // Configuration for parallel processing
   bool enableParallelProcessing = true; // Set to false for sequential
-  static int maxConcurrentRequests = 3; // Limit concurrent requests
+  static int maxConcurrentRequests = 8; // Limit concurrent requests
 
   BaseApiService() {
     dio = Dio(
@@ -46,6 +46,7 @@ class BaseApiService {
 
     dio.interceptors.add(
       PrettyDioLogger(
+        enabled: !kReleaseMode,
         requestHeader: true,
         requestBody: true,
         responseBody: true,

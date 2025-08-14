@@ -6,10 +6,9 @@ class CartController extends GetxController {
   final cartService = CartService();
   Rx<Cart> cart = Cart(total: 0.0, items: []).obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchCart();
+  Future<CartController> init() async {
+    await fetchCart();
+    return this;
   }
 
   Future<void> fetchCart() async {

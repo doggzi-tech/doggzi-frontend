@@ -61,14 +61,6 @@ class AppRoutes {
     GetPage(
       name: mainPage,
       page: () => MainPage(),
-      bindings: [
-        BindingsBuilder(() {
-          Get.put(LocationController(), permanent: true);
-          Get.put(FoodMenuController());
-          Get.put(PetController());
-          Get.put(CartController(), permanent: true);
-        }),
-      ],
     ),
     GetPage(name: notifications, page: () => NotificationsPage()),
     GetPage(

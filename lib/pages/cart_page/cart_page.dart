@@ -100,18 +100,6 @@ class CartPage extends StatelessWidget {
                         const DeliveryAddressCard(),
                         SizedBox(height: 16.h),
 
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(12.w),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFF3E0),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Image.asset(
-                              'assets/images/subscription_information.png',
-                              height: 60.h),
-                        ),
-
                         SizedBox(height: 20.h),
                         // Extra space for bottom padding
                       ],

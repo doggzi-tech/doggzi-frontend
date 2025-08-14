@@ -10,10 +10,9 @@ class PetController extends GetxController {
   RxString error = ''.obs;
   final PetService petService = PetService();
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchPets();
+  Future<PetController> init() async {
+    await fetchPets();
+    return this;
   }
 
   Future<void> fetchPets() async {

@@ -1,3 +1,7 @@
+import 'package:doggzi/controllers/cart_controller.dart';
+import 'package:doggzi/controllers/food_menu_controller.dart';
+import 'package:doggzi/controllers/location_controller.dart';
+import 'package:doggzi/controllers/pet_controller.dart';
 import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:doggzi/models/general_model.dart';
@@ -26,6 +30,7 @@ class AuthController extends GetxController {
 
   final Rx<User?> _user = Rx<User?>(null);
   final RxBool _isLoading = false.obs;
+  final RxBool _isInitializing = true.obs;
   final RxString _accessToken = ''.obs;
   final RxString _refreshToken = ''.obs;
 
@@ -44,8 +49,11 @@ class AuthController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
+  bool get isInitializing => _isInitializing.value;
+
   bool get isProfileComplete =>
-      _user.value!.email.isNotEmpty && _user.value!.fullName.isNotEmpty;
+      _user.value?.email.isNotEmpty == true &&
+      _user.value?.fullName.isNotEmpty == true;
 
   bool get isLoggedIn => _user.value != null && _accessToken.isNotEmpty;
 
@@ -68,9 +76,44 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadStoredAuth();
-    _checkServerHealth();
-    _getGeneralSettings();
+    initializeApp();
+    ever(_isInitializing, (isInitializing) {
+      print('Initialization status changed: $isInitializing');
+    });
+  }
+
+  Future<void> initializeApp() async {
+    try {
+      await Future.wait<void>([
+        _getGeneralSettings(),
+        _loadStoredAuth(),
+        _checkServerHealth(),
+        _initializeMainPageControllers(),
+      ]);
+    } catch (e) {
+      print('Error during initialization: $e');
+    } finally {
+      _isInitializing.value = false;
+    }
+  }
+
+  Future<void> _initializeMainPageControllers() async {
+    try {
+      await Get.putAsync<LocationController>(
+          () async => await LocationController().init(),
+          permanent: true);
+      await Get.putAsync<FoodMenuController>(
+          () async => await FoodMenuController().init());
+      if (isLoggedIn) {
+        await Get.putAsync<PetController>(
+            () async => await PetController().init());
+        await Get.putAsync<CartController>(
+            () async => await CartController().init(),
+            permanent: true);
+      }
+    } catch (e) {
+      print('Error initializing main page controllers: $e');
+    }
   }
 
   @override
@@ -80,7 +123,7 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
-  void _getGeneralSettings() async {
+  Future<void> _getGeneralSettings() async {
     try {
       final settings = await generalService.getGeneralSettings();
       generalSettings.value = settings;
@@ -90,7 +133,7 @@ class AuthController extends GetxController {
     }
   }
 
-  void _loadStoredAuth() {
+  Future<void> _loadStoredAuth() async {
     final storedAccessToken = _storage.read('access_token');
     final storedRefreshToken = _storage.read('refresh_token');
     final storedUser = _storage.read('user');
@@ -103,7 +146,7 @@ class AuthController extends GetxController {
       _user.value = User.fromJson(Map<String, dynamic>.from(storedUser));
 
       // Verify token is still valid by fetching profile
-      _verifyTokenValidity();
+      await _verifyTokenValidity();
     }
   }
 
@@ -189,6 +232,13 @@ class AuthController extends GetxController {
         message: 'OTP verified successfully',
         type: SnackBarType.success,
       );
+      _isInitializing.value = true;
+      await Get.putAsync<PetController>(
+          () async => await PetController().init());
+      await Get.putAsync<CartController>(
+          () async => await CartController().init(),
+          permanent: true);
+      _isInitializing.value = false;
       if (!isProfileComplete) {
         Get.offAllNamed(AppRoutes.userOnboardingPage);
       } else {
