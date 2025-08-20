@@ -3,6 +3,7 @@ import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class OrderConfirmedPage extends StatelessWidget {
   const OrderConfirmedPage({super.key});
@@ -27,7 +28,7 @@ class OrderConfirmedPage extends StatelessWidget {
                       color: AppColors.orange400,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.check, color: AppColors.lightGrey400),
+                    child: Center(child: Lottie.asset('assets/lottie/success.json',height:double.infinity,width: double.infinity,fit: BoxFit.contain ),),
                   ),
                   SizedBox(height: 40.h),
                   Text(

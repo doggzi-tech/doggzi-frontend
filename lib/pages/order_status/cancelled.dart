@@ -3,6 +3,7 @@ import 'package:doggzi/theme/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class OrderCancelledPage extends StatelessWidget {
   const OrderCancelledPage({super.key});
@@ -27,7 +28,7 @@ class OrderCancelledPage extends StatelessWidget {
                       color: AppColors.orange500,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.close, color: AppColors.lightGrey100),
+                    child: Center(child: Lottie.asset('assets/lottie/cancelled.json',width:double.infinity,height:double.infinity,fit: BoxFit.contain)),
                   ),
                   SizedBox(height: 40.h),
                   Text(

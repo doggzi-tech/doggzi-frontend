@@ -1,8 +1,15 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/route_manager.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../pages/order_status/cancelled.dart';
+import '../pages/order_status/confirmed.dart';
+import '../widgets/custom_loader.dart';
 import 'base_api_service.dart';
 
 class RazorpayService extends BaseApiService {
@@ -47,7 +54,7 @@ class RazorpayService extends BaseApiService {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     try {
-      await dio.post(
+     final verifyResponse= await dio.post(
         '/orders/${response.orderId}/verify-payment',
         data: {
           'razorpay_order_id': response.orderId,
@@ -55,6 +62,34 @@ class RazorpayService extends BaseApiService {
           'razorpay_signature': response.signature,
         },
       );
+      final status = verifyResponse.data['status'];
+
+      if (status == 'success') {
+        Get.offAll(() => OrderConfirmedPage());
+        return;
+      }
+
+      if (status == 'pending') {
+        int elapsed = 0;
+        const interval = Duration(seconds: 10);
+        const timeout = 60;
+
+        Timer.periodic(interval, (timer) async {
+          elapsed += 10;
+
+          final res = await dio.get('/orders/${response.orderId}/status');
+          final s = res.data["status"];
+          if (s == 'success') {
+            timer.cancel();
+            Get.offAll(() => OrderConfirmedPage());
+          } else if (s == 'failed' || elapsed > timeout) {
+            timer.cancel();
+            Get.offAll(() => OrderCancelledPage());
+          } else {
+            Get.offAll(CustomLoader());
+          }
+        });
+      }
     } on DioException catch (e) {
       throw Exception(handleError(e));
     }
