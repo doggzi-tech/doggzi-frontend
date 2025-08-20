@@ -19,6 +19,7 @@ import '../pages/address_page/map_pick_page.dart';
 import '../pages/cart_page/cart_page.dart';
 import '../pages/home_page/home_page.dart';
 import '../pages/notification_page/notification_page.dart';
+import '../pages/order_status/order_page.dart';
 import '../pages/otp_verification_page.dart';
 import '../pages/pet_onboarding_page/pet_onboarding_1_page.dart';
 import '../pages/pet_onboarding_page/pet_onboarding_2_page.dart';
@@ -47,6 +48,7 @@ class AppRoutes {
   static const addressListPage = '/address-list';
   static const mapPickPage = '/map-pick';
   static const offers = '/offers';
+  static const order = '/order';
 
   static final pages = [
     GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
@@ -96,6 +98,10 @@ class AppRoutes {
     GetPage(
       name: userOnboardingPage,
       page: () => const UserOnboardingPage(),
+    ),
+    GetPage(
+      name: order,
+      page: () => const OrderPage(),
     ),
     GetPage(
       name: addressListPage,

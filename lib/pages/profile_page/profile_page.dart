@@ -42,6 +42,9 @@ class ProfilePage extends StatelessWidget {
                   ProfileItem(
                     title: "My Orders",
                     onTap: () {
+                      Get.toNamed(
+                        AppRoutes.order,
+                      ); // Navigate to My Orders page
                       // Navigate to My Pets page
                     },
                   ),

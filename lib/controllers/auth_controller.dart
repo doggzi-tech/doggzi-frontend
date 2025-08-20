@@ -83,6 +83,9 @@ class AuthController extends GetxController {
   }
 
   Future<void> initializeApp() async {
+    print('Splash screen started');
+    print("start timing is ${DateTime.now()}");
+    final stopwatch = Stopwatch()..start();
     try {
       await Future.wait<void>([
         _getGeneralSettings(),
@@ -93,30 +96,46 @@ class AuthController extends GetxController {
     } catch (e) {
       print('Error during initialization: $e');
     } finally {
+      stopwatch.stop();
+      print('Initialization completed in ${stopwatch.elapsedMilliseconds}ms');
+      print("end timing is ${DateTime.now()}");
       _isInitializing.value = false;
+      print('Splash screen ended');
     }
   }
 
   Future<void> _initializeMainPageControllers() async {
     try {
+      print("LocationController initialization started at: ${DateTime.now()}");
+      // Always initialize location first
       await Get.putAsync<LocationController>(
         () async => await LocationController().init(),
         permanent: true,
       );
-      await Get.putAsync<FoodMenuController>(
-        () async => await FoodMenuController().init(),
-        permanent: true,
+      print(
+          'LocationController initialized completed timing: ${DateTime.now()}');
+      // Prepare futures for parallel initialization
+      final futures = <Future>[];
+      futures.add(
+        Get.putAsync<FoodMenuController>(
+          () async => await FoodMenuController().init(),
+          permanent: true,
+        ),
       );
       if (isLoggedIn) {
-        await Get.putAsync<PetController>(
-          () async => await PetController().init(),
-          permanent: true,
-        );
-        await Get.putAsync<CartController>(
-          () async => await CartController().init(),
-          permanent: true,
-        );
+        futures.addAll([
+          Get.putAsync<PetController>(
+            () async => await PetController().init(),
+            permanent: true,
+          ),
+          Get.putAsync<CartController>(
+            () async => await CartController().init(),
+            permanent: true,
+          ),
+        ]);
       }
+      // Run the prepared futures in parallel
+      await Future.wait(futures);
     } catch (e) {
       print('Error initializing main page controllers: $e');
     }
@@ -238,17 +257,32 @@ class AuthController extends GetxController {
         message: 'OTP verified successfully',
         type: SnackBarType.success,
       );
-      await Get.putAsync<PetController>(
+
+      if (Get.isRegistered<PetController>()) {
+        Get.delete<PetController>(force: true);
+      }
+      if (Get.isRegistered<CartController>()) {
+        Get.delete<CartController>(force: true);
+      }
+
+      // Initialize controllers in parallel
+      await Future.wait([
+        Get.putAsync<PetController>(
           () async => await PetController().init(),
-          permanent: true);
-      await Get.putAsync<CartController>(
+          permanent: true,
+        ),
+        Get.putAsync<CartController>(
           () async => await CartController().init(),
-          permanent: true);
+          permanent: true,
+        ),
+      ]);
+
       if (!isProfileComplete) {
         Get.offAllNamed(AppRoutes.userOnboardingPage);
       } else {
         Get.offAllNamed(AppRoutes.mainPage);
       }
+
       return true;
     } catch (e) {
       customSnackBar.show(

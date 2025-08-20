@@ -32,7 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackButtonTap;
 
   @override
-  Size get preferredSize => Size.fromHeight(50.h + 44.h + 20.h);
+  Size get preferredSize => Size.fromHeight(50.h + 44.h);
 
   @override
   Widget build(BuildContext context) {

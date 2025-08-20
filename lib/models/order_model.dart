@@ -20,7 +20,7 @@ class OrderModel {
   final double deliveryCharge;
   final double discount;
   final double tax;
-  final AddressModel address;
+  final AddressModel? address;
   final DateTime deliveryDate;
   final int? rating;
   final String? ratingComment;
@@ -53,7 +53,9 @@ class OrderModel {
       deliveryCharge: json['delivery_charge'] ?? 0.0,
       discount: json['discount'] ?? 0.0,
       tax: json['tax'] ?? 0.0,
-      address: AddressModel.fromJson(json['address']),
+      address: json['shipping_address'] != null
+          ? AddressModel.fromJson(json['shipping_address'])
+          : null,
       deliveryDate: DateTime.parse(json['delivery_date']),
       rating: json['rating'],
       ratingComment: json['rating_comment'],
@@ -65,7 +67,7 @@ class OrderItem {
   final String name;
   final int quantity;
   final double price;
-  final MenuModel menuItem;
+  final MenuModel? menuItem;
 
   OrderItem({
     required this.name,
@@ -80,7 +82,9 @@ class OrderItem {
       name: json['name'] as String,
       quantity: json['quantity'] ?? 1,
       price: json['price'] ?? 0.0,
-      menuItem: MenuModel.fromJson(json['menu_item']),
+      menuItem: json['menu_item'] != null
+          ? MenuModel.fromJson(json['menu_item'])
+          : null,
     );
   }
 }

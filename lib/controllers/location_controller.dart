@@ -23,9 +23,7 @@ class LocationController extends GetxController {
   Future<void> _initLocationService() async {
     final hasPermission = await _handlePermission();
     if (!hasPermission) return;
-
-    await getCurrentLocation();
-    // startListening();
+    await fetchLocationOptimized();
   }
 
   Future<bool> _handlePermission() async {
@@ -47,16 +45,48 @@ class LocationController extends GetxController {
     }
   }
 
-  Future<void> getCurrentLocation() async {
+  Future<void> fetchLocationOptimized() async {
     try {
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+      // 1. Get last known location first (instant if available)
+      final lastKnown = await Geolocator.getLastKnownPosition(
+        forceAndroidLocationManager: false,
       );
-      _currentPosition.value = position;
-      getAddressFromLatLng(position.latitude, position.longitude);
+      if (lastKnown != null) {
+        // Check if cached location is fresh (less than 30 minutes old)
+        final locationAge = DateTime.now().difference(lastKnown.timestamp);
+        if (locationAge.inMinutes < 60) {
+          print("Using cached location");
+          _updatePosition(lastKnown);
+        } else {
+          print("Cached location is too old, fetching new location");
+          final mediumAccuracyPosition = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.medium,
+          );
+          _updatePosition(mediumAccuracyPosition);
+          print("Got medium accuracy location");
+        }
+      }
+      Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 10), // Added timeout
+      ).then((highAccuracyPosition) {
+        _updatePosition(highAccuracyPosition);
+        print("Updated with high accuracy location");
+      }).catchError((e) {
+        print("Failed to get high accuracy location: $e");
+      });
     } catch (e) {
-      Get.snackbar('Location Error', 'Failed to get location: $e');
+      print("Location fetch error: $e");
+      // Only show an error if we failed to get any location at all
+      if (_currentPosition.value == null) {
+        Get.snackbar('Location Error', 'Failed to get location: $e');
+      }
     }
+  }
+
+  void _updatePosition(Position position) {
+    _currentPosition.value = position;
+    getAddressFromLatLng(position.latitude, position.longitude);
   }
 
   void startListening() {
@@ -70,7 +100,7 @@ class LocationController extends GetxController {
     );
 
     _positionStream!.listen((Position position) {
-      _currentPosition.value = position;
+      _updatePosition(position);
     });
 
     _isListening.value = true;

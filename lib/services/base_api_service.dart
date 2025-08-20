@@ -46,7 +46,8 @@ class BaseApiService {
 
     dio.interceptors.add(
       PrettyDioLogger(
-        enabled: !kReleaseMode,
+        // enabled: !kReleaseMode,
+        enabled: false,
         requestHeader: true,
         requestBody: true,
         responseBody: true,
@@ -64,7 +65,7 @@ class BaseApiService {
           if (authController.accessToken.isNotEmpty) {
             options.headers['Authorization'] =
                 'Bearer ${authController.accessToken}';
-            print('🔑 Using access token: ${authController.accessToken}');
+            // print('🔑 Using access token: ${authController.accessToken}');
           }
           print('🚀 ${options.method} ${options.path}');
           if (options.data != null) {
