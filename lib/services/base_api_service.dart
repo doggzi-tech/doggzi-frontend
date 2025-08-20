@@ -46,8 +46,8 @@ class BaseApiService {
 
     dio.interceptors.add(
       PrettyDioLogger(
-        // enabled: !kReleaseMode,
-        enabled: false,
+        enabled: !kReleaseMode,
+        // enabled: false,
         requestHeader: true,
         requestBody: true,
         responseBody: true,

@@ -6,6 +6,7 @@ import 'package:doggzi/core/app_routes.dart';
 import 'package:doggzi/core/common/CustomSnackbar.dart';
 import 'package:doggzi/models/general_model.dart';
 import 'package:doggzi/services/general_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -97,6 +98,17 @@ class AuthController extends GetxController {
       print('Error during initialization: $e');
     } finally {
       stopwatch.stop();
+      // Logs an event when a user clicks the main call-to-action button
+      FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+      analytics.logEvent(
+        name: 'InitializationCompleted',
+        parameters: {
+          'duration_ms': stopwatch.elapsedMilliseconds,
+          'isLoggedIn': isLoggedIn == true ? 1 : 0,
+          'isProfileComplete': isProfileComplete == true ? 1 : 0,
+          "userId": user?.id ?? 'guest',
+        },
+      );
       print('Initialization completed in ${stopwatch.elapsedMilliseconds}ms');
       print("end timing is ${DateTime.now()}");
       _isInitializing.value = false;
@@ -112,8 +124,7 @@ class AuthController extends GetxController {
         () async => await LocationController().init(),
         permanent: true,
       );
-      print(
-          'LocationController initialized completed timing: ${DateTime.now()}');
+      print('LocationController initialized completed at: ${DateTime.now()}');
       // Prepare futures for parallel initialization
       final futures = <Future>[];
       futures.add(
