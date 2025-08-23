@@ -6,6 +6,7 @@ import 'package:doggzi/pages/offers_page/offers_page.dart';
 import 'package:doggzi/pages/on_boarding_page.dart';
 import 'package:doggzi/pages/order_status/cancelled.dart';
 import 'package:doggzi/pages/order_status/confirmed.dart';
+import 'package:doggzi/pages/order_status/order_page/widgets/order_details.dart';
 import 'package:doggzi/pages/user_onboarding_page/user_onboarding_page.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,7 @@ import '../pages/address_page/map_pick_page.dart';
 import '../pages/cart_page/cart_page.dart';
 import '../pages/home_page/home_page.dart';
 import '../pages/notification_page/notification_page.dart';
-import '../pages/order_status/order_page.dart';
+import '../pages/order_status/order_page/order_page.dart';
 import '../pages/otp_verification_page.dart';
 import '../pages/pet_onboarding_page/pet_onboarding_1_page.dart';
 import '../pages/pet_onboarding_page/pet_onboarding_2_page.dart';
@@ -49,6 +50,7 @@ class AppRoutes {
   static const mapPickPage = '/map-pick';
   static const offers = '/offers';
   static const order = '/order';
+  static const orderDetailsPage = '/order-details';
 
   static final pages = [
     GetPage(name: confirmed, page: () => const OrderConfirmedPage()),
