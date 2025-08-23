@@ -125,17 +125,18 @@ class OrderCard extends GetView<CartController> {
             ),
 
             // Rating & Reorder (only for delivered orders)
-            title.contains('Delivered')
-                ? Padding(
+
+                Padding(
               padding:
               EdgeInsets.symmetric(horizontal: 19.w, vertical: 6.h),
               child: Row(
                 children: [
+                  title.contains('Delivered')?
                   Text(
                     'Rate',
                     style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 17.sp),
-                  ),
+                  ):
                   SizedBox(width: 11.w),
 
                   const Spacer(),
@@ -168,7 +169,7 @@ class OrderCard extends GetView<CartController> {
                 ],
               ),
             )
-                : const SizedBox(),
+
           ],
         ),
       ),

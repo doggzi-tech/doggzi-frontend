@@ -1,4 +1,5 @@
 import 'package:doggzi/core/app_routes.dart';
+import 'package:doggzi/models/cart.dart';
 import 'package:doggzi/models/order_model.dart';
 import 'package:doggzi/pages/order_status/order_page/widgets/order_card.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,9 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../widgets/custom_app_bar.dart';
 
 class OrderPage extends GetView<CartController> {
-  const OrderPage({super.key});
+   OrderPage({super.key});
+
+  final cartController = Get.find<CartController>();
 
   String _formatDate(DateTime dt) {
     final months = [
@@ -47,7 +50,7 @@ class OrderPage extends GetView<CartController> {
     return Scaffold(
       body: Column(
         children: [
-          CustomAppBar(
+          const CustomAppBar(
             title: "Orders",
             showBackButton: true,
           ),
@@ -68,25 +71,38 @@ class OrderPage extends GetView<CartController> {
                   final order = controller.orders[index];
                   final date = order.deliveryDate;
 
-                  if (order.status == OrderStatus.pending_confirmation ||
-                      order.status == OrderStatus.delivered) {
-                    return OrderCard(
-                      title: 'Delivered on ${_formatDate(date)}',
-                      order: order,
-                    );
-                  } else if (order.status == OrderStatus.cancelled ||
-                      order.status == OrderStatus.failed) {
-                    return OrderCard(
-                      title: 'Cancelled on ${_formatDate(date)}',
-                      order: order,
-                    );
-                  } else if (order.status == OrderStatus.out_for_delivery) {
-                    return OrderCard(
-                      title: 'Out for Delivery on ${_formatDate(date)}',
-                      order: order,
-                    );
-                  }
-                  return const SizedBox.shrink();
+                  return ZoomTapAnimation(
+                    onTap: () {
+                      cartController.showOrderDetails(order);
+                    },
+                    child: () {
+                      if (order.status == OrderStatus.pending_confirmation ||
+                          order.status == OrderStatus.delivered) {
+                        return OrderCard(
+                          title: 'Delivered on ${_formatDate(date)}',
+                          order: order,
+                        );
+                      } else if (order.status == OrderStatus.cancelled ||
+                          order.status == OrderStatus.failed ||order.status==OrderStatus.pending_payment) {
+                        return OrderCard(
+                          title: 'Cancelled on ${_formatDate(date)}',
+                          order: order,
+                        );
+                      } else if (order.status == OrderStatus.out_for_delivery) {
+                        return OrderCard(
+                          title: 'Out for Delivery on ${_formatDate(date)}',
+                          order: order,
+                        );
+                      }
+                      else if (order.status == OrderStatus.preparing) {
+                        return OrderCard(
+                          title: 'Preparing on ${_formatDate(date)}',
+                          order: order,
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    }(),
+                  );
                 },
               );
             }),

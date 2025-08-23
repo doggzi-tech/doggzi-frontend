@@ -1,7 +1,9 @@
 import 'package:doggzi/models/cart.dart';
 import 'package:doggzi/models/order_model.dart';
+import 'package:doggzi/pages/order_status/order_page/widgets/order_details.dart';
 import 'package:doggzi/services/cart_service.dart';
 import 'package:doggzi/services/order_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
@@ -49,4 +51,21 @@ class CartController extends GetxController {
       print("failed to fetch orders: $e");
     }
   }
+
+  Rx<int> itemQuantity = 1.obs;
+  final RxBool isDetailsSheetOpen = false.obs;
+
+  void showOrderDetails(OrderModel item) {
+    isDetailsSheetOpen.value = true;
+
+    Get.bottomSheet(
+      OrderDetailsPage(order: item),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    ).then((_) {
+      itemQuantity.value = 1;
+     isDetailsSheetOpen.value=false;
+    });
+  }
+
 }

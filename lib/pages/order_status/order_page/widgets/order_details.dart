@@ -269,7 +269,7 @@ class OrderDetailsPage extends StatelessWidget {
                       Text('Payment Mode',
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.bold)),
-                      Text("COD",
+                      Text("NULL",
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.bold)),
                     ],

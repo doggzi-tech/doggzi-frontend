@@ -103,7 +103,7 @@ class AppRoutes {
     ),
     GetPage(
       name: order,
-      page: () => const OrderPage(),
+      page: () =>  OrderPage(),
     ),
     GetPage(
       name: addressListPage,
