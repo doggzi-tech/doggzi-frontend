@@ -15,12 +15,8 @@ class OrderCard extends GetView<CartController> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(() => OrderDetailsPage(order: order));
-      },
-      child: Container(
-        margin: EdgeInsets.all(10.h),
+    return Container(
+         margin: EdgeInsets.all(10.h),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
@@ -33,6 +29,8 @@ class OrderCard extends GetView<CartController> {
             ),
           ],
         ),
+    child: Padding(
+    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -48,12 +46,11 @@ class OrderCard extends GetView<CartController> {
             ),
 
             Divider(
-              height: 18.h,
-              color: Colors.grey.shade300,
-              thickness: 1,
-            ),
+                height: 22.h,
+                color: Colors.grey.shade300,
+                thickness: 1.2),
 
-            /// Items inside order
+            // Items inside order
             Column(
               children: order.items.map((item) {
                 return Padding(
@@ -104,6 +101,7 @@ class OrderCard extends GetView<CartController> {
                           ],
                         ),
                       ),
+                      SizedBox(width: 5.w),
                       Text(
                         "₹${item.price.toStringAsFixed(2)}",
                         style: TextStyle(
@@ -119,10 +117,9 @@ class OrderCard extends GetView<CartController> {
             ),
 
             Divider(
-              height: 18.h,
-              color: Colors.grey.shade300,
-              thickness: 1,
-            ),
+                height: 22.h,
+                color: Colors.grey.shade300,
+                thickness: 1.2),
 
             // Rating & Reorder (only for delivered orders)
 
@@ -141,7 +138,7 @@ class OrderCard extends GetView<CartController> {
 
                   const Spacer(),
 
-                  /// Reorder button
+                  // Reorder button
                   ElevatedButton(
                     onPressed: () {
                       // TODO: Implement reorder
@@ -172,7 +169,8 @@ class OrderCard extends GetView<CartController> {
 
           ],
         ),
-      ),
+      // ),
+    )
     );
   }
 }

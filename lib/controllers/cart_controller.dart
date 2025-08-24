@@ -11,6 +11,8 @@ class CartController extends GetxController {
   final orderService = OrderService();
   RxList<OrderModel> orders = <OrderModel>[].obs;
   Rx<Cart> cart = Cart(total: 0.0, items: []).obs;
+  Rx<int> itemQuantity = 1.obs;
+  final RxBool isDetailsSheetOpen = false.obs;
 
   Future<CartController> init() async {
     await fetchCart();
@@ -52,12 +54,7 @@ class CartController extends GetxController {
     }
   }
 
-  Rx<int> itemQuantity = 1.obs;
-  final RxBool isDetailsSheetOpen = false.obs;
-
   void showOrderDetails(OrderModel item) {
-    isDetailsSheetOpen.value = true;
-
     Get.bottomSheet(
       OrderDetailsPage(order: item),
       isScrollControlled: true,

@@ -1,5 +1,4 @@
-import 'package:doggzi/core/app_routes.dart';
-import 'package:doggzi/models/cart.dart';
+
 import 'package:doggzi/models/order_model.dart';
 import 'package:doggzi/pages/order_status/order_page/widgets/order_card.dart';
 import 'package:flutter/material.dart';
