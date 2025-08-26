@@ -32,6 +32,10 @@ class OrderDetailsPage extends StatelessWidget {
     return "$dayName, ${dt.day.toString().padLeft(2, '0')} $monthName";
   }
 
+  double _getItemsTotal() {
+    return order.items.fold(0.0, (sum, item) => sum + (item.price * item.quantity));
+  }
+
   @override
   Widget build(BuildContext context) {
     if (order.items.isEmpty) {
@@ -132,7 +136,7 @@ class OrderDetailsPage extends StatelessWidget {
                               width: 20.w,
                               height: 20.h,
                             ),
-                            SizedBox(width: 5.w),
+                            SizedBox(width: 10.w),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,6 +156,7 @@ class OrderDetailsPage extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            SizedBox(width: 10.w),
                             Text(
                               "₹${item.price.toStringAsFixed(2)}",
                               style: TextStyle(
@@ -240,7 +245,7 @@ class OrderDetailsPage extends StatelessWidget {
                       Text('Item Total',
                           style: TextStyle(
                               fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                      Text("₹${order.totalAmount.toStringAsFixed(2)}",
+                      Text("₹${_getItemsTotal().toStringAsFixed(2)}",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14.sp)),
                     ],
@@ -257,6 +262,19 @@ class OrderDetailsPage extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 14.sp)),
                     ],
                   ),
+                  SizedBox(height: 5.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Tax Included',
+                          style: TextStyle(
+                              fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                      Text("₹${order.tax.toStringAsFixed(2)}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14.sp)),
+                    ],
+                  ),
+                  SizedBox(height: 5.h),
                   Divider(
                       height: 22.h,
                       color: Colors.grey.shade300,

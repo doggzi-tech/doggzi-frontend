@@ -11,52 +11,56 @@ class OrderCard extends GetView<CartController> {
   final String title;
   final OrderModel order;
 
-  const OrderCard({super.key, required this.title, required this.order});
+  final RxInt rating=0.obs;
+
+   OrderCard({super.key, required this.title, required this.order}){
+     rating.value=order.rating??0;
+   }
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
-         margin: EdgeInsets.all(10.h),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              spreadRadius: 1,
-              offset: const Offset(0, 0),
-            ),
-          ],
-        ),
-    child: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+      margin: EdgeInsets.all(10.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: const Offset(0, 0),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Order Title
             Padding(
-              padding: EdgeInsets.only(top: 10.h, bottom: 5.h, left: 10.w),
+              padding: EdgeInsets.only(bottom: 8.h),
               child: Text(
                 title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 22.sp,
+                  fontSize: 18.sp,
                 ),
               ),
             ),
 
-            Divider(
-                height: 22.h,
-                color: Colors.grey.shade300,
-                thickness: 1.2),
+            Divider(color: Colors.grey.shade300, thickness: 1.2),
 
-            // Items inside order
+            /// Order Items
             Column(
               children: order.items.map((item) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 7.h),
+                  padding: EdgeInsets.symmetric(vertical: 6.h),
                   child: Row(
                     children: [
+                      /// Item Image
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
                         child: SizedBox(
@@ -72,6 +76,8 @@ class OrderCard extends GetView<CartController> {
                         ),
                       ),
                       SizedBox(width: 10.w),
+
+                      /// Veg / Non-Veg Icon
                       Image.asset(
                         item.menuItem?.dietType == "vegetarian"
                             ? 'assets/images/veg.png'
@@ -80,6 +86,8 @@ class OrderCard extends GetView<CartController> {
                         height: 20.h,
                       ),
                       SizedBox(width: 5.w),
+
+                      /// Item Name + Quantity
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +109,8 @@ class OrderCard extends GetView<CartController> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 5.w),
+                      SizedBox(width: 10.w),
+                      /// Price
                       Text(
                         "₹${item.price.toStringAsFixed(2)}",
                         style: TextStyle(
@@ -116,61 +125,101 @@ class OrderCard extends GetView<CartController> {
               }).toList(),
             ),
 
-            Divider(
-                height: 22.h,
-                color: Colors.grey.shade300,
-                thickness: 1.2),
+            Divider(color: Colors.grey.shade300, thickness: 1.2),
 
-            // Rating & Reorder (only for delivered orders)
-
-                Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: 19.w, vertical: 6.h),
+            title.contains('Delivered')?
+            Column(children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.h),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title.contains('Delivered')?
                   Text(
-                    'Rate',
+                    "Amount Paid:",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 17.sp),
-                  ):
-                  SizedBox(width: 11.w),
-
-                  const Spacer(),
-
-                  // Reorder button
-                  ElevatedButton(
-                    onPressed: () {
-                      // TODO: Implement reorder
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.orange300,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7.r),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 23.w,
-                        vertical: 1.5.h,
-                      ),
-                      elevation: 0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.sp,
                     ),
-                    child: Text(
-                      "Reorder",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.8.sp,
-                      ),
+                  ),
+                  Text(
+                    "₹${order.totalAmount.toStringAsFixed(2)}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.sp,
                     ),
                   ),
                 ],
               ),
-            )
+            ),
 
+            SizedBox(height: 8.h),
+
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Rate:",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.sp,
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Obx(() => Row(
+                  children: List.generate(5, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        rating.value = index + 1;
+                       // order.rating=index+1;
+                      },
+                      child: Icon(
+                        index < rating.value
+                            ? Icons.star
+                            : Icons.star_border,
+                        color: Colors.amber,
+                        size: 22.sp,
+                      ),
+                    );
+                  }),
+                )),
+              ],
+            ),
+
+          ],):SizedBox(height: 8.h),
+
+
+
+            /// Reorder Button
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  // TODO: Implement reorder functionality
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.orange300,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 40.w,
+                    vertical: 10.h,
+                  ),
+                  elevation: 0,
+                ),
+                child: Text(
+                  "Reorder",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
-      // ),
-    )
+      ),
     );
   }
 }
